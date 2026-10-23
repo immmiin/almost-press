@@ -39,7 +39,7 @@ export default async function exportScreen(root: HTMLElement, params: URLSearchP
   root.innerHTML = `<main class="export" data-state="idle">
     <header class="x-head"><a class="x-back mono" href="#/reader?issue=${which}"></a>
       <p class="mono x-spec">ALMOST PRESS AP-16 · ${no} · 16pp · A5 148×210 · bleed 3 mm · 300 dpi</p></header>
-    <p class="x-axis ja vert" aria-hidden="true">刷り上げ · 第${which === '01' ? '一' : ''}号 · 十六頁</p>
+    <p class="x-axis ja vert" aria-hidden="true">刷り上げ · ${which === '01' ? '第一号' : no} · 十六頁</p>
     <section class="x-scene">
       <div class="x-tray" aria-hidden="true"><div class="x-stack"></div><i class="x-tray-lip"></i></div>
       <div class="x-machine">
@@ -107,7 +107,7 @@ export default async function exportScreen(root: HTMLElement, params: URLSearchP
   });
 
   atmosphere().setPage(16);
-  atmosphere().setInks(issue.pages[15].inks.map((id) => INK_BY_ID[id].hex));
+  atmosphere().setInks(issue.pages[issue.pages.length - 1].inks.map((id) => INK_BY_ID[id].hex));
 
   // ---------- hold START ----------
   let fill = 0, holding = false, raf = 0, last = 0;
@@ -294,6 +294,15 @@ export default async function exportScreen(root: HTMLElement, params: URLSearchP
     skipBtn.hidden = true;
   };
 
+  // an unfinished issue cannot run: the machine says so and START stays dark
+  if (issue.pages.length < 16 || issue.pages.slice(0, 16).some((p) => !p.printed && !issue.fixed)) {
+    const printed = issue.pages.filter((p) => p.printed).length;
+    main.dataset.state = 'short';
+    lcdTop.textContent = 'NEED 16 SHEETS';
+    lcdCount.textContent = `${pad2(printed)}/16`;
+    start.disabled = true;
+    $('.x-hint').innerHTML = `<a href="#/press">${t('back')}</a>`;
+  }
   // the machine glides in
   if (!rm) $('.x-machine').animate([{ transform: 'translateX(28vw)', filter: 'blur(6px)', opacity: 0 }, { transform: 'none', filter: 'blur(0)', opacity: 1 }], { duration: 1600, easing: 'cubic-bezier(.2,.7,.2,1)' });
   start.focus({ preventScroll: true });

@@ -3,7 +3,7 @@
 Autonomous overnight run. The brief lives in `references/almost-press-prompt.md`.
 
 ## Current phase
-Phase 7 — done. Next: Issue 01 data (needed to test export), then Phase 8 export.
+Phase 8 — done. Next: Phase 9 (Issue 01 polished page by page, Colophon `#/colophon`, three-language UI).
 
 ## Done
 - Phase 0: references moved (`references/dream-object-index.html`, `references/almost-press-prompt.md`,
@@ -63,6 +63,20 @@ Phase 7 — done. Next: Issue 01 data (needed to test export), then Phase 8 expo
   28 s, doze after 40 s (mist slows, vials bubble), objects slide after the tab was hidden, label language
   drift (lock switch in the ticket), wrong twin in the drawer, slug misprints, seal double-strike/rotation,
   crosshair cursor with brush halo, cursor ink trail that prints.
+- Phase 8: Export `#/export?issue=01|current` (Reader → "Run the edition"). Code-drawn AP-16 in celadon enamel
+  glides in; LCD job menu (Zine PDF / Spreads PDF / Plates / Instagram / All, arrow keys), hold START (pointer or
+  Space/Enter), drum spins, LCD counts real renders, each plate passes through the pearl window in its ink, sheets
+  slide out onto the tray (left; time flows right→left), masters drift into the master box, seeded paper jam
+  (Keep the jam → that sheet is rendered crumpled / Reprint), then jog · fold · two staples · seal · the zine drops
+  toward the viewer, files download, and a sheet lists every file with numbers read back from the PDFs.
+  Files: `src/export/files.ts` (render + PDF/zip builders), `src/export/inspect.ts` (PDF read-back).
+  **Verified** with `node scripts/verify-export.mjs 01 all` (headless Chrome on `dist/`, downloads read back from disk):
+  · zine-A5-bleed.pdf: 16 pages · 154×216 mm (148×210 + 3 mm bleed) · 16 images 1819×2551 px
+  · zine-A5-cropmarks.pdf: 16 pages · 178×240 mm (bleed sheet + 12 mm slug with crop marks + registration targets) · 16 images 1819×2551 px
+  · spreads.pdf: 9 pages · 302×216 mm (cover, 2–3 … 14–15, back) · 9 images 3567×2551 px
+  · plates.zip: 50 plate masters 1819×2551 (one per ink per page) + 16 stamp & type masters + inks.txt
+  · instagram.zip: 16 × 1080×1350 PNG
+  Full "All" run of Issue 01: ~16 s in headless Chrome on this Mac.
 
 ## Moodboard
 `references/moodboard/` is **empty**, so per the brief I worked from section 3. What I take from it:
@@ -107,5 +121,14 @@ every screen is: soft fields, sharp type, lots of air, one hot accent, and paper
 - **Shake to forget**: grab the paper where there is no object and shake left-right (4 quick reversals).
 - **Hold Space** anywhere on the Press (outside inputs) also holds PRINT.
 
+- **Export formats**: page images in the PDFs are JPEG q0.93 (each zine PDF ≈ 28 MB; lossless would be ~10×).
+  Plates are PNG (lossless, as masters should be); "All" is one zip (~200 MB for Issue 01, mostly plate PNGs).
+- **"All" = one zip** containing both zine PDFs, spreads, plates zip and Instagram zip (browsers block many
+  separate downloads). Single jobs download their files directly.
+- **Paper jam**: seeded per issue (30 % of issues jam, on one of sheets 2–15), so the same issue always jams the same
+  sheet. Add `&jam=6` to the export URL to force a jam on sheet 6 when you want to see it.
+- An unfinished issue (fewer than 16 printed sheets) shows "NEED 16 SHEETS" on the LCD and START stays disabled.
+
 ## Check in the morning
+- `#/export?issue=01` → hold START (choose "All" or one job on the LCD). Try `#/export?issue=01&jam=6` for the jam.
 - `npm install && npm run dev` → open the printed URL.

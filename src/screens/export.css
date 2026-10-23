@@ -66,6 +66,8 @@
 .x-start-wrap { grid-column: 2; }
 .x-start { width: 96px; height: 96px; }
 .x-start .enamel-ring { -webkit-mask: radial-gradient(circle, transparent 38px, #000 39px); mask: radial-gradient(circle, transparent 38px, #000 39px); }
+.x-start:disabled { opacity: .45; cursor: not-allowed; }
+.x-hint a { color: var(--sumi); }
 .x-hint { grid-column: 2; margin: 0; text-align: center; color: #3f5247; }
 
 /* master box */
