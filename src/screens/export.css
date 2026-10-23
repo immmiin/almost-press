@@ -1,0 +1,140 @@
+/* Export · the AP-16 runs the edition */
+.export { position: fixed; inset: 0; overflow: hidden; display: grid; grid-template-rows: auto minmax(0, 1fr); --mw: min(760px, 58vw); --mh: calc(var(--mw) * .6); }
+.x-loading { position: fixed; left: 50%; top: 50%; translate: -50% -50%; }
+.x-head { display: flex; align-items: baseline; gap: 26px; padding: 16px 26px 0; }
+.x-back { color: var(--sumi); text-decoration: none; border-bottom: 1px solid rgba(59,58,64,.4); }
+.x-spec { margin: 0; color: var(--sumi); }
+.x-axis { position: absolute; right: 22px; top: 70px; margin: 0; font: 600 13px/1 var(--f-display); letter-spacing: .34em; color: var(--sumi); }
+.x-scene { position: relative; }
+
+/* ---------- the machine ---------- */
+.x-machine { position: absolute; left: calc(50% - var(--mw) * .3); bottom: 17vh; width: var(--mw); }
+.x-body {
+  position: relative; height: var(--mh); border-radius: 30px 30px 16px 16px;
+  background:
+    radial-gradient(120% 70% at 30% 0%, rgba(255,255,255,.55), transparent 55%),
+    linear-gradient(176deg, #e6f2e4 0%, #cfe6d2 38%, #bfdcc6 78%, #aecdb6 100%);
+  box-shadow: inset 0 2px 1px rgba(255,255,255,.9), inset 0 -10px 18px rgba(80,120,96,.18), inset 0 0 0 1px rgba(90,130,104,.25),
+    0 30px 40px -24px rgba(70,90,110,.45), 0 60px 80px -40px rgba(120,100,150,.35);
+}
+/* enamel speckle */
+.x-body::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: var(--tex-fibre) 0 0 / 260px; opacity: .22; mix-blend-mode: multiply; pointer-events: none; }
+.x-seam { position: absolute; left: 4%; right: 4%; top: 64%; height: 1px; background: rgba(70,110,86,.28); box-shadow: 0 1px 0 rgba(255,255,255,.7); }
+.x-feet { display: flex; justify-content: space-between; padding: 0 9%; }
+.x-feet i { width: 54px; height: 9px; border-radius: 0 0 6px 6px; background: linear-gradient(#8c9a92, #6f7d76); }
+.x-name { position: absolute; left: 5.5%; top: 7%; display: flex; align-items: flex-start; gap: 12px; }
+.x-name-en { font: 14px/1 var(--f-wide); transform: scaleX(1.6) scaleY(.8); transform-origin: left top; letter-spacing: -.02em; color: #4f6a5b; margin-right: 92px; white-space: nowrap; }
+.x-model { color: #4a5f53; margin-top: 2px; }
+.x-name-ja { position: absolute; left: 2.2%; top: 52%; writing-mode: vertical-rl; font: 800 10px/1 var(--f-display); letter-spacing: .3em; color: #4a5f53; }
+
+/* paper feed on top (time flows right → left: paper enters at the right) */
+.x-feed { position: absolute; right: 9%; top: -26px; width: 34%; height: 30px; }
+.x-feed i { position: absolute; left: 0; right: 0; bottom: 0; height: 26px; background: var(--rice) var(--tex-rice) 0 0 / 200px; transform: skewX(-24deg); box-shadow: 0 1px 1px rgba(59,58,64,.12); }
+.x-feed i:nth-child(2) { bottom: 3px; left: 3px; } .x-feed i:nth-child(3) { bottom: 6px; left: 6px; right: -4px; }
+
+/* the pearl drum window */
+.x-window { position: absolute; left: 7%; top: 22%; width: calc(var(--mh) * .5); aspect-ratio: 1; border-radius: 50%; overflow: hidden;
+  background: radial-gradient(circle, #fbf8f3 0 60%, #e8e0d6 100%);
+  box-shadow: 0 0 0 7px #f6f2ec, 0 0 0 8px rgba(120,110,100,.25), 0 0 0 13px #d7e8d8, inset 0 6px 14px rgba(80,70,90,.3); }
+.x-drum { position: absolute; inset: 14% 6%; border-radius: 10px; overflow: hidden; --ink: #A9C6E8;
+  background: linear-gradient(90deg, rgba(60,60,80,.18), transparent 22%, transparent 78%, rgba(60,60,80,.22)); }
+.x-skin { position: absolute; left: 0; right: 0; top: 0; height: 200%;
+  background: repeating-linear-gradient(180deg, color-mix(in srgb, var(--ink) 55%, #fff) 0 9px, color-mix(in srgb, var(--ink) 30%, #fff) 9px 14px, #f1ece2 14px 22px); }
+.export[data-state="running"] .x-skin { animation: x-spin .5s linear infinite; }
+@keyframes x-spin { to { transform: translateY(-50%); } }
+.x-passes { position: absolute; inset: 0; mix-blend-mode: multiply; }
+.x-passes i { position: absolute; left: 0; right: 0; top: 0; height: 100%; background: linear-gradient(180deg, transparent, var(--ink) 45%, var(--ink) 55%, transparent); opacity: 0; filter: blur(2px); }
+.x-glass { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(60% 40% at 32% 22%, rgba(255,255,255,.75), transparent 70%); pointer-events: none; }
+.x-slot { position: absolute; left: -4px; top: 58%; width: 18px; height: 8px; border-radius: 0 4px 4px 0; background: #5f7568; box-shadow: inset 0 2px 3px rgba(0,0,0,.4); }
+
+/* control panel: LCD + START */
+.x-panel { position: absolute; right: 5%; top: 20%; display: grid; grid-template-columns: auto auto; grid-template-rows: auto auto; gap: 10px 18px; align-items: center; }
+.x-lcd { grid-row: 1 / span 2; width: calc(var(--mw) * .33); min-width: 190px; padding: 8px 10px; border-radius: 4px;
+  background: linear-gradient(180deg, #dfe8d6, #cfdcc6); box-shadow: inset 0 2px 4px rgba(40,60,40,.35), 0 0 0 4px #f3efe8, 0 0 0 5px rgba(90,110,96,.35);
+  font: 11px/1.35 var(--f-pixel), var(--f-body); color: #2f3a33; }
+.x-lcd p { margin: 0; }
+.x-lcd-top { letter-spacing: .14em; border-bottom: 1px dashed rgba(47,58,51,.35); padding-bottom: 3px; margin-bottom: 4px !important; }
+.x-lcd-top.x-flash { color: #c0332b; animation: x-blink .5s steps(2) infinite; }
+@keyframes x-blink { 50% { opacity: .15; } }
+.x-menu { display: grid; }
+.x-menu button { display: flex; gap: 6px; border: 0; background: none; padding: 1px 2px; text-align: left; font: inherit; color: inherit; }
+.x-menu button i { font-style: normal; width: 1em; }
+.x-menu button[aria-checked="true"] { background: rgba(47,58,51,.14); }
+.x-menu button:focus-visible { outline: 1px dashed #2f3a33; outline-offset: 0; }
+.x-lcd-count { text-align: right; font-size: 18px; letter-spacing: .1em; margin-top: 4px !important; }
+.export:not([data-state="idle"]) .x-menu button { opacity: .55; cursor: default; }
+.x-start-wrap { grid-column: 2; }
+.x-start { width: 96px; height: 96px; }
+.x-start .enamel-ring { -webkit-mask: radial-gradient(circle, transparent 38px, #000 39px); mask: radial-gradient(circle, transparent 38px, #000 39px); }
+.x-hint { grid-column: 2; margin: 0; text-align: center; color: #3f5247; }
+
+/* master box */
+.x-masters { position: absolute; right: 5%; bottom: 7%; width: 30%; height: 26%; padding: 6px 10px;
+  background: linear-gradient(180deg, rgba(250,248,244,.7), rgba(240,236,230,.55)); backdrop-filter: blur(6px); box-shadow: inset 0 0 0 .5px rgba(255,255,255,.7); }
+.x-masters span { color: #3f5247; }
+.x-mstack { position: absolute; inset: 22px 12px 8px; }
+.x-mstack i { position: absolute; left: 6%; right: 6%; bottom: 0; height: 70%; transform: rotate(var(--r));
+  background: linear-gradient(180deg, color-mix(in srgb, var(--ink) 16%, #fff), rgba(255,255,255,.7)); box-shadow: 0 0 0 .5px rgba(59,58,64,.12); }
+
+/* output tray: left of the machine (time flows right → left) */
+.x-tray { position: absolute; left: calc(50% - var(--mw) * .3 - 170px); bottom: calc(17vh + 9px + var(--mh) * .1); width: 150px; height: calc(var(--mh) * .4); }
+.x-tray-lip { position: absolute; left: -8px; right: -14px; bottom: -8px; height: 10px; border-radius: 3px; background: linear-gradient(#e5eee2, #b8d1bf); box-shadow: 0 8px 12px -6px rgba(70,90,110,.4); }
+.x-stack { position: absolute; left: 22px; bottom: 0; width: 104px; height: 148px; --slot-x: 180; transform-origin: left center; }
+.x-sheet { position: absolute; inset: 0; background: var(--rice) center / cover; box-shadow: 0 1px 1px rgba(59,58,64,.12), 0 6px 10px -6px rgba(80,70,100,.3); transform: translate(var(--dx), var(--dy)) rotate(var(--r)); }
+.x-crumpled { filter: contrast(1.05); clip-path: polygon(2% 4%, 30% 0, 62% 5%, 98% 1%, 95% 38%, 100% 70%, 96% 98%, 58% 94%, 26% 100%, 0 95%, 4% 60%, 0 30%); }
+.x-crumpled::after { content: ""; position: absolute; inset: 0; background: linear-gradient(118deg, transparent 30%, rgba(80,70,90,.14) 31%, transparent 34%), linear-gradient(64deg, transparent 52%, rgba(255,255,255,.4) 53%, transparent 56%), linear-gradient(160deg, transparent 66%, rgba(80,70,90,.12) 67%, transparent 70%); }
+.x-staple { position: absolute; left: -2px; width: 3px; height: 16px; margin-top: -8px; background: linear-gradient(90deg, #9aa0a6, #e6e8ea, #8d9399); border-radius: 1px; z-index: 40; }
+.x-cover-seal { position: absolute; right: 10px; bottom: 12px; z-index: 41; mix-blend-mode: multiply; }
+
+/* tiny sharp labels placed around the machine, with hairline leaders */
+.x-lab { position: absolute; margin: 0; color: var(--sumi); white-space: nowrap; pointer-events: none; }
+.x-lab::before { content: ""; position: absolute; background: rgba(59,58,64,.55); }
+.x-lab-drum { right: calc(100% + 14px); top: 22%; }
+.x-lab-drum::before { left: calc(100% + 4px); top: 50%; width: calc(var(--mw) * .1 + 10px); height: 1px; }
+.x-lab-feed { right: 0; top: -58px; }
+.x-lab-feed::before { right: 26%; top: calc(100% + 2px); width: 1px; height: 20px; }
+.x-lab-master { right: 0; top: calc(100% + 18px); }
+.x-lab-master::before { right: 30px; bottom: calc(100% + 2px); width: 1px; height: 30px; }
+.x-lab-tray { left: -190px; top: calc(100% + 18px); }
+
+/* paper jam */
+.x-jam { position: absolute; left: max(3vw, calc(50% - var(--mw) * .32 - 420px)); top: 16vh; z-index: 20; }
+.x-jam-slip { padding: 18px 26px 20px; max-width: 360px; transform: rotate(-1.4deg); }
+.x-jam-h { margin: 0 0 8px; display: flex; align-items: flex-start; gap: 14px; }
+.x-jam-en { font: 20px/1 var(--f-wide); transform: scaleX(1.4) scaleY(.8); transform-origin: left; color: var(--seal); margin-right: 60px; white-space: nowrap; }
+.x-jam-ko { font: 22px/1 var(--f-heavy-ko); }
+.x-jam-ja { font: 800 12px/1 var(--f-display); letter-spacing: .2em; }
+.x-jam-btns { display: flex; gap: 18px; margin-top: 12px; }
+.x-jam-btns button { border: 0; background: none; padding: 4px 0; font: 600 15px var(--f-display); border-bottom: 1.5px solid var(--sumi); }
+.x-jam-btns .x-keep { border-bottom-color: var(--seal); }
+
+/* the files */
+.x-done { position: absolute; left: 4vw; top: 7vh; z-index: 15; width: max(300px, min(600px, calc(50% - var(--mw) * .3 - 4vw - 16px))); }
+.x-done-sheet { padding: 22px 26px 24px; transform: rotate(.6deg); }
+.x-done-h { margin: 0 0 12px; font: italic 400 24px/1.1 var(--f-accent); }
+.x-done-h .ja { font: 800 22px var(--f-display); font-style: normal; color: var(--seal); margin-right: 8px; }
+.x-files { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.x-files li { display: grid; gap: 1px; }
+.x-files a { color: var(--sumi); font-size: 11px; }
+.x-files span { color: var(--soft); }
+.x-facts { list-style: none; margin: 12px 0 0; padding: 10px 0 0; border-top: 1px solid rgba(59,58,64,.25); display: grid; gap: 2px; color: var(--sumi); }
+.x-done-jam { color: var(--seal); }
+.x-done-btns { display: flex; gap: 22px; align-items: center; margin-top: 16px; }
+.x-again { font: 600 15px var(--f-display); padding: 8px 16px; border: 0; }
+.x-back2 { color: var(--sumi); }
+.x-skip { position: absolute; right: 26px; bottom: 18px; border: 0; background: none; border-bottom: 1px solid var(--sumi); z-index: 30; }
+
+@media (max-width: 900px) {
+  .export { --mw: 94vw; }
+  .x-machine { left: 3vw; bottom: 4vh; }
+  .x-tray { left: 8vw; bottom: calc(4vh + var(--mh) + 40px); }
+  .x-stack { --slot-x: 0; }
+  .x-panel { right: 3%; top: 16%; gap: 6px 10px; }
+  .x-lcd { min-width: 150px; font-size: 10px; }
+  .x-start { width: 78px; height: 78px; }
+  .x-start .enamel-ring { -webkit-mask: radial-gradient(circle, transparent 30px, #000 31px); mask: radial-gradient(circle, transparent 30px, #000 31px); }
+  .x-name-en { margin-right: 60px; font-size: 11px; }
+  .x-done { left: 3vw; width: 94vw; top: 7vh; }
+  .x-axis { display: none; }
+  .x-jam { left: 3vw; }
+}

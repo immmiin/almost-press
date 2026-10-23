@@ -32,15 +32,21 @@ const nextFrame = () => new Promise<void>((r) => requestAnimationFrame(() => r()
 const toBlob = (c: HTMLCanvasElement, type: string, q?: number) => new Promise<Blob>((r) => c.toBlob((b) => r(b!), type, q));
 const blobBytes = async (b: Blob) => new Uint8Array(await b.arrayBuffer());
 
-export interface Rendered { jpeg: Uint8Array; canvas: HTMLCanvasElement; plates?: { name: string; png: Blob }[]; stamp?: Blob }
+/** A rendered page. Only the JPEG is kept (16 RGBA canvases at 300 dpi would hold ~300 MB); spreads and
+ *  Instagram images decode it again when they need pixels. */
+export interface Rendered { jpeg: Uint8Array; blob: Blob; thumb: string; plates?: { name: string; png: Blob }[]; stamp?: Blob }
+
+const decode = (r: Rendered) => createImageBitmap(r.blob);
 
 /** Render one page at 300 dpi including bleed. */
 export async function renderPage300(page: Page, withPlates: boolean): Promise<Rendered> {
   const src = pipeline().render(page, PX_W);
-  const c = document.createElement('canvas');
-  c.width = src.width; c.height = src.height;
-  c.getContext('2d')!.drawImage(src, 0, 0);
-  const out: Rendered = { jpeg: await blobBytes(await toBlob(c, 'image/jpeg', 0.93)), canvas: c };
+  const blob = await toBlob(src, 'image/jpeg', 0.93);
+  // a small proof for the tray, cut from the trim area
+  const tc = document.createElement('canvas'); tc.width = 120; tc.height = Math.round(120 * PAGE_H / PAGE_W);
+  const bl = BLEED * (src.width / FULL_W);
+  tc.getContext('2d')!.drawImage(src, bl, bl, src.width - bl * 2, src.height - bl * 2, 0, 0, tc.width, tc.height);
+  const out: Rendered = { jpeg: await blobBytes(blob), blob, thumb: tc.toDataURL('image/jpeg', 0.8) };
   if (withPlates) {
     out.plates = [];
     for (let i = 0; i < page.inks.length; i++) {
@@ -92,7 +98,7 @@ export function zinePDF(issue: Issue, pages: Rendered[], marks: boolean): Blob {
 }
 
 /** Spreads: cover (right half), 2–3 … 14–15, back (left half). Each spread is 2×148 + bleed. */
-export function spreadsPDF(issue: Issue, pages: Rendered[]): Blob {
+export async function spreadsPDF(issue: Issue, pages: Rendered[]): Promise<Blob> {
   const SW = PAGE_W * 2 + BLEED * 2, SH = FULL_H;
   const pdf = new jsPDF({ unit: 'mm', format: [SW, SH], orientation: 'landscape', compress: true });
   pdf.setProperties({ title: `A Day I Almost Remember · spreads · #${String(issue.seed).padStart(4, '0')}`, creator: 'ALMOST PRESS' });
@@ -100,18 +106,20 @@ export function spreadsPDF(issue: Issue, pages: Rendered[]): Blob {
   const spreads: [number | null, number | null][] = [[null, 0]];
   for (let i = 1; i < 15; i += 2) spreads.push([i, i + 1]);
   spreads.push([15, null]);
-  spreads.forEach(([l, r], si) => {
+  const c = document.createElement('canvas');
+  c.width = Math.round(SW * pxPerMM); c.height = PX_H;
+  const x = c.getContext('2d')!;
+  for (let si = 0; si < spreads.length; si++) {
+    const [l, r] = spreads[si];
     if (si) pdf.addPage([SW, SH], 'landscape');
-    const c = document.createElement('canvas');
-    c.width = Math.round(SW * pxPerMM); c.height = PX_H;
-    const x = c.getContext('2d')!;
     x.fillStyle = '#F1ECE2'; x.fillRect(0, 0, c.width, c.height);
     const bl = Math.round(BLEED * pxPerMM), tw = Math.round(PAGE_W * pxPerMM);
     // left page keeps its outer (left) bleed, right page keeps its outer (right) bleed
-    if (l !== null) x.drawImage(pages[l].canvas, 0, 0, bl + tw, PX_H, 0, 0, bl + tw, PX_H);
-    if (r !== null) x.drawImage(pages[r].canvas, bl, 0, tw + bl, PX_H, bl + tw, 0, tw + bl, PX_H);
-    pdf.addImage(c.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, SW, SH, `sp${si}`, 'NONE');
-  });
+    if (l !== null) { const b = await decode(pages[l]); x.drawImage(b, 0, 0, bl + tw, PX_H, 0, 0, bl + tw, PX_H); b.close(); }
+    if (r !== null) { const b = await decode(pages[r]); x.drawImage(b, bl, 0, tw + bl, PX_H, bl + tw, 0, tw + bl, PX_H); b.close(); }
+    pdf.addImage(await blobBytes(await toBlob(c, 'image/jpeg', 0.92)), 'JPEG', 0, 0, SW, SH, `sp${si}`, 'NONE');
+    await nextFrame();
+  }
   return pdf.output('blob');
 }
 
@@ -129,7 +137,9 @@ export async function instagram(issue: Issue, pages: Rendered[]): Promise<{ name
     const ox = (1080 - w) / 2, oy = 62;
     const bl = BLEED * (PX_W / FULL_W);
     x.shadowColor = 'rgba(90,80,120,.25)'; x.shadowBlur = 30; x.shadowOffsetY = 14;
-    x.drawImage(pages[i].canvas, bl, bl, PX_W - bl * 2, PX_H - bl * 2, ox, oy, w, h);
+    const bm = await decode(pages[i]);
+    x.drawImage(bm, bl, bl, PX_W - bl * 2, PX_H - bl * 2, ox, oy, w, h);
+    bm.close();
     x.shadowColor = 'transparent';
     x.fillStyle = '#3B3A40'; x.font = '15px "IBM Plex Mono", monospace';
     x.fillText(`ALMOST PRESS · A Day I Almost Remember · #${String(issue.seed).padStart(4, '0')} · p.${String(i + 1).padStart(2, '0')}/16`, ox, oy + h + 52);
@@ -153,18 +163,35 @@ export function download(blob: Blob, name: string) {
   setTimeout(() => URL.revokeObjectURL(a.href), 60000);
 }
 
-/** The whole run. onPage fires as each sheet is really rendered. */
-export async function runEdition(issue: Issue, kind: Kind, progress: Progress, jamPage = -1, keepJam = false): Promise<{ name: string; blob: Blob }[]> {
+export interface RunOpts {
+  /** page index that jams (-1: none) and how the operator answers: true = keep the crumpled sheet */
+  jamPage?: number;
+  onJam?: (i: number) => Promise<boolean>;
+  /** fires as each sheet is really rendered */
+  onPage?: (i: number, r: Rendered, page: Page) => void;
+  /** every file as it is made (also the ones that end up inside the 'all' zip) */
+  onFile?: (name: string, blob: Blob) => void;
+}
+
+/** A jammed sheet: every object comes out crumpled, the creases showing another pattern. */
+export function jammed(p: Page): Page {
+  return { ...p, objects: p.objects.map((o) => (o.kind === 'helper' ? o : { ...o, crumple: Math.max(o.crumple ?? 0, 0.65), pattern: (o.pattern ?? 0) + 1 })), jam: true };
+}
+
+/** The whole run. */
+export async function runEdition(issue: Issue, kind: Kind, progress: Progress, opts: RunOpts = {}): Promise<{ name: string; blob: Blob }[]> {
   await fontsReady();
   const needPlates = kind === 'plates' || kind === 'all';
   const rendered: Rendered[] = [];
   const name = `almost-press-${String(issue.seed).padStart(4, '0')}`;
   for (let i = 0; i < 16; i++) {
     let p = issue.pages[i];
-    if (i === jamPage && keepJam) p = { ...p, objects: p.objects.map((o) => (o.kind === 'helper' ? o : { ...o, crumple: Math.max(o.crumple ?? 0, 0.65), pattern: (o.pattern ?? 0) + 1 })), jam: true };
+    if (i === opts.jamPage && opts.onJam && (await opts.onJam(i))) p = jammed(p);
     progress(i, 16, 'render', i + 1);
     await nextFrame();
-    rendered.push(await renderPage300(p, needPlates));
+    const r = await renderPage300(p, needPlates);
+    rendered.push(r);
+    opts.onPage?.(i, r, p);
     progress(i + 1, 16, 'render', i + 1);
   }
   const files: { name: string; blob: Blob }[] = [];
@@ -175,11 +202,11 @@ export async function runEdition(issue: Issue, kind: Kind, progress: Progress, j
     await nextFrame();
     files.push({ name: `${name}-zine-A5-cropmarks.pdf`, blob: zinePDF(issue, rendered, true) });
   }
-  if (kind === 'spreads' || kind === 'all') { await nextFrame(); files.push({ name: `${name}-spreads.pdf`, blob: spreadsPDF(issue, rendered) }); }
+  if (kind === 'spreads' || kind === 'all') { await nextFrame(); files.push({ name: `${name}-spreads.pdf`, blob: await spreadsPDF(issue, rendered) }); }
   if (needPlates) {
     const zip = new JSZip();
     const dir = zip.folder('masters')!;
-    rendered.forEach((r) => { r.plates?.forEach((pl) => dir.file(pl.name, pl.png)); if (r.stamp) dir.file(`p${String(rendered.indexOf(r) + 1).padStart(2, '0')}-stamp-and-type.png`, r.stamp); });
+    rendered.forEach((r, i) => { r.plates?.forEach((pl) => dir.file(pl.name, pl.png)); if (r.stamp) dir.file(`p${String(i + 1).padStart(2, '0')}-stamp-and-type.png`, r.stamp); });
     zip.file('inks.txt', inkList(issue));
     files.push({ name: `${name}-plates.zip`, blob: await zip.generateAsync({ type: 'blob', compression: 'STORE' }) });
   }
@@ -189,6 +216,7 @@ export async function runEdition(issue: Issue, kind: Kind, progress: Progress, j
     ig.forEach((f) => zip.file(f.name, f.png));
     files.push({ name: `${name}-instagram.zip`, blob: await zip.generateAsync({ type: 'blob', compression: 'STORE' }) });
   }
+  files.forEach((f) => opts.onFile?.(f.name, f.blob));
   if (kind === 'all') {
     const zip = new JSZip();
     files.forEach((f) => zip.file(f.name, f.blob));
