@@ -30,7 +30,7 @@ export class Drawer {
   constructor() {
     const wrap = document.createElement('section');
     wrap.className = 'drawer-wrap vellum-wrap';
-    wrap.setAttribute('aria-label', 'Object drawer');
+    wrap.setAttribute('aria-label', tA('a_drawer'));
     wrap.innerHTML = `<div class="drawer vellum"><div class="drawer-head"><label class="sr" for="dsearch"></label><input id="dsearch" class="ruled drawer-search" type="search" autocomplete="off"></div><div class="drawer-body"><nav class="drawer-cats" role="tablist"></nav><div class="drawer-grid" role="tabpanel"></div></div></div>`;
     this.el = wrap;
     const sheet = wrap.querySelector('.drawer') as HTMLElement;
@@ -89,7 +89,7 @@ export class Drawer {
         return;
       }
       if (this.cat === 'type') {
-        this.grid.innerHTML = HELPERS.map((h) => `<button type="button" class="dstamp dhelp" data-h="${h.id}" aria-label="${h.en}"><span class="dhelp-ch">${h.char}</span><span class="dcap mono">${lang === 'ko' ? h.ko : lang === 'ja' ? h.ja : h.en}</span></button>`).join('');
+        this.grid.innerHTML = HELPERS.map((h) => `<button type="button" class="dstamp dhelp" data-h="${h.id}" aria-label="${lang === 'ko' ? h.ko : lang === 'ja' ? h.ja : h.en}"><span class="dhelp-ch">${h.char}</span><span class="dcap mono">${lang === 'ko' ? h.ko : lang === 'ja' ? h.ja : h.en}</span></button>`).join('');
         return;
       }
       const keys = KEYS.filter((k) => this.matches(k));

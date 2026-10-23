@@ -15,7 +15,7 @@ import { tick } from '../core/sound';
 import type { Issue } from '../model/types';
 
 export default async function reader(root: HTMLElement, params: URLSearchParams) {
-  root.innerHTML = `<p class="mono r-loading">unrolling…</p>`;
+  root.innerHTML = `<p class="mono r-loading">${tA('unrolling')}</p>`;
   const which = params.get('issue') ?? '01';
   const issue: Issue = await loadIssue(which);
   if (!root.isConnected) return;
@@ -29,7 +29,7 @@ export default async function reader(root: HTMLElement, params: URLSearchParams)
       <button type="button" class="r-run slip"></button></div></header>
     <section class="r-scroll" aria-label="hand scroll, drag or use arrow keys" tabindex="0"><div class="r-roll r-roll-l" aria-hidden="true"></div><div class="r-track"></div><div class="r-roll r-roll-r" aria-hidden="true"></div></section>
     <section class="r-book" aria-label="booklet" tabindex="0" hidden><div class="r-spread"></div><p class="r-book-n mono" aria-live="polite"></p>
-      <button type="button" class="r-turn r-prev mono" aria-label="previous spread">←</button><button type="button" class="r-turn r-next mono" aria-label="next spread">→</button></section>
+      <button type="button" class="r-turn r-prev mono" aria-label="${tA('prevSpread')}">←</button><button type="button" class="r-turn r-next mono" aria-label="${tA('nextSpread')}">→</button></section>
   </main>`;
   const $ = (s: string) => root.querySelector(s) as HTMLElement;
   const labels = () => {
@@ -136,7 +136,7 @@ export default async function reader(root: HTMLElement, params: URLSearchParams)
     const [a, b] = spreads[si];
     spread.style.setProperty('--pw', `${W}px`); spread.style.setProperty('--ph', `${H}px`);
     spread.innerHTML = `<div class="r-side r-left">${face(a)}</div><div class="r-side r-right">${face(b)}</div><i class="r-spine"></i>`;
-    $('.r-book-n').textContent = si === 0 ? 'cover' : si === spreads.length - 1 ? 'back cover' : `${a! + 1}–${b! + 1}`;
+    $('.r-book-n').textContent = si === 0 ? tA('cover') : si === spreads.length - 1 ? tA('backcover') : `${a! + 1}–${b! + 1}`;
   };
   const turn = (dir: 1 | -1) => {
     const nx = si + dir;

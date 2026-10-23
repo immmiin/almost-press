@@ -67,7 +67,7 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
   });
   const layerBtns = document.createElement('div');
   layerBtns.className = 'layer-btns';
-  layerBtns.innerHTML = `<button type="button" class="mono" data-l="1" aria-label="bring forward">上</button><button type="button" class="mono" data-l="-1" aria-label="send back">下</button>`;
+  layerBtns.innerHTML = `<button type="button" class="mono" data-l="1" aria-label="${tA('a_fwd')}">上</button><button type="button" class="mono" data-l="-1" aria-label="${tA('a_bwd')}">下</button>`;
   layerBtns.addEventListener('click', (e) => { const b = (e.target as HTMLElement).closest('button'); if (!b) return; stage.reorder(currentPage().objects.filter((o) => stage.selected.has(o.id)), +b.dataset.l!); emit('layer'); stage.render(); });
   tools.append(layerBtns, reprintBtn);
   $('.p-tools').append(toolsWrap);

@@ -5,6 +5,7 @@ import { FULL_W, FULL_H, objMatrix, boxOf } from '../riso/plates';
 import { pipeline } from '../riso/pipeline';
 import { emit, forget, getIssue } from '../model/store';
 import { objectThumb } from './thumbs';
+import { tA } from '../core/i18n';
 import { TOOL_BY_ID, type ToolId } from './toolDefs';
 import { makeStamp, makeHelper, bloomStroke, sideMove, sideErase, sideScale, sidePlate, sideDuplicate } from './edits';
 import { thud, tick } from '../core/sound';
@@ -54,7 +55,7 @@ export class Stage {
     this.ghost = this.el.querySelector('.stage-ghost')!;
     this.sheet.tabIndex = 0;
     deckle(this.canvas, 17, 'deckle', 3);
-    this.sheet.setAttribute('aria-label', 'The page. Arrow keys nudge the selection; Tab through objects with the [ and ] keys disabled.');
+    this.sheet.setAttribute('aria-label', tA('a_page'));
     this.bind();
     this.offFonts = onFontsLoaded(() => { pipeline().invalidate(); this.render('full'); });
   }

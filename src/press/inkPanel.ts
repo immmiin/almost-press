@@ -27,7 +27,7 @@ export class InkPanel {
   constructor() {
     const wrap = document.createElement('section');
     wrap.className = 'inks-wrap vellum-wrap';
-    wrap.setAttribute('aria-label', 'Inks and plates');
+    wrap.setAttribute('aria-label', tA('a_inks'));
     wrap.innerHTML = `<div class="inks vellum"><h2 class="mono-up inks-h"></h2><div class="inks-slots"></div><div class="inks-presets"></div><div class="inks-lib" role="listbox"></div><div class="inks-view"></div><div class="inks-knobs"></div><div class="inks-side"></div></div>`;
     this.el = wrap;
     deckle(wrap.querySelector('.inks')!, 77, 'deckle', 2.5);

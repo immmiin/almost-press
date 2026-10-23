@@ -51,7 +51,7 @@ export class Ticket {
     this.input.placeholder = 'a swan in the kitchen · 부엌의 백조 · 台所の白鳥 — Enter';
     this.input.setAttribute('aria-label', tA('dream'));
     const lang = getLang();
-    q('.ticket-lang').setAttribute('aria-label', 'language');
+    q('.ticket-lang').setAttribute('aria-label', tA('a_lang'));
     q('.ticket-lang').innerHTML = (['en', 'ko', 'ja'] as Lang[]).map((l) => `<button type="button" class="mono" data-l="${l}" aria-pressed="${l === lang}">${l === 'en' ? 'EN' : l === 'ko' ? '한' : '日'}</button>`).join('');
     q('[data-a="sound"]').textContent = `${t('sound')} ${soundOn() ? t('on') : t('off')}`;
     q('[data-a="sound"]').setAttribute('aria-pressed', String(soundOn()));

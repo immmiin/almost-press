@@ -3,7 +3,7 @@
 Autonomous overnight run. The brief lives in `references/almost-press-prompt.md`.
 
 ## Current phase
-Phase 8 — done. Next: Phase 9 (Issue 01 polished page by page, Colophon `#/colophon`, three-language UI).
+Phase 9 — done. Next: Phase 10 (mobile 400 px, keyboard, performance, final build) → DONE.md.
 
 ## Done
 - Phase 0: references moved (`references/dream-object-index.html`, `references/almost-press-prompt.md`,
@@ -77,6 +77,13 @@ Phase 8 — done. Next: Phase 9 (Issue 01 polished page by page, Colophon `#/col
   · plates.zip: 50 plate masters 1819×2551 (one per ink per page) + 16 stamp & type masters + inks.txt
   · instagram.zip: 16 × 1080×1350 PNG
   Full "All" run of Issue 01: ~16 s in headless Chrome on this Mac.
+- Phase 9: Issue 01 reviewed page by page against section 15 from the real 300 dpi renders (contact sheets via
+  `node scripts/contact.mjs`). Changes: p.6 the twelve swans now recede in one stream from crisp/large to
+  small/faint/soft into the fog; p.15 is a luminous pink wet wash (was a muddy brown floor) with four floating dot
+  meshes (Purcell). New: per-object soft focus (`blur`, was in the model but not rendered) and the 玉 dot-mesh
+  helper (also in the drawer's type & marks). Colophon `#/colophon`: three-language inscriptions around a pressed
+  seal (about, inks, type, seeds, moodboard, credits + licences). Remaining English-only screen-reader labels and
+  Reader strings moved into i18n (EN / 한 / 日).
 
 ## Moodboard
 `references/moodboard/` is **empty**, so per the brief I worked from section 3. What I take from it:
@@ -129,6 +136,10 @@ every screen is: soft fields, sharp type, lots of air, one hot accent, and paper
   sheet. Add `&jam=6` to the export URL to force a jam on sheet 6 when you want to see it.
 - An unfinished issue (fewer than 16 printed sheets) shows "NEED 16 SHEETS" on the LCD and START stays disabled.
 
+- **Colophon credits** name you as "the student (SVA)" — put your real name in `src/screens/colophon.ts` (I did not
+  want to guess how you sign your work). The fluid credit says it is my own solver after Stam / Dobryakov (no code copied).
+
 ## Check in the morning
+- `#/colophon` — replace "the student" with your name.
 - `#/export?issue=01` → hold START (choose "All" or one job on the LCD). Try `#/export?issue=01&jam=6` for the jam.
 - `npm install && npm run dev` → open the printed URL.
