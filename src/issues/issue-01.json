@@ -313,7 +313,7 @@
    "layout": "art-directed",
    "setoff": [
     {
-     "id": "a3v",
+     "id": "a3z",
      "kind": "obj",
      "key": "clock",
      "x": 102,
@@ -459,7 +459,7 @@
    "layout": "art-directed",
    "setoff": [
     {
-     "id": "a3w",
+     "id": "a40",
      "kind": "obj",
      "key": "clock",
      "x": 104,
@@ -474,7 +474,7 @@
      "seed": 67
     },
     {
-     "id": "a3x",
+     "id": "a41",
      "kind": "obj",
      "key": "table",
      "x": 70,
@@ -489,7 +489,7 @@
      "seed": 74
     },
     {
-     "id": "a3y",
+     "id": "a42",
      "kind": "obj",
      "key": "teacup",
      "x": 58,
@@ -504,7 +504,7 @@
      "seed": 81
     },
     {
-     "id": "a3z",
+     "id": "a43",
      "kind": "obj",
      "key": "toast",
      "x": 82,
@@ -689,7 +689,7 @@
    "layout": "art-directed",
    "setoff": [
     {
-     "id": "a40",
+     "id": "a44",
      "kind": "obj",
      "key": "clock",
      "x": 100,
@@ -704,7 +704,7 @@
      "seed": 109
     },
     {
-     "id": "a41",
+     "id": "a45",
      "kind": "obj",
      "key": "table",
      "x": 72,
@@ -719,7 +719,7 @@
      "seed": 116
     },
     {
-     "id": "a42",
+     "id": "a46",
      "kind": "obj",
      "key": "swan",
      "x": 46,
@@ -735,7 +735,7 @@
      "flip": true
     },
     {
-     "id": "a43",
+     "id": "a47",
      "kind": "obj",
      "key": "teacup",
      "x": 82,
@@ -941,7 +941,7 @@
    "layout": "art-directed",
    "setoff": [
     {
-     "id": "a44",
+     "id": "a48",
      "kind": "obj",
      "key": "clock",
      "x": 78,
@@ -956,7 +956,7 @@
      "seed": 158
     },
     {
-     "id": "a45",
+     "id": "a49",
      "kind": "obj",
      "key": "table",
      "x": 112,
@@ -1016,9 +1016,9 @@
      "id": "ay",
      "kind": "obj",
      "key": "swan",
-     "x": 20,
-     "y": 168,
-     "s": 22,
+     "x": 22,
+     "y": 184,
+     "s": 21,
      "r": 0,
      "plates": [
       1,
@@ -1027,15 +1027,16 @@
      ],
      "seed": 256,
      "opacity": 1,
+     "blur": 0,
      "flip": false
     },
     {
      "id": "az",
      "kind": "obj",
      "key": "swan",
-     "x": 42,
-     "y": 166.5,
-     "s": 21.4,
+     "x": 46.54264847786511,
+     "y": 177.63636363636363,
+     "s": 19.90909090909091,
      "r": 0,
      "plates": [
       1,
@@ -1043,16 +1044,17 @@
       0
      ],
      "seed": 263,
-     "opacity": 0.935,
+     "opacity": 0.9436363636363636,
+     "blur": 0.06363636363636363,
      "flip": true
     },
     {
      "id": "a10",
      "kind": "obj",
      "key": "swan",
-     "x": 64,
-     "y": 165,
-     "s": 20.8,
+     "x": 64.34987730703642,
+     "y": 171.27272727272728,
+     "s": 18.81818181818182,
      "r": 0,
      "plates": [
       1,
@@ -1060,16 +1062,17 @@
       0
      ],
      "seed": 270,
-     "opacity": 0.87,
+     "opacity": 0.8872727272727272,
+     "blur": 0.12727272727272726,
      "flip": false
     },
     {
      "id": "a11",
      "kind": "obj",
      "key": "swan",
-     "x": 86,
-     "y": 163.5,
-     "s": 20.2,
+     "x": 71.25896821612733,
+     "y": 164.9090909090909,
+     "s": 17.727272727272727,
      "r": 0,
      "plates": [
       1,
@@ -1077,16 +1080,17 @@
       0
      ],
      "seed": 277,
-     "opacity": 0.8049999999999999,
-     "flip": true
+     "opacity": 0.8309090909090909,
+     "blur": 0.1909090909090909,
+     "flip": false
     },
     {
      "id": "a12",
      "kind": "obj",
      "key": "swan",
-     "x": 108,
-     "y": 162,
-     "s": 19.6,
+     "x": 67.26992120513782,
+     "y": 158.54545454545453,
+     "s": 16.636363636363637,
      "r": 0,
      "plates": [
       1,
@@ -1094,16 +1098,17 @@
       0
      ],
      "seed": 284,
-     "opacity": 0.74,
-     "flip": false
+     "opacity": 0.7745454545454545,
+     "blur": 0.2545454545454545,
+     "flip": true
     },
     {
      "id": "a13",
      "kind": "obj",
      "key": "swan",
-     "x": 130,
-     "y": 160.5,
-     "s": 19,
+     "x": 56.545454545454554,
+     "y": 152.1818181818182,
+     "s": 15.545454545454547,
      "r": 0,
      "plates": [
       1,
@@ -1111,16 +1116,17 @@
       0
      ],
      "seed": 291,
-     "opacity": 0.675,
-     "flip": true
+     "opacity": 0.7181818181818183,
+     "blur": 0.3181818181818182,
+     "flip": false
     },
     {
      "id": "a14",
      "kind": "obj",
      "key": "swan",
-     "x": 31,
-     "y": 135,
-     "s": 18.4,
+     "x": 45.82098788577126,
+     "y": 145.8181818181818,
+     "s": 14.454545454545455,
      "r": 0,
      "plates": [
       1,
@@ -1128,16 +1134,17 @@
       0
      ],
      "seed": 298,
-     "opacity": 0.61,
+     "opacity": 0.6618181818181819,
+     "blur": 0.3818181818181818,
      "flip": false
     },
     {
      "id": "a15",
      "kind": "obj",
      "key": "swan",
-     "x": 53,
-     "y": 133.5,
-     "s": 17.8,
+     "x": 41.83194087478175,
+     "y": 139.45454545454544,
+     "s": 13.363636363636363,
      "r": 0,
      "plates": [
       1,
@@ -1145,16 +1152,17 @@
       0
      ],
      "seed": 305,
-     "opacity": 0.5449999999999999,
+     "opacity": 0.6054545454545455,
+     "blur": 0.44545454545454544,
      "flip": true
     },
     {
      "id": "a16",
      "kind": "obj",
      "key": "swan",
-     "x": 75,
-     "y": 132,
-     "s": 17.2,
+     "x": 48.741031783872685,
+     "y": 133.0909090909091,
+     "s": 12.272727272727273,
      "r": 0,
      "plates": [
       1,
@@ -1162,16 +1170,17 @@
       0
      ],
      "seed": 312,
-     "opacity": 0.48,
+     "opacity": 0.5490909090909091,
+     "blur": 0.509090909090909,
      "flip": false
     },
     {
      "id": "a17",
      "kind": "obj",
      "key": "swan",
-     "x": 97,
-     "y": 130.5,
-     "s": 16.6,
+     "x": 66.54826061304401,
+     "y": 126.72727272727272,
+     "s": 11.181818181818182,
      "r": 0,
      "plates": [
       1,
@@ -1179,16 +1188,17 @@
       0
      ],
      "seed": 319,
-     "opacity": 0.41500000000000004,
-     "flip": true
+     "opacity": 0.4927272727272727,
+     "blur": 0.5727272727272728,
+     "flip": false
     },
     {
      "id": "a18",
      "kind": "obj",
      "key": "swan",
-     "x": 119,
-     "y": 129,
-     "s": 16,
+     "x": 91.09090909090908,
+     "y": 120.36363636363637,
+     "s": 10.090909090909092,
      "r": 0,
      "plates": [
       1,
@@ -1196,16 +1206,17 @@
       0
      ],
      "seed": 326,
-     "opacity": 0.35,
-     "flip": false
+     "opacity": 0.4363636363636364,
+     "blur": 0.6363636363636364,
+     "flip": true
     },
     {
      "id": "a19",
      "kind": "obj",
      "key": "swan",
-     "x": 141,
-     "y": 127.5,
-     "s": 15.4,
+     "x": 115.63355756877421,
+     "y": 114,
+     "s": 9,
      "r": 0,
      "plates": [
       1,
@@ -1213,8 +1224,9 @@
       0
      ],
      "seed": 333,
-     "opacity": 0.2849999999999999,
-     "flip": true
+     "opacity": 0.38,
+     "blur": 0.7,
+     "flip": false
     },
     {
      "id": "a1c",
@@ -1414,7 +1426,7 @@
    "layout": "art-directed",
    "setoff": [
     {
-     "id": "a46",
+     "id": "a4a",
      "kind": "obj",
      "key": "ladder",
      "x": 118,
@@ -1429,7 +1441,7 @@
      "seed": 207
     },
     {
-     "id": "a47",
+     "id": "a4b",
      "kind": "obj",
      "key": "swan",
      "x": 62,
@@ -1444,7 +1456,7 @@
      "seed": 214
     },
     {
-     "id": "a48",
+     "id": "a4c",
      "kind": "obj",
      "key": "clock",
      "x": 40,
@@ -1802,7 +1814,7 @@
    "layout": "art-directed",
    "setoff": [
     {
-     "id": "a49",
+     "id": "a4d",
      "kind": "obj",
      "key": "stairs",
      "x": 94,
@@ -1817,7 +1829,7 @@
      "seed": 340
     },
     {
-     "id": "a4a",
+     "id": "a4e",
      "kind": "obj",
      "key": "clock",
      "x": 118,
@@ -1833,12 +1845,12 @@
      "opacity": 0.6
     },
     {
-     "id": "a4b",
+     "id": "a4f",
      "kind": "obj",
      "key": "swan",
-     "x": 20,
-     "y": 168,
-     "s": 22,
+     "x": 22,
+     "y": 184,
+     "s": 21,
      "r": 0,
      "plates": [
       1,
@@ -1847,15 +1859,16 @@
      ],
      "seed": 256,
      "opacity": 1,
+     "blur": 0,
      "flip": false
     },
     {
-     "id": "a4c",
+     "id": "a4g",
      "kind": "obj",
      "key": "swan",
-     "x": 42,
-     "y": 166.5,
-     "s": 21.4,
+     "x": 46.54264847786511,
+     "y": 177.63636363636363,
+     "s": 19.90909090909091,
      "r": 0,
      "plates": [
       1,
@@ -1863,16 +1876,17 @@
       0
      ],
      "seed": 263,
-     "opacity": 0.935,
+     "opacity": 0.9436363636363636,
+     "blur": 0.06363636363636363,
      "flip": true
     },
     {
-     "id": "a4d",
+     "id": "a4h",
      "kind": "obj",
      "key": "swan",
-     "x": 64,
-     "y": 165,
-     "s": 20.8,
+     "x": 64.34987730703642,
+     "y": 171.27272727272728,
+     "s": 18.81818181818182,
      "r": 0,
      "plates": [
       1,
@@ -1880,16 +1894,17 @@
       0
      ],
      "seed": 270,
-     "opacity": 0.87,
+     "opacity": 0.8872727272727272,
+     "blur": 0.12727272727272726,
      "flip": false
     },
     {
-     "id": "a4e",
+     "id": "a4i",
      "kind": "obj",
      "key": "swan",
-     "x": 86,
-     "y": 163.5,
-     "s": 20.2,
+     "x": 71.25896821612733,
+     "y": 164.9090909090909,
+     "s": 17.727272727272727,
      "r": 0,
      "plates": [
       1,
@@ -1897,16 +1912,17 @@
       0
      ],
      "seed": 277,
-     "opacity": 0.8049999999999999,
-     "flip": true
+     "opacity": 0.8309090909090909,
+     "blur": 0.1909090909090909,
+     "flip": false
     },
     {
-     "id": "a4f",
+     "id": "a4j",
      "kind": "obj",
      "key": "swan",
-     "x": 108,
-     "y": 162,
-     "s": 19.6,
+     "x": 67.26992120513782,
+     "y": 158.54545454545453,
+     "s": 16.636363636363637,
      "r": 0,
      "plates": [
       1,
@@ -1914,16 +1930,17 @@
       0
      ],
      "seed": 284,
-     "opacity": 0.74,
-     "flip": false
+     "opacity": 0.7745454545454545,
+     "blur": 0.2545454545454545,
+     "flip": true
     },
     {
-     "id": "a4g",
+     "id": "a4k",
      "kind": "obj",
      "key": "swan",
-     "x": 130,
-     "y": 160.5,
-     "s": 19,
+     "x": 56.545454545454554,
+     "y": 152.1818181818182,
+     "s": 15.545454545454547,
      "r": 0,
      "plates": [
       1,
@@ -1931,16 +1948,17 @@
       0
      ],
      "seed": 291,
-     "opacity": 0.675,
-     "flip": true
+     "opacity": 0.7181818181818183,
+     "blur": 0.3181818181818182,
+     "flip": false
     },
     {
-     "id": "a4h",
+     "id": "a4l",
      "kind": "obj",
      "key": "swan",
-     "x": 31,
-     "y": 135,
-     "s": 18.4,
+     "x": 45.82098788577126,
+     "y": 145.8181818181818,
+     "s": 14.454545454545455,
      "r": 0,
      "plates": [
       1,
@@ -1948,16 +1966,17 @@
       0
      ],
      "seed": 298,
-     "opacity": 0.61,
+     "opacity": 0.6618181818181819,
+     "blur": 0.3818181818181818,
      "flip": false
     },
     {
-     "id": "a4i",
+     "id": "a4m",
      "kind": "obj",
      "key": "swan",
-     "x": 53,
-     "y": 133.5,
-     "s": 17.8,
+     "x": 41.83194087478175,
+     "y": 139.45454545454544,
+     "s": 13.363636363636363,
      "r": 0,
      "plates": [
       1,
@@ -1965,16 +1984,17 @@
       0
      ],
      "seed": 305,
-     "opacity": 0.5449999999999999,
+     "opacity": 0.6054545454545455,
+     "blur": 0.44545454545454544,
      "flip": true
     },
     {
-     "id": "a4j",
+     "id": "a4n",
      "kind": "obj",
      "key": "swan",
-     "x": 75,
-     "y": 132,
-     "s": 17.2,
+     "x": 48.741031783872685,
+     "y": 133.0909090909091,
+     "s": 12.272727272727273,
      "r": 0,
      "plates": [
       1,
@@ -1982,16 +2002,17 @@
       0
      ],
      "seed": 312,
-     "opacity": 0.48,
+     "opacity": 0.5490909090909091,
+     "blur": 0.509090909090909,
      "flip": false
     },
     {
-     "id": "a4k",
+     "id": "a4o",
      "kind": "obj",
      "key": "swan",
-     "x": 97,
-     "y": 130.5,
-     "s": 16.6,
+     "x": 66.54826061304401,
+     "y": 126.72727272727272,
+     "s": 11.181818181818182,
      "r": 0,
      "plates": [
       1,
@@ -1999,16 +2020,17 @@
       0
      ],
      "seed": 319,
-     "opacity": 0.41500000000000004,
-     "flip": true
+     "opacity": 0.4927272727272727,
+     "blur": 0.5727272727272728,
+     "flip": false
     },
     {
-     "id": "a4l",
+     "id": "a4p",
      "kind": "obj",
      "key": "swan",
-     "x": 119,
-     "y": 129,
-     "s": 16,
+     "x": 91.09090909090908,
+     "y": 120.36363636363637,
+     "s": 10.090909090909092,
      "r": 0,
      "plates": [
       1,
@@ -2016,16 +2038,17 @@
       0
      ],
      "seed": 326,
-     "opacity": 0.35,
-     "flip": false
+     "opacity": 0.4363636363636364,
+     "blur": 0.6363636363636364,
+     "flip": true
     },
     {
-     "id": "a4m",
+     "id": "a4q",
      "kind": "obj",
      "key": "swan",
-     "x": 141,
-     "y": 127.5,
-     "s": 15.4,
+     "x": 115.63355756877421,
+     "y": 114,
+     "s": 9,
      "r": 0,
      "plates": [
       1,
@@ -2033,8 +2056,9 @@
       0
      ],
      "seed": 333,
-     "opacity": 0.2849999999999999,
-     "flip": true
+     "opacity": 0.38,
+     "blur": 0.7,
+     "flip": false
     }
    ]
   },
@@ -2275,7 +2299,7 @@
    "layout": "art-directed",
    "setoff": [
     {
-     "id": "a4n",
+     "id": "a4r",
      "kind": "obj",
      "key": "table",
      "x": 72,
@@ -2290,7 +2314,7 @@
      "seed": 396
     },
     {
-     "id": "a4o",
+     "id": "a4s",
      "kind": "obj",
      "key": "teacup",
      "x": 56,
@@ -2305,7 +2329,7 @@
      "seed": 403
     },
     {
-     "id": "a4p",
+     "id": "a4t",
      "kind": "obj",
      "key": "clock",
      "x": 96,
@@ -2320,7 +2344,7 @@
      "seed": 410
     },
     {
-     "id": "a4q",
+     "id": "a4u",
      "kind": "obj",
      "key": "chair",
      "x": 30,
@@ -2335,7 +2359,7 @@
      "seed": 417
     },
     {
-     "id": "a4r",
+     "id": "a4v",
      "kind": "obj",
      "key": "swan",
      "x": 118,
@@ -2588,7 +2612,7 @@
    "layout": "art-directed",
    "setoff": [
     {
-     "id": "a4s",
+     "id": "a4w",
      "kind": "obj",
      "key": "table",
      "x": 96,
@@ -2603,7 +2627,7 @@
      "seed": 494
     },
     {
-     "id": "a4t",
+     "id": "a4x",
      "kind": "obj",
      "key": "table",
      "x": 102,
@@ -2619,7 +2643,7 @@
      "opacity": 0.38
     },
     {
-     "id": "a4u",
+     "id": "a4y",
      "kind": "obj",
      "key": "swan",
      "x": 104,
@@ -2634,7 +2658,7 @@
      "seed": 508
     },
     {
-     "id": "a4v",
+     "id": "a4z",
      "kind": "obj",
      "key": "swan",
      "x": 99,
@@ -2874,7 +2898,7 @@
    "layout": "art-directed",
    "setoff": [
     {
-     "id": "a4w",
+     "id": "a50",
      "kind": "obj",
      "key": "clock",
      "x": 52,
@@ -2889,7 +2913,7 @@
      "seed": 557
     },
     {
-     "id": "a4x",
+     "id": "a51",
      "kind": "obj",
      "key": "clock",
      "x": 58,
@@ -2905,7 +2929,7 @@
      "opacity": 0.38
     },
     {
-     "id": "a4y",
+     "id": "a52",
      "kind": "obj",
      "key": "teacup",
      "x": 40,
@@ -2920,7 +2944,7 @@
      "seed": 571
     },
     {
-     "id": "a4z",
+     "id": "a53",
      "kind": "obj",
      "key": "teacup",
      "x": 45,
@@ -3131,7 +3155,7 @@
    "layout": "art-directed",
    "setoff": [
     {
-     "id": "a50",
+     "id": "a54",
      "kind": "obj",
      "key": "clock",
      "x": 74,
@@ -3146,7 +3170,7 @@
      "seed": 620
     },
     {
-     "id": "a51",
+     "id": "a55",
      "kind": "obj",
      "key": "table",
      "x": 50,
@@ -3161,7 +3185,7 @@
      "seed": 627
     },
     {
-     "id": "a52",
+     "id": "a56",
      "kind": "obj",
      "key": "swan",
      "x": 112,
@@ -3450,7 +3474,7 @@
    "layout": "art-directed",
    "setoff": [
     {
-     "id": "a53",
+     "id": "a57",
      "kind": "obj",
      "key": "stairs",
      "x": 76,
@@ -3465,7 +3489,7 @@
      "seed": 676
     },
     {
-     "id": "a54",
+     "id": "a58",
      "kind": "obj",
      "key": "swan",
      "x": 104,
@@ -3650,7 +3674,7 @@
    "groundPlate": 0,
    "setoff": [
     {
-     "id": "a55",
+     "id": "a59",
      "kind": "word",
      "key": "chair",
      "style": 1,
@@ -3666,7 +3690,7 @@
      "seed": 107
     },
     {
-     "id": "a56",
+     "id": "a5a",
      "kind": "word",
      "key": "의자",
      "style": 0,
@@ -3682,7 +3706,7 @@
      "seed": 108
     },
     {
-     "id": "a57",
+     "id": "a5b",
      "kind": "word",
      "key": "椅子",
      "style": 2,
@@ -3698,7 +3722,7 @@
      "seed": 109
     },
     {
-     "id": "a58",
+     "id": "a5c",
      "kind": "word",
      "key": "clock",
      "style": 3,
@@ -3714,7 +3738,7 @@
      "seed": 110
     },
     {
-     "id": "a59",
+     "id": "a5d",
      "kind": "word",
      "key": "時計",
      "style": 5,
@@ -3730,7 +3754,7 @@
      "seed": 111
     },
     {
-     "id": "a5a",
+     "id": "a5e",
      "kind": "word",
      "key": "백조",
      "style": 4,
@@ -3746,7 +3770,7 @@
      "seed": 112
     },
     {
-     "id": "a5b",
+     "id": "a5f",
      "kind": "obj",
      "key": "teacup",
      "x": 128,
@@ -3886,7 +3910,7 @@
    "layout": "art-directed",
    "setoff": [
     {
-     "id": "a5c",
+     "id": "a5g",
      "kind": "obj",
      "key": "clock",
      "x": 116,
@@ -3902,7 +3926,7 @@
      "opacity": 0.5
     },
     {
-     "id": "a5i",
+     "id": "a5m",
      "kind": "obj",
      "key": "clock",
      "x": 100,
@@ -3918,7 +3942,7 @@
      "opacity": 1.6
     },
     {
-     "id": "a5j",
+     "id": "a5n",
      "kind": "obj",
      "key": "table",
      "x": 72,
@@ -3934,7 +3958,7 @@
      "opacity": 1.6
     },
     {
-     "id": "a5k",
+     "id": "a5o",
      "kind": "obj",
      "key": "swan",
      "x": 46,
@@ -3951,7 +3975,7 @@
      "opacity": 1.6
     },
     {
-     "id": "a5l",
+     "id": "a5p",
      "kind": "obj",
      "key": "teacup",
      "x": 82,
@@ -3967,7 +3991,7 @@
      "opacity": 1.6
     },
     {
-     "id": "a5m",
+     "id": "a5q",
      "kind": "obj",
      "key": "table",
      "x": 72,
@@ -3983,7 +4007,7 @@
      "opacity": 1.2
     },
     {
-     "id": "a5n",
+     "id": "a5r",
      "kind": "obj",
      "key": "teacup",
      "x": 56,
@@ -3999,7 +4023,7 @@
      "opacity": 1.2
     },
     {
-     "id": "a5o",
+     "id": "a5s",
      "kind": "obj",
      "key": "clock",
      "x": 96,
@@ -4015,7 +4039,7 @@
      "opacity": 1.2
     },
     {
-     "id": "a5p",
+     "id": "a5t",
      "kind": "obj",
      "key": "chair",
      "x": 30,
@@ -4031,7 +4055,7 @@
      "opacity": 1.2
     },
     {
-     "id": "a5q",
+     "id": "a5u",
      "kind": "obj",
      "key": "swan",
      "x": 118,
@@ -4056,7 +4080,7 @@
     "llime",
     "lmauve"
    ],
-   "ground": "cloud",
+   "ground": "wash",
    "objects": [
     {
      "id": "a3f",
@@ -4122,6 +4146,70 @@
     {
      "id": "a3j",
      "kind": "helper",
+     "key": "dots",
+     "text": "",
+     "x": 36,
+     "y": 58,
+     "s": 58,
+     "r": 0,
+     "plates": [
+      0,
+      1,
+      2
+     ],
+     "seed": 41
+    },
+    {
+     "id": "a3k",
+     "kind": "helper",
+     "key": "dots",
+     "text": "",
+     "x": 118,
+     "y": 112,
+     "s": 44,
+     "r": 0,
+     "plates": [
+      1,
+      0,
+      2
+     ],
+     "seed": 57
+    },
+    {
+     "id": "a3l",
+     "kind": "helper",
+     "key": "dots",
+     "text": "",
+     "x": 58,
+     "y": 172,
+     "s": 40,
+     "r": 18,
+     "plates": [
+      0,
+      1,
+      2
+     ],
+     "seed": 73
+    },
+    {
+     "id": "a3m",
+     "kind": "helper",
+     "key": "dots",
+     "text": "",
+     "x": 128,
+     "y": 30,
+     "s": 26,
+     "r": 0,
+     "plates": [
+      1,
+      0,
+      2
+     ],
+     "seed": 89
+    },
+    {
+     "id": "a3n",
+     "kind": "helper",
      "key": "seal",
      "text": "殆",
      "x": 130,
@@ -4179,7 +4267,7 @@
      ],
      "size": 0.3,
      "intensity": 1,
-     "seed": 228
+     "seed": 232
     },
     {
      "tool": "melt",
@@ -4223,7 +4311,7 @@
      ],
      "size": 0.3,
      "intensity": 1,
-     "seed": 229
+     "seed": 233
     },
     {
      "tool": "bleed",
@@ -4259,7 +4347,7 @@
      ],
      "size": 0.2,
      "intensity": 0.9,
-     "seed": 230
+     "seed": 234
     },
     {
      "tool": "bokashi",
@@ -4303,7 +4391,7 @@
      ],
      "size": 0.14,
      "intensity": 0.45,
-     "seed": 231,
+     "seed": 235,
      "plate": 3
     }
    ],
@@ -4317,7 +4405,7 @@
    "layout": "art-directed",
    "setoff": [
     {
-     "id": "a5d",
+     "id": "a5h",
      "kind": "obj",
      "key": "clock",
      "x": 74,
@@ -4344,7 +4432,7 @@
    "ground": "wash",
    "objects": [
     {
-     "id": "a3o",
+     "id": "a3s",
      "kind": "obj",
      "key": "clock",
      "x": 74,
@@ -4356,11 +4444,11 @@
       3,
       2
      ],
-     "seed": 942,
+     "seed": 970,
      "opacity": 0.18
     },
     {
-     "id": "a3p",
+     "id": "a3t",
      "kind": "helper",
      "key": "inscription",
      "text": "A DAY I ALMOST REMEMBER · issue 01 · seed #0001\n\n“I was late for a swim, but the pool was in my grandmother’s kitchen\nand the clock kept getting bigger.”\ninks: fluorescent orange, mint, light mauve, light lime, seafoam, sky blue,\ncornflower, orchid, violet, fluorescent pink, aqua\ndrift: bleed, mist, haze, horizon, wave, pour, break, tube, echo, melt\nALMOST PRESS · 거의 인쇄소 · ほぼ印刷所",
@@ -4373,10 +4461,10 @@
       1,
       2
      ],
-     "seed": 1745
+     "seed": 1797
     },
     {
-     "id": "a3q",
+     "id": "a3u",
      "kind": "helper",
      "key": "seal",
      "text": "殆",
@@ -4435,7 +4523,7 @@
      ],
      "size": 0.34,
      "intensity": 1,
-     "seed": 235
+     "seed": 239
     },
     {
      "tool": "bokashi",
@@ -4479,7 +4567,7 @@
      ],
      "size": 0.18,
      "intensity": 0.4,
-     "seed": 236,
+     "seed": 240,
      "plate": 3
     },
     {
@@ -4492,7 +4580,7 @@
      ],
      "size": 0.3,
      "intensity": 0.8,
-     "seed": 237,
+     "seed": 241,
      "plate": 2
     },
     {
@@ -4529,7 +4617,7 @@
      ],
      "size": 0.2,
      "intensity": 0.8,
-     "seed": 238
+     "seed": 242
     }
    ],
    "mis": 0.6,
@@ -4543,7 +4631,7 @@
    "groundPlate": 0,
    "setoff": [
     {
-     "id": "a5e",
+     "id": "a5i",
      "kind": "obj",
      "key": "clock",
      "x": 72,
@@ -4559,7 +4647,7 @@
      "opacity": 0.35
     },
     {
-     "id": "a5f",
+     "id": "a5j",
      "kind": "obj",
      "key": "swan",
      "x": 50,
@@ -4574,7 +4662,7 @@
      "seed": 886
     },
     {
-     "id": "a5g",
+     "id": "a5k",
      "kind": "obj",
      "key": "table",
      "x": 104,
@@ -4589,7 +4677,7 @@
      "seed": 893
     },
     {
-     "id": "a5h",
+     "id": "a5l",
      "kind": "obj",
      "key": "stairs",
      "x": 110,

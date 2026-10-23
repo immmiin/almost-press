@@ -5,6 +5,7 @@
 import { s, type Part } from '../riso/parts';
 import type { PageObj } from '../model/types';
 import { sealGeometry } from '../design/seal';
+import { rng } from '../core/rng';
 
 const esc = (v: string) => String(v).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
 
@@ -15,6 +16,7 @@ export const HELPERS: { id: string; char: string; en: string; ko: string; ja: st
   { id: 'inscription', char: '題', en: 'inscription', ko: '화제', ja: '画題', def: 'a day i almost remember' },
   { id: 'date', char: '暦', en: 'date column', ko: '날짜', ja: '日付', def: '' },
   { id: 'seal', char: '殆', en: 'seal', ko: '낙관', ja: '落款', def: '殆' },
+  { id: 'dots', char: '玉', en: 'dot mesh', ko: '점 무늬', ja: '水玉', def: '' },
 ];
 
 const lines = (o: PageObj) => (o.text ?? '').split('\n');
@@ -59,6 +61,19 @@ export function helperParts(o: PageObj): Part[] {
     case 'seal': case 'issueSeal': {
       const g = sealGeometry(o.key === 'seal' ? (txt || '殆') : txt.padStart(4, '0'), o.seed);
       return [s(0, `<path d="${g.edge}" fill="{F}"/>`), ...g.glyphs.map((x) => ({ i: 'k' as const, m: `<path d="${x.d}" transform="${x.transform}" fill="{F}"/>` }))];
+    }
+    case 'dots': {
+      // a floating mesh of dots (Purcell; lace-like dot meshes): a jittered grid inside a soft blob, two inks
+      const r = rng(o.seed * 7 + 1);
+      const out: Part[] = [];
+      const lobes = [0, 1, 2].map(() => [30 + r() * 40, 30 + r() * 40, 22 + r() * 18]);
+      for (let y = 4; y < 100; y += 7) for (let x = 4 + ((y / 7) % 2) * 3.5; x < 100; x += 7) {
+        const d = Math.min(...lobes.map(([cx, cy, rr]) => Math.hypot(x - cx, y - cy) / rr));
+        if (d > 1 || r() < 0.08) continue;
+        const rad = (1 - d * 0.7) * 2.4 * (0.75 + r() * 0.5);
+        out.push(s(r() < 0.78 ? 0 : 1, `<circle cx="${(x + (r() - 0.5) * 1.6).toFixed(1)}" cy="${(y + (r() - 0.5) * 1.6).toFixed(1)}" r="${rad.toFixed(2)}" fill="{F}"/>`));
+      }
+      return out;
     }
     case 'title': {
       // A Day I Almost Remember / 거의 기억나는 하루 / ほとんど覚えている一日 — each script set differently

@@ -84,7 +84,11 @@ pages.push(page(5, ['seafoam', 'llime', 'sky'], 'pool', [
 ], [st('bokashi', line(-0.05, 0.1, 1.05, 0.1, 8), 0.18, 0.55, { plate: 0 }), st('bokashi', line(-0.05, 0.4, 1.05, 0.42, 8), 0.1, 0.5, { plate: 1 })], { seed: 1221, mis: 0.4 }));
 
 // 6 · Mist: stairs rise into fog; twelve swans fade from crisp to washed out.
-const swans6: PageObj[] = Array.from({ length: 12 }, (_, i) => o('swan', 20 + (i % 6) * 22 + (i >= 6 ? 11 : 0), 168 - Math.floor(i / 6) * 24 - i * 1.5, 22 - i * 0.6, { opacity: 1 - i * 0.065, plates: P(1, 2, 0), flip: i % 2 === 1 }));
+// one stream of swans receding toward the stairs: crisp and large in front, smaller, fainter and hazier into the fog
+const swans6: PageObj[] = Array.from({ length: 12 }, (_, i) => {
+  const k = i / 11;
+  return o('swan', 22 + k * 76 + Math.sin(k * Math.PI * 2.2) * 30, 184 - k * 70, 21 - k * 12, { opacity: 1 - k * 0.62, blur: k * 0.7, plates: P(1, 2, 0), flip: i % 3 === 1 });
+});
 pages.push(page(6, ['seafoam', 'cornflower', 'llime'], 'horizon', [
   o('stairs', 94, 74, 78, { plates: P(1, 0, 2) }),
   o('clock', 118, 30, 40, { opacity: 0.6, plates: P(0, 1, 2) }),
@@ -166,11 +170,16 @@ pages.push(page(14, ['cornflower', 'orchid', 'llime'], 'rice', [
 ], [st('echo', [[0.5, 0.44], [0.56, 0.46]], 0.26, 1), st('pour', line(0.1, 0.7, 0.9, 0.7, 6), 0.08, 0.5)], { seed: 1555, mis: 1.4, drift: ['ink-starve', 'misregister-spike'] }));
 
 // 15 · Melt: everything dissolves into a wet abstract painting with floating dot patterns (Purcell); a faint clock circle remains.
-pages.push(page(15, ['cornflower', 'fpink', 'llime', 'lmauve'], 'cloud', [
+pages.push(page(15, ['cornflower', 'fpink', 'llime', 'lmauve'], 'wash', [
   o('clock', 72, 92, 112, { opacity: 0.35, plates: P(0, 3, 2) }),
   o('swan', 50, 150, 50, { plates: P(1, 2, 0) }),
   o('table', 104, 150, 56, { plates: P(2, 1, 0) }),
   o('stairs', 110, 60, 46, { plates: P(1, 0, 2) }),
+  // dot patterns floating over the washes (Purcell)
+  helper('dots', '', 36, 58, 58, { plates: P(0, 1, 2), seed: 41 }),
+  helper('dots', '', 118, 112, 44, { plates: P(1, 0, 2), seed: 57 }),
+  helper('dots', '', 58, 172, 40, { plates: P(0, 1, 2), seed: 73, r: 18 }),
+  helper('dots', '', 128, 30, 26, { plates: P(1, 0, 2), seed: 89 }),
   seal(130, 193, 9, -3, 31),
 ], [st('melt', line(0.1, 0.3, 0.9, 0.4, 8), 0.3, 1), st('melt', line(0.1, 0.7, 0.9, 0.75, 8), 0.3, 1), st('bleed', line(0.2, 0.5, 0.8, 0.55, 6), 0.2, 0.9), st('bokashi', line(-0.05, 0.92, 1.05, 0.9, 8), 0.14, 0.45, { plate: 3 })], { seed: 1592, mis: 0.7 }));
 

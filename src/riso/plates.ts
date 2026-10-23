@@ -94,8 +94,10 @@ function drawObj(ctxs: CanvasRenderingContext2D[], o: PageObj, base: DOMMatrix, 
   const crum = o.crumple ?? 0;
   const facets = crum > 0.02 ? crumpleFacets(o, crum) : [null];
   const shadowFix = o.flip && o.kind === 'obj';
+  // soft focus on the object alone (drift ghosts, receding swans): radius in page mm → canvas px
+  const blurPx = (o.blur ?? 0) > 0.01 ? (o.blur ?? 0) * 2.2 * Math.hypot(base.a, base.b) : 0;
   for (const f of facets) {
-    for (const c of ctxs) { c.save(); c.setTransform(m); if (f) { c.beginPath(); c.moveTo(...f.poly[0]); f.poly.slice(1).forEach((p) => c.lineTo(...p)); c.closePath(); c.clip(); c.transform(...f.t); } c.globalAlpha = alpha; c.globalCompositeOperation = 'lighter'; }
+    for (const c of ctxs) { c.save(); c.setTransform(m); if (blurPx) c.filter = `blur(${blurPx.toFixed(1)}px)`; if (f) { c.beginPath(); c.moveTo(...f.poly[0]); f.poly.slice(1).forEach((p) => c.lineTo(...p)); c.closePath(); c.clip(); c.transform(...f.t); } c.globalAlpha = alpha; c.globalCompositeOperation = 'lighter'; }
     // parts in drawing order; a knockout cuts every plate drawn so far (beneath objects included),
     // later parts print over it — e.g. the egg white is paper, the yolk sits on top.
     parts.forEach((p, idx) => {

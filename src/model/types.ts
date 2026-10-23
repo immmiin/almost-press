@@ -6,7 +6,7 @@ import type { ToolId } from '../press/toolDefs';
 export const PAGE_W = 148, PAGE_H = 210, BLEED = 3;
 
 export type GroundId = 'rice' | 'bokashi' | 'horizon' | 'pool' | 'sea' | 'cloud' | 'checker' | 'wash' | 'machine';
-export type HelperId = 'vja' | 'hangul' | 'stretch' | 'inscription' | 'date' | 'seal' | 'issueSeal' | 'slug' | 'title';
+export type HelperId = 'vja' | 'hangul' | 'stretch' | 'inscription' | 'date' | 'seal' | 'issueSeal' | 'slug' | 'title' | 'dots';
 
 export interface PageObj {
   id: string;
