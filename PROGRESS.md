@@ -3,7 +3,7 @@
 Autonomous overnight run. The brief lives in `references/almost-press-prompt.md`.
 
 ## Current phase
-Phase 1 — done. Next: Phase 2 (atmosphere: bokashi mist + cursor fluid + dream time).
+Phase 2 — done. Next: Phase 3 (N-plate riso engine, 100 objects, JA names + parser, plate view).
 
 ## Done
 - Phase 0: references moved (`references/dream-object-index.html`, `references/almost-press-prompt.md`,
@@ -18,6 +18,14 @@ Phase 1 — done. Next: Phase 2 (atmosphere: bokashi mist + cursor fluid + dream
   extracted at build time into `glyphs.ts`, so no 15 MB font load), issue-number seal, 10 seal-stamp tools,
   glass ink vials (spring slosh, drain, bubbles), ceramic knobs (role=slider, keyboard), mild/normal/wild
   switch, enamel PRINT button with filling vermilion ring. Hidden sheet at `#/system`.
+
+- Phase 2: `src/atmosphere/atmosphere.ts` — WebGL2 context #1. Warped 4-point mesh gradient (bokashi),
+  ichimonji band, drifting mist banks, faint current-page inks, paper grain, fluorescent glow at moonlight.
+  Own small stable-fluids solver (advect / divergence / 16 Jacobi / gradient) at 128px velocity and
+  512px dye; dye is stored as absorbance so the cursor paints watercolour that dries darker at the edges
+  and fades over ~3 s; click = ink bloom. Dream time blends continuously from page 1 to 16. API:
+  setPage, setInks, flashInk, bloom, setDissolve (watercolour wash used for screen transitions), sleep.
+  Paused when the tab is hidden; reduced motion → one static frame, no fluid. Renders at 0.5× resolution.
 
 ## Moodboard
 `references/moodboard/` is **empty**, so per the brief I worked from section 3. What I take from it:

@@ -68,9 +68,9 @@ export const PRESETS: Preset[] = [
 /** Dream time: four bands of the night, each with mist colours (always light). */
 export interface DreamTime { id: 'dawn' | 'day' | 'dusk' | 'moon'; en: string; ko: string; ja: string; mist: string[]; glow: string }
 export const DREAM_TIMES: DreamTime[] = [
-  { id: 'dawn', en: 'dawn', ko: '새벽', ja: '夜明け', mist: ['#F7C6D4', '#F6F2EC', '#F3D9CF', '#E6B5C9'], glow: '#FF48B0' },
+  { id: 'dawn', en: 'dawn', ko: '새벽', ja: '夜明け', mist: ['#F7C6D4', '#F6F2EC', '#F9DCC8', '#DCCFEA'], glow: '#FF48B0' },
   { id: 'day', en: 'day', ko: '낮', ja: '昼', mist: ['#CFE6D2', '#C4D8EC', '#F1ECE2', '#B7CFA6'], glow: '#44D62C' },
-  { id: 'dusk', en: 'dusk', ko: '해질녘', ja: '夕暮れ', mist: ['#C9B6E4', '#E6B5C9', '#F1E6EE', '#A88BC9'], glow: '#FF48B0' },
+  { id: 'dusk', en: 'dusk', ko: '해질녘', ja: '夕暮れ', mist: ['#C9B6E4', '#E6B5C9', '#F1E6EE', '#C4D8EC'], glow: '#FF48B0' },
   { id: 'moon', en: 'moonlight', ko: '달빛', ja: '月明かり', mist: ['#A9C6E8', '#C9B6E4', '#DCE6F4', '#B9A6DA'], glow: '#62A8E5' },
 ];
 /** Page number 1–16 → dream time band. */
