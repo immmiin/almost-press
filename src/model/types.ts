@@ -81,6 +81,9 @@ export interface Issue {
   dream: string;
   lang: 'en' | 'ko' | 'ja';
   keepsake?: string; // object key
+  keepsakeS?: number; // its size on page 1, mm
+  levels?: Record<string, number>; // ink vial levels
+  driftLog?: string[];
   pages: Page[];
   current: number; // index 0..15
   forgotten: PageObj[];

@@ -3,6 +3,7 @@
 import type { Page, GroundId } from '../model/types';
 import { PAGE_W, PAGE_H, BLEED } from '../model/types';
 import { rng } from '../core/rng';
+import { INK_BY_ID, hexToRgb } from '../design/tokens';
 
 type Paint = (c: CanvasRenderingContext2D, k: { SOLID: string; TINT: string; WASH: string }) => void;
 export interface GroundPart { plate: number; kind: 'solid' | 'tint' | 'wash'; markup?: string; paint?: Paint; alpha?: number; m?: DOMMatrix }
@@ -57,14 +58,17 @@ export function resolveGround(page: Page): GroundId {
 
 export function groundParts(page: Page): GroundPart[] {
   const n = Math.max(1, page.inks.length);
-  const top = n >= 4 ? 3 : 0; // the 4th plate carries washes and backgrounds
+  // the 4th plate carries washes and backgrounds; otherwise the lightest ink does (stays pale)
+  const lum = (id: string) => { const [a, b, c] = hexToRgb(INK_BY_ID[id]?.hex ?? '#888888'); return a * 0.3 + b * 0.59 + c * 0.11; };
+  const lightest = page.inks.reduce((best, id, i) => (lum(id) > lum(page.inks[best]) ? i : best), 0);
+  const top = n >= 4 ? 3 : lightest;
   const sec = n >= 2 ? 1 : 0;
   const thr = n >= 3 ? 2 : 0;
   const r = rng(page.seed * 31 + 7);
   const hz = 118 + Math.round((r() - 0.5) * 20);
   switch (resolveGround(page)) {
     case 'rice': return [];
-    case 'bokashi': return [{ plate: top, kind: 'wash', paint: band(Y0, 64, 0.62, false, true) }];
+    case 'bokashi': return [{ plate: top, kind: 'wash', paint: band(Y0, 64, 0.42, false, true) }];
     case 'horizon': return [
       { plate: thr, kind: 'wash', paint: band(hz - 30, hz + 26, 0.45) },
       { plate: top, kind: 'wash', paint: band(Y0, hz - 10, 0.22, false, true) },
@@ -99,8 +103,8 @@ export function groundParts(page: Page): GroundPart[] {
       { plate: sec, kind: 'solid', markup: `<rect x="${X0}" y="${hz - 0.4}" width="${W}" height="0.8" fill="{F}"/>` },
     ];
     case 'wash': return [
-      { plate: top, kind: 'wash', paint: (c) => { const g = c.createLinearGradient(0, Y0, W * 0.3, H); g.addColorStop(0, 'rgba(0,0,255,.55)'); g.addColorStop(0.55, 'rgba(0,0,255,.25)'); g.addColorStop(1, 'rgba(0,0,255,.48)'); c.fillStyle = g; c.fillRect(X0, Y0, W, H); } },
-      { plate: sec, kind: 'wash', paint: (c) => { const g = c.createRadialGradient(PAGE_W * 0.7, PAGE_H * 0.7, 4, PAGE_W * 0.7, PAGE_H * 0.7, 110); g.addColorStop(0, 'rgba(0,0,255,.4)'); g.addColorStop(1, 'rgba(0,0,255,0)'); c.fillStyle = g; c.fillRect(X0, Y0, W, H); } },
+      { plate: top, kind: 'wash', paint: (c) => { const g = c.createLinearGradient(0, Y0, W * 0.3, H); g.addColorStop(0, 'rgba(0,0,255,.3)'); g.addColorStop(0.55, 'rgba(0,0,255,.1)'); g.addColorStop(1, 'rgba(0,0,255,.26)'); c.fillStyle = g; c.fillRect(X0, Y0, W, H); } },
+      { plate: sec, kind: 'wash', paint: (c) => { const g = c.createRadialGradient(PAGE_W * 0.7, PAGE_H * 0.7, 4, PAGE_W * 0.7, PAGE_H * 0.7, 110); g.addColorStop(0, 'rgba(0,0,255,.22)'); g.addColorStop(1, 'rgba(0,0,255,0)'); c.fillStyle = g; c.fillRect(X0, Y0, W, H); } },
     ];
   }
   return [];

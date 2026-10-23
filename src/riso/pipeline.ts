@@ -213,6 +213,7 @@ class Pipeline {
   private plateP: Prog; private compP: Prog;
   private texPlates: WebGLTexture[] = []; private texOver: WebGLTexture; private texM: WebGLTexture[] = [];
   private fbos: FBO[] = [];
+  private fboSets = new Map<string, FBO[]>();
   private maskCanvases = [0, 1, 2].map(() => document.createElement('canvas'));
   private lastPlateKey = ''; private lastMaskKey = '';
   lastPlates: PlateSet | null = null;
@@ -249,11 +250,22 @@ class Pipeline {
     for (let i = 0; i < n; i++) { const info = gl.getActiveUniform(p, i)!; u[info.name.replace('[0]', '')] = gl.getUniformLocation(p, info.name); }
     return { p, u };
   }
+  /** FBO sets are kept per size (screen page, thumbnails, 300 dpi) so alternating renders don't reallocate. */
   private fbo(i: number, w: number, h: number): FBO {
     const gl = this.gl;
-    let f = this.fbos[i];
-    if (f && f.w === w && f.h === h) return f;
-    if (f) { gl.deleteTexture(f.tex); gl.deleteFramebuffer(f.fb); }
+    const key = `${w}x${h}`;
+    let set = this.fboSets.get(key);
+    if (!set) {
+      if (this.fboSets.size >= 4) {
+        const [k0, old] = this.fboSets.entries().next().value as [string, FBO[]];
+        old.forEach((f) => { gl.deleteTexture(f.tex); gl.deleteFramebuffer(f.fb); });
+        this.fboSets.delete(k0);
+      }
+      set = []; this.fboSets.set(key, set);
+    }
+    this.fbos = set;
+    let f = set[i];
+    if (f) return f;
     const tex = gl.createTexture()!;
     gl.bindTexture(gl.TEXTURE_2D, tex);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, w, h, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
@@ -261,7 +273,7 @@ class Pipeline {
     const fb = gl.createFramebuffer()!;
     gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
     gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
-    f = { tex, fb, w, h }; this.fbos[i] = f;
+    f = { tex, fb, w, h }; set[i] = f;
     return f;
   }
   private upload(tex: WebGLTexture, src: HTMLCanvasElement) {

@@ -8,5 +8,6 @@ atmosphere().setPage(1);
 (window as unknown as { __atmo: unknown }).__atmo = atmosphere();
 route('system', async () => (await import('./screens/system')).default);
 route('specimen', async () => (await import('./screens/specimen')).default);
-route('gate', async () => (await import('./screens/system')).default);
+route('press', async () => (await import('./press/press')).default);
+route('gate', async () => (await import('./press/press')).default);
 startRouter();
