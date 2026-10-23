@@ -1,0 +1,46 @@
+/* Colophon · inscriptions around a large seal */
+.colophon { position: fixed; inset: 0; overflow: auto; }
+.c-nav { position: absolute; left: 26px; top: 14px; display: flex; gap: 22px; z-index: 4; }
+.c-nav a { color: var(--sumi); text-decoration: none; border-bottom: 1px solid rgba(59,58,64,.4); }
+.c-sheet-wrap { position: relative; margin: 44px 3vw 4vh; min-height: calc(100vh - 44px - 4vh); transform: rotate(.35deg); filter: drop-shadow(0 26px 36px rgba(110,90,140,.2)) drop-shadow(0 1px 1px rgba(59,58,64,.1)); }
+.c-sheet { position: relative; min-height: inherit; padding: 5vh 4vw;
+  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-auto-rows: min-content; gap: 3vh 2.2vw; align-content: space-between; }
+.c-blk { position: relative; z-index: 2; color: var(--sumi); }
+.c-blk h2 { margin: 0 0 6px; color: var(--soft); font-weight: 400; }
+.c-blk p { margin: 0 0 6px; }
+.c-blk ul { list-style: none; margin: 0 0 8px; padding: 0; }
+
+.c-title { grid-column: 1 / span 3; grid-row: 1 / span 2; margin: 0; display: flex; align-items: flex-start; gap: 14px; }
+.c-t-ja { writing-mode: vertical-rl; font: 800 clamp(40px, 5vw, 72px)/1 var(--f-display); letter-spacing: .12em; }
+.c-t-ko { font: 400 clamp(26px, 3vw, 44px)/1 var(--f-heavy-ko); margin-top: 1.6em; }
+.c-t-en { font: italic 400 clamp(18px, 1.6vw, 24px)/1 var(--f-accent); margin-top: 5.2em; color: var(--soft); }
+
+.c-seal { position: absolute; left: 50%; top: 39%; translate: -50% -50%; z-index: 1; mix-blend-mode: multiply; opacity: .94; pointer-events: none; }
+.c-seal .seal { width: clamp(150px, 16vw, 240px); height: auto; }
+
+.c-about-en { grid-column: 4 / span 4; grid-row: 1; font: 13px/1.6 var(--f-body); max-width: 46ch; }
+.c-about-en i { font-family: var(--f-accent); font-size: 15px; }
+.c-about-ja { grid-column: 11 / span 2; grid-row: 1 / span 3; justify-self: end; font: 600 14px/1.9 var(--f-display); letter-spacing: .14em; max-height: 46vh; }
+.c-about-ja p { margin: 0; }
+.c-seeds { grid-column: 8 / span 3; grid-row: 1; }
+.c-mood { grid-column: 1 / span 3; grid-row: 3 / span 2; align-self: end; }
+.c-about-ko { grid-column: 1 / span 3; grid-row: 5; font: 400 13.5px/1.8 var(--f-ko); align-self: end; }
+.c-fonts { grid-column: 4 / span 3; grid-row: 5; align-self: end; }
+.c-fonts li { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; font-size: 15px; line-height: 1.5; white-space: nowrap; border-bottom: .5px solid rgba(59,58,64,.15); }
+.c-fonts li span:first-child { overflow: hidden; text-overflow: ellipsis; }
+.c-fonts li .mono { color: var(--soft); white-space: nowrap; }
+.c-inks { grid-column: 7 / span 3; grid-row: 5; align-self: end; }
+.c-inks ul { columns: 2; column-gap: 14px; }
+.c-inks li { display: flex; align-items: center; gap: 6px; break-inside: avoid; }
+.c-inks li i { width: 9px; height: 9px; border-radius: 50%; mix-blend-mode: multiply; flex: none; }
+.c-credits { grid-column: 10 / span 3; grid-row: 4 / span 2; align-self: end; }
+.c-credits i { font-family: var(--f-accent); font-size: 11px; }
+.c-date { position: absolute; left: 1.4vw; top: 22vh; margin: 0; color: var(--soft); letter-spacing: .3em; }
+.c-hand { position: absolute; left: calc(50% + clamp(90px, 9.5vw, 140px)); top: 26%; margin: 0; font: 600 13px/1 var(--f-display); letter-spacing: .5em; color: var(--seal); opacity: .85; }
+
+@media (max-width: 900px) {
+  .c-sheet { display: flex; flex-direction: column; gap: 22px; padding: 28px 22px 40px; }
+  .c-seal { position: relative; left: auto; top: auto; translate: none; align-self: center; order: 2; }
+  .c-about-ja { max-height: 300px; align-self: flex-end; }
+  .c-date, .c-hand { display: none; }
+}

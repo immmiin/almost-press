@@ -11,5 +11,6 @@ route('specimen', async () => (await import('./screens/specimen')).default);
 route('press', async () => (await import('./press/press')).default);
 route('reader', async () => (await import('./screens/reader')).default);
 route('export', async () => (await import('./screens/export')).default);
+route('colophon', async () => (await import('./screens/colophon')).default);
 route('gate', async () => (await import('./screens/gate')).default);
 startRouter();
