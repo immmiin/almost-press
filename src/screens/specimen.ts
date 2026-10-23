@@ -18,7 +18,18 @@ export function samplePage(): Page {
   };
 }
 
-export default function specimen(root: HTMLElement) {
+import { loadIssue } from '../issues/load';
+export default async function specimen(root: HTMLElement) {
+  const qq = new URLSearchParams(location.hash.split('?')[1] ?? '');
+  if (qq.get('issue')) {
+    const is = await loadIssue(qq.get('issue')!);
+    const from = +(qq.get('from') ?? 1), to = +(qq.get('to') ?? 16), w = +(qq.get('w') ?? 330);
+    root.innerHTML = `<main style="padding:10px;display:flex;flex-wrap:wrap;gap:10px"></main>`;
+    const m = root.querySelector('main')!;
+    const go = () => { m.innerHTML = ''; for (const p of is.pages.filter((p) => p.n >= from && p.n <= to)) { const src = pipeline().render(p, w * 1.5); const c = document.createElement('canvas'); c.width = src.width; c.height = src.height; c.style.width = w + 'px'; c.getContext('2d')!.drawImage(src, 0, 0); m.append(c); } };
+    go(); onFontsLoaded(go);
+    return;
+  }
   root.innerHTML = `<main style="padding:24px;display:grid;gap:24px"><div style="display:flex;gap:16px;align-items:flex-start" id="row"></div><div id="grid" style="display:grid;grid-template-columns:repeat(auto-fill,96px);gap:6px"></div></main>`;
   const row = root.querySelector('#row')!;
   const page = samplePage();

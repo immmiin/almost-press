@@ -61,7 +61,7 @@ export function groundParts(page: Page): GroundPart[] {
   // the 4th plate carries washes and backgrounds; otherwise the lightest ink does (stays pale)
   const lum = (id: string) => { const [a, b, c] = hexToRgb(INK_BY_ID[id]?.hex ?? '#888888'); return a * 0.3 + b * 0.59 + c * 0.11; };
   const lightest = page.inks.reduce((best, id, i) => (lum(id) > lum(page.inks[best]) ? i : best), 0);
-  const top = n >= 4 ? 3 : lightest;
+  const top = page.groundPlate !== undefined ? page.groundPlate % n : n >= 4 ? 3 : lightest;
   const sec = n >= 2 ? 1 : 0;
   const thr = n >= 3 ? 2 : 0;
   const r = rng(page.seed * 31 + 7);

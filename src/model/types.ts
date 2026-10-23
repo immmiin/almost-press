@@ -51,6 +51,8 @@ export interface Page {
   n: number; // 1..16
   inks: string[]; // ink ids, 1..4 plates
   ground: GroundId;
+  /** plate that carries the ground wash (default: 4th plate, else the lightest ink) */
+  groundPlate?: number;
   objects: PageObj[];
   strokes: Stroke[];
   mis: number; // misregistration, mm
