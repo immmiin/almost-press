@@ -62,7 +62,7 @@ export function nextPage(issue: Issue, driftKnob: number): Page {
   const band = Math.min(3, Math.floor((n - 1) / 4));
   // inks drift toward the dream time
   let inks = prev.inks.slice();
-  if (r() < 0.55 || (n - 1) % 4 === 0) inks = PRESETS.find((p) => p.id === pick(r, BAND_PRESETS[band]))!.inks.slice();
+  if (r() < 0.55 || (n - 1) % 4 === 0) { const id = pick(r, BAND_PRESETS[band]); inks = PRESETS.find((p) => p.id === id)!.inks.slice(); }
   if (n >= 9 && inks.length < 4 && r() < 0.5) inks.push(pick(r, ['fpink', 'cornflower', 'fgreen', 'sunflower'].filter((x) => !inks.includes(x))));
   const page = blankPage(n, issue.seed, inks);
   page.seed = seed % 100000;
@@ -90,7 +90,9 @@ export function nextPage(issue: Issue, driftKnob: number): Page {
   // set-off: a faint mirrored ghost of the previous page
   page.setoff = prev.objects.filter((o) => !o.fx && o.kind !== 'helper').map((o) => ({ ...o, id: newId() }));
   // layout template, then drift cards
-  const layout: Layout = pick(r, LAYOUTS);
+  // never the same template twice in a row; the full-bleed wash is rarer
+  const opts = LAYOUTS.filter((l) => l !== prev.layout && (l !== 'wash' || r() < 0.45));
+  const layout: Layout = pick(r, opts);
   page.layout = layout;
   applyLayout(layout, page, r, keep?.id);
   const { cards, k } = drawCards(r, n, driftKnob);

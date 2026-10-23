@@ -10,10 +10,10 @@ const browser = await chromium.launch({
   executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
   args: ['--use-angle=metal', '--enable-gpu', '--ignore-gpu-blocklist'],
 });
-const page = await browser.newPage({ viewport: { width: +w, height: +h }, deviceScaleFactor: 1 });
+const page = await browser.newPage({ viewport: { width: +w, height: +h }, deviceScaleFactor: 1, reducedMotion: process.env.REDUCED ? 'reduce' : 'no-preference' });
 const logs = [];
 page.on('console', (m) => logs.push(`[${m.type()}] ${m.text()}`));
-page.on('pageerror', (e) => logs.push(`[pageerror] ${e.message}`));
+page.on('pageerror', (e) => logs.push(`[pageerror] ${e.message}\n${e.stack}`));
 await page.route('http://press.local/**', async (r) => {
   let p = new URL(r.request().url()).pathname;
   if (p.endsWith('/')) p += 'index.html';

@@ -180,7 +180,11 @@ export function renderPlates(page: Page, pxW: number, opts: RenderOpts = {}): Pl
     }
     for (const o of page.objects) {
       if (o.id === opts.exclude) continue;
-      if (isSeal(o)) drawOverlayObj(octx, o, base, '#E5483E');
+      if (isSeal(o)) {
+        // the seal sometimes double-strikes
+        if (o.seed % 5 === 0) drawOverlayObj(octx, { ...o, x: o.x + 0.7, y: o.y - 0.5, r: o.r + 2.5, opacity: 0.38 }, base, '#E5483E');
+        drawOverlayObj(octx, o, base, '#E5483E');
+      }
       else if (isSharp(o)) drawOverlayObj(octx, o, base, ink);
       else drawObj(active, o, base, n);
     }
