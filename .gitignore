@@ -4,3 +4,4 @@ dist
 overnight.log
 *.local
 .shots
+scripts/.cache
