@@ -3,7 +3,7 @@
 Autonomous overnight run. The brief lives in `references/almost-press-prompt.md`.
 
 ## Current phase
-Phase 3 — done (and the WebGL2 effect pipeline of Phase 5 is written). Next: Phase 4 (Press layout and editing).
+Phase 5 — done. Next: Phase 6 (print loop polish: drift, layouts, strip, binding — scaffolding already in).
 
 ## Done
 - Phase 0: references moved (`references/dream-object-index.html`, `references/almost-press-prompt.md`,
@@ -36,6 +36,19 @@ Phase 3 — done (and the WebGL2 effect pipeline of Phase 5 is written). Next: P
   and sharp type; `riso/pipeline.ts` (WebGL2 context #2) runs per-plate effects + halftone/grain screening,
   then multiplies tinted plates on rice paper; plate view (single plate grayscale or 2×2 Spectrolite grid).
   Hidden specimen at `#/specimen` (add `?tool=wave` etc. to see a tool).
+
+- Phase 4: Press at `#/press` — ticket (seal, issue no., dream input, EN/한/日, language lock, sound),
+  drawer (search EN/KO/JA, 8 vertical categories + grounds 地 + type & marks 字, soft-focus stamps, the
+  wrong twin), stage (ghost stamp, press duration = pressure, long press blooms, handles drawn as
+  registration marks, keys, side effects for move/erase/scale/crumple/plate/flip/duplicate, cursor ink
+  trail that prints, shake the paper to forget → matter-js drops objects into the dish; dish items can be
+  stamped back, mutated), tools column (10 seal stamps + layer 上/下 + Reprint this page), ink panel
+  (vials per plate, add/remove plates 1–4, 29-ink library click or drag onto a slot, presets, plate view,
+  knobs, mild/normal/wild), bench (16 sheets on a scroll rod, right→left; Forgotten dish; PRINT).
+  Under 900 px the side panels become bottom sheets (finished in Phase 10).
+- Phase 5: all 10 tools are stored strokes (path, tool, size, intensity, seed, plate) rasterised into
+  three RGB mask fields + echo uniforms; each plate runs the stack in the WebGL2 pass. Specimen of all
+  tools: `#/specimen?tools=1`.
 
 ## Moodboard
 `references/moodboard/` is **empty**, so per the brief I worked from section 3. What I take from it:
@@ -74,6 +87,11 @@ every screen is: soft fields, sharp type, lots of air, one hot accent, and paper
 - **Hangul detection**: the reference's `/[ㄱ-힝]/` also matches kana and kanji; narrowed to Hangul so
   Japanese can be parsed separately.
 - Halftone cell is 1.05 mm (in page mm, so screen and 300 dpi match); coarse on purpose (visible dots).
+
+- **Layer order keys**: plain ↑/↓ already nudge (as the brief also asks), so layer order is Alt/⌘+↑/↓
+  and the 上/下 buttons under the tools.
+- **Shake to forget**: grab the paper where there is no object and shake left-right (4 quick reversals).
+- **Hold Space** anywhere on the Press (outside inputs) also holds PRINT.
 
 ## Check in the morning
 - `npm install && npm run dev` → open the printed URL.

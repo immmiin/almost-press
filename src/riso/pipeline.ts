@@ -68,15 +68,21 @@ void main(){
   // 瀑 pour: everything below the line pours down in luminous streaks (pixel-sort feel)
   float c;
   if(pour > .002){
-    float col = floor(p.x*2.2);
-    float len = pour * (24. + 60.*h21(vec2(col, seed))) ;
+    // pixel-sort: each column pours what is above it downward; luminous, not dirty
+    float col = floor(p.x*1.7);
+    float hc = h21(vec2(col, seed + pidx*7.));
+    // each column belongs mostly to one plate, so streaks stay clean colours instead of muddy overprints
+    float own = step(.5, fract(h21(vec2(col, seed)) * 2.7 + pidx * .37));
+    float len = pour * (34. + 90.*hc);
     float best = tone(t);
-    for(int i=1;i<24;i++){
-      float f = float(i)/23.;
+    for(int i=1;i<28;i++){
+      float f = float(i)/27.;
       float s = tone(toUV(p - vec2(0., len*f)));
-      best = max(best, s * (1. - f*.55) * mix(.82, 1., h21(vec2(col, float(i)))));
+      best = max(best, s * (1. - f*f*.35) * mix(.88, 1., h21(vec2(col, float(i)))));
     }
-    c = mix(tone(t), best, smoothstep(0., .35, pour));
+    // streak texture: fine vertical lines of uneven density
+    float streak = .82 + .18*h21(vec2(floor(p.x*6.), seed+3.));
+    c = mix(tone(t), max(tone(t), sqrt(best)*streak*mix(.15, 1., own)), smoothstep(0., .25, pour));
   } else c = tone(t);
   // ink-wash edges: displaced, softened, soaking into fibres
   float wA = washAmt;
@@ -123,12 +129,16 @@ void main(){
   }
   // 點 dither: coarse pixels, posterised into big grainy fields
   if(dith > .002){
-    vec2 cell = floor(mm/1.6);
-    float pc = tone(toUV(cell*1.6 + .8 - off));
-    float lv = floor(pc*3.99)/3.;
-    float bayer = h21(cell + seed);
-    float dc = step(bayer*.9, lv) * step(.08, pc);
-    c = mix(c, max(lv*.85, dc), smoothstep(0., .4, dith));
+    // big pixels: block-averaged tone, posterised, ordered-dithered inside each block
+    float B = 2.4;
+    vec2 cell = floor(mm/B);
+    vec2 cc = cell*B + B*.5 - off;
+    float pc = (tone(toUV(cc)) + tone(toUV(cc+vec2(B*.3,0))) + tone(toUV(cc-vec2(B*.3,0))) + tone(toUV(cc+vec2(0,B*.3))) + tone(toUV(cc-vec2(0,B*.3))))/5.;
+    float lv = floor(pc*3.999)/3.;
+    vec2 sub = floor(fract(mm/B)*4.);
+    float bay = mod(sub.x*2. + sub.y*3. + floor(sub.x*sub.y), 4.)/4. + .12;
+    float dc = lv > .99 ? 1. : step(bay, lv);
+    c = mix(c, dc, smoothstep(0., .3, dith));
   }
   c = clamp(c*density, 0., 1.);
   // screening: solids stay solid, intermediate tones become halftone dots at this plate's angle

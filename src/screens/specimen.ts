@@ -34,6 +34,21 @@ export default function specimen(root: HTMLElement) {
       row.append(c);
     }
   };
+  if (q.get('tools')) {
+    row.innerHTML = '';
+    for (const tool of ['bleed', 'bokashi', 'haze', 'wave', 'pour', 'break', 'tube', 'echo', 'melt', 'dither']) {
+      const p = samplePage();
+      p.ground = 'rice';
+      const pts: [number, number][] = tool === 'echo' ? [[0.7, 0.28], [0.78, 0.3]] : tool === 'pour' ? [[0.3, 0.55], [0.75, 0.55]] : [[0.15, 0.62], [0.5, 0.66], [0.85, 0.7]];
+      p.strokes.push({ tool: tool as never, pts, size: tool === 'echo' ? 0.16 : 0.2, intensity: 1, seed: 1, plate: 1, plate2: 2 });
+      const src = pipeline().render(p, 360);
+      const c = document.createElement('canvas'); c.width = src.width; c.height = src.height; c.style.width = '230px'; c.title = tool;
+      c.getContext('2d')!.drawImage(src, 0, 0);
+      row.append(c);
+    }
+    (row as HTMLElement).style.flexWrap = 'wrap';
+    return;
+  }
   draw();
   onFontsLoaded(draw);
   const grid = root.querySelector('#grid')!;
