@@ -3,7 +3,7 @@
 Autonomous overnight run. The brief lives in `references/almost-press-prompt.md`.
 
 ## Current phase
-Phase 9 — done. Next: Phase 10 (mobile 400 px, keyboard, performance, final build) → DONE.md.
+All phases (0–10) done. `npm run build` passes. See DONE.md.
 
 ## Done
 - Phase 0: references moved (`references/dream-object-index.html`, `references/almost-press-prompt.md`,
@@ -84,6 +84,13 @@ Phase 9 — done. Next: Phase 10 (mobile 400 px, keyboard, performance, final bu
   helper (also in the drawer's type & marks). Colophon `#/colophon`: three-language inscriptions around a pressed
   seal (about, inks, type, seeds, moodboard, credits + licences). Remaining English-only screen-reader labels and
   Reader strings moved into i18n (EN / 한 / 日).
+- Phase 10: 400 px pass on every screen. Press: drawer / tools / inks open as vellum bottom sheets from three tabs
+  (判 stamps · 道 tools · 墨 inks) between the page and the strip; pinch-scale / two-finger rotate were already in the
+  stage. Reader: pages sized to the screen, header wraps. Export: machine re-laid vertically (window on top, LCD +
+  START below, master box at the foot). Gate: title fits. Keyboard: export LCD menu is a radio group (arrows),
+  START holds with Space/Enter; colophon is plain links. Final `npm run build` passes; final edition run re-verified
+  (numbers above). Performance: Issue 01's full 300 dpi edition (16 pages × all formats) renders in ~16 s headless;
+  the export bundle (jsPDF, JSZip) is a lazy chunk loaded only on `#/export`.
 
 ## Moodboard
 `references/moodboard/` is **empty**, so per the brief I worked from section 3. What I take from it:
