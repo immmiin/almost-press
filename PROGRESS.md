@@ -3,13 +3,21 @@
 Autonomous overnight run. The brief lives in `references/almost-press-prompt.md`.
 
 ## Current phase
-Phase 0 — done. Next: Phase 1 (design system + hidden `#/system` page).
+Phase 1 — done. Next: Phase 2 (atmosphere: bokashi mist + cursor fluid + dream time).
 
 ## Done
 - Phase 0: references moved (`references/dream-object-index.html`, `references/almost-press-prompt.md`,
   `references/moodboard/` kept). Vite 8 + TypeScript 7 scaffold, git (`main`), GitHub Pages workflow
   (`.github/workflows/pages.yml`, not pushed), fonts, `npm run build` passes, `npm run dev` starts
   (probed for a few seconds with curl, then stopped).
+
+- Phase 1: `src/design/` tokens (UI colours, 29 riso inks, 6 presets, 4 dream times), rice paper
+  (code-drawn fibres + formation, seamless tile; deckled / torn edges via `clip-path: path()` kept in sync
+  with ResizeObserver), vellum (backdrop blur + fibre grain), washi tape (4 patterns, torn ends), torn slips,
+  seal 殆 (rough edge, ink gaps, double strike, rotation; glyphs are real Shippori Mincho B1 outlines
+  extracted at build time into `glyphs.ts`, so no 15 MB font load), issue-number seal, 10 seal-stamp tools,
+  glass ink vials (spring slosh, drain, bubbles), ceramic knobs (role=slider, keyboard), mild/normal/wild
+  switch, enamel PRINT button with filling vermilion ring. Hidden sheet at `#/system`.
 
 ## Moodboard
 `references/moodboard/` is **empty**, so per the brief I worked from section 3. What I take from it:
