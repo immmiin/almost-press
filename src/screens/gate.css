@@ -1,0 +1,39 @@
+.gate { position: fixed; inset: 0; overflow: hidden; }
+.g-sheet-wrap { position: absolute; left: 6vw; top: 7vh; width: min(66vw, 980px); height: 82vh; transform: rotate(-1.2deg); transform-style: preserve-3d; filter: drop-shadow(0 30px 40px rgba(110,90,140,.22)) drop-shadow(0 2px 2px rgba(59,58,64,.1)); }
+.g-sheet { position: absolute; inset: 0; overflow: hidden; }
+.g-title { position: absolute; inset: 0; pointer-events: none; }
+.g-plate { position: absolute; inset: 0; mix-blend-mode: multiply; color: var(--ink); filter: url(#g-riso); transform: translate(var(--dx), var(--dy)); animation: g-print 1.1s var(--d) both cubic-bezier(.3,0,.2,1); }
+@keyframes g-print { from { opacity: 0; clip-path: inset(0 0 100% 0); filter: blur(2px); } to { opacity: .88; clip-path: inset(0 0 0 0); filter: url(#g-riso); } }
+.g-plate:nth-child(1) .g-ko, .g-plate:nth-child(1) .g-ja { visibility: hidden; }
+.g-plate:nth-child(2) .g-en, .g-plate:nth-child(2) .g-ja { visibility: hidden; }
+.g-plate:nth-child(3) .g-en, .g-plate:nth-child(3) .g-ko { visibility: hidden; }
+/* English wide and flat; Hangul as a heavy block; Japanese vertical — never a neat stack */
+.g-en { position: absolute; left: 6%; top: 9%; font: 400 clamp(28px, 4.1vw, 66px)/1 var(--f-wide); transform: scaleX(1.48) scaleY(.66); transform-origin: left top; white-space: nowrap; letter-spacing: -.03em; }
+.g-ko { position: absolute; right: 9%; bottom: 13%; font: 400 clamp(64px, 10vw, 168px)/.92 var(--f-heavy-ko); width: 2.2em; text-align: right; word-break: keep-all; }
+.g-ja { position: absolute; right: 4%; top: 21%; font: 800 clamp(22px, 2.6vw, 40px)/1 var(--f-display); writing-mode: vertical-rl; letter-spacing: .32em; }
+.g-seal { position: absolute; left: 44%; top: 34%; mix-blend-mode: multiply; }
+.g-seal .seal { width: clamp(90px, 10vw, 150px); height: auto; }
+.g-sub { position: absolute; left: 6%; top: calc(9% + clamp(28px, 4.1vw, 66px) * .9); color: var(--sumi); }
+.g-zine { position: absolute; left: 6%; bottom: 9%; margin: 0; display: grid; gap: 2px; }
+.g-zine-en { font: italic 400 clamp(20px, 2vw, 30px)/1.1 var(--f-accent); }
+.g-zine-ko { font: 700 13px/1.3 var(--f-ko); }
+.g-zine-ja { position: absolute; left: 3%; top: 32%; margin: 0; font: 600 13px/1 var(--f-display); letter-spacing: .3em; }
+.g-date { position: absolute; right: 1.6%; bottom: 6%; margin: 0; color: var(--soft); }
+.g-ins { position: absolute; left: 30%; top: 62%; margin: 0; color: var(--sumi); }
+.g-slips { position: absolute; right: 4vw; top: 22vh; display: grid; gap: 30px; justify-items: end; z-index: 3; }
+.g-slip-wrap { position: relative; filter: drop-shadow(0 8px 12px rgba(90,80,120,.18)); }
+.g-slip-0 { transform: rotate(-2.5deg) translateX(-30px); }
+.g-slip-1 { transform: rotate(1.8deg); }
+.g-slip-2 { transform: rotate(-1deg) translateX(-12px); }
+.g-slip { display: grid; gap: 3px; padding: 16px 26px 20px; min-width: 230px; transform-origin: top center; }
+.g-slip-main { font: 600 22px/1.15 var(--f-display); color: var(--sumi); }
+.g-slip-alt { color: var(--soft); }
+.g-slip-note { color: var(--seal); }
+.g-new { border: 0; background: none; color: var(--sumi); border-bottom: 1px solid rgba(59,58,64,.4); padding: 2px 0; }
+@media (max-width: 900px) {
+  .g-sheet-wrap { left: 4vw; right: 4vw; width: auto; top: 3vh; height: 58vh; }
+  .g-slips { left: 6vw; right: 6vw; top: auto; bottom: 4vh; gap: 14px; }
+  .g-slip { min-width: 0; padding: 12px 18px 16px; }
+  .g-slip-main { font-size: 18px; }
+  .g-ins, .g-zine-ja { display: none; }
+}

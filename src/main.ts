@@ -9,5 +9,5 @@ atmosphere().setPage(1);
 route('system', async () => (await import('./screens/system')).default);
 route('specimen', async () => (await import('./screens/specimen')).default);
 route('press', async () => (await import('./press/press')).default);
-route('gate', async () => (await import('./press/press')).default);
+route('gate', async () => (await import('./screens/gate')).default);
 startRouter();

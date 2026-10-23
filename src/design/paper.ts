@@ -95,7 +95,7 @@ export function drawFormation(ctx: CanvasRenderingContext2D, w: number, h: numbe
       const x = x0 + ox, y = y0 + oy;
       if (x + rad < 0 || x - rad > w || y + rad < 0 || y - rad > h) continue;
       const g = ctx.createRadialGradient(x, y, 0, x, y, rad);
-      g.addColorStop(0, light ? `rgba(255,255,255,${0.10 * strength})` : `rgba(120,105,90,${0.035 * strength})`);
+      g.addColorStop(0, light ? `rgba(255,255,255,${0.07 * strength})` : `rgba(120,105,90,${0.008 * strength})`);
       g.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
     }
