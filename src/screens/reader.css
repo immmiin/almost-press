@@ -1,0 +1,46 @@
+.reader { position: fixed; inset: 0; display: grid; grid-template-rows: auto 1fr; overflow: hidden; }
+.r-loading { position: fixed; left: 50%; top: 50%; translate: -50% -50%; }
+.r-head { display: flex; align-items: center; gap: 24px; padding: 14px 24px 0; }
+.r-back { color: var(--sumi); text-decoration: none; border-bottom: 1px solid rgba(59,58,64,.4); }
+.r-title { margin: 0; display: flex; align-items: baseline; gap: 14px; flex: 1; min-width: 0; }
+.r-en { font: italic 400 22px/1.1 var(--f-accent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.r-no { color: var(--seal); }
+.r-ctl { display: flex; gap: 6px; align-items: center; }
+.r-mode { border: 0; background: none; padding: 4px 8px; border-bottom: 1.5px solid transparent; }
+.r-mode[aria-pressed="true"] { border-bottom-color: var(--seal); }
+.r-run { font: 600 15px var(--f-display); margin-left: 10px; }
+.r-run .ja { color: var(--seal); font-weight: 800; }
+.r-scroll { position: relative; overflow: hidden; touch-action: pan-y; cursor: grab; outline: none; display: flex; align-items: center; }
+.r-scroll.grab { cursor: grabbing; }
+.r-scroll:focus-visible { outline: 1.5px dashed var(--seal); outline-offset: -8px; }
+.r-track { position: relative; display: flex; gap: 0; padding: 0 60px 0 90px; will-change: transform;
+  /* one long sheet of scroll paper behind the pages */
+  background: linear-gradient(180deg, transparent calc(50% - var(--ph) / 2 - 34px), var(--rice) 0, var(--rice) calc(50% + var(--ph) / 2 + 58px), transparent 0); }
+.r-track::before { content: ""; position: absolute; inset: calc(50% - var(--ph) / 2 - 34px) 0 auto; height: calc(var(--ph) + 92px); background: var(--tex-rice) 0 0 / 384px; opacity: .9; pointer-events: none; }
+.r-page { position: relative; margin: 0 22px; display: grid; gap: 8px; transform-origin: right center; --shade: 0; }
+.r-img { width: var(--pw); height: var(--ph); background: var(--rice) center / cover no-repeat; box-shadow: 0 1px 1px rgba(59,58,64,.08); position: relative; }
+.r-img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(80,70,90,var(--shade)), transparent 70%); pointer-events: none; }
+.r-page figcaption { display: flex; gap: 10px; align-items: flex-start; color: var(--sumi); }
+.r-page figcaption .vert { font-size: 11px; letter-spacing: .2em; }
+.r-drift { color: var(--soft); max-width: 22ch; }
+.r-roll { position: absolute; top: calc(50% - 64vh / 2 - 60px); bottom: calc(50% - 64vh / 2 - 70px); width: 26px; z-index: 3; border-radius: 13px;
+  background: linear-gradient(90deg, #8b7a68, #e5d6c2 35%, #b9a68f 60%, #7d6c5b); box-shadow: 0 10px 20px -6px rgba(59,58,64,.4); pointer-events: none; }
+.r-roll-l { left: 14px; } .r-roll-r { right: 14px; }
+.r-roll::before, .r-roll::after { content: ""; position: absolute; left: 3px; right: 3px; height: 14px; border-radius: 4px; background: #3B3A40; opacity: .75; }
+.r-roll::before { top: -10px; } .r-roll::after { bottom: -10px; }
+.r-book { position: relative; display: grid; place-items: center; outline: none; perspective: 2200px; }
+.r-book[hidden] { display: none; }
+.r-spread { position: relative; display: flex; transform-style: preserve-3d; filter: drop-shadow(0 24px 30px rgba(90,80,120,.25)); }
+.r-side { width: var(--pw); height: var(--ph); }
+.r-face { width: var(--pw); height: var(--ph); background: var(--rice) center / cover; backface-visibility: hidden; }
+.r-blank { background: transparent; }
+.r-spine { position: absolute; left: 50%; top: 0; bottom: 0; width: 18px; margin-left: -9px; background: linear-gradient(90deg, transparent, rgba(80,70,90,.18), transparent); pointer-events: none; }
+.r-leaf { position: absolute; top: 0; width: var(--pw); height: var(--ph); transform-style: preserve-3d; z-index: 5; }
+.r-leaf.fwd { left: 50%; transform-origin: left center; }
+.r-leaf.back { right: 50%; transform-origin: right center; }
+.r-leaf .r-face { position: absolute; inset: 0; }
+.r-leaf .r-face:nth-child(2) { transform: rotateY(180deg); }
+.r-book-n { position: absolute; bottom: 4vh; left: 50%; translate: -50% 0; }
+.r-turn { position: absolute; top: 50%; border: 0; background: none; font-size: 20px; padding: 10px; }
+.r-prev { left: 3vw; } .r-next { right: 3vw; }
+@media (max-width: 900px) { .r-head { flex-wrap: wrap; gap: 8px; padding: 8px 10px 0; } .r-en { font-size: 16px; } .r-spread { transform: scale(.5); } }

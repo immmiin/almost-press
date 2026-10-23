@@ -1,5 +1,5 @@
 // Hash router: GitHub Pages never 404s. Each screen mounts into #app and returns a cleanup.
-export type Screen = (root: HTMLElement, params: URLSearchParams) => (() => void) | void;
+export type Screen = (root: HTMLElement, params: URLSearchParams) => (() => void) | void | Promise<(() => void) | void>;
 const routes = new Map<string, () => Promise<Screen>>();
 let cleanup: (() => void) | void;
 let current = '';
@@ -20,7 +20,9 @@ async function render() {
     root.innerHTML = '';
     root.dataset.screen = key;
     current = key;
-    cleanup = screen(root, new URLSearchParams(q));
+    const res = screen(root, new URLSearchParams(q));
+    if (res instanceof Promise) { cleanup = undefined; res.then((c) => { if (current === key) cleanup = c; else if (c) c(); }); }
+    else cleanup = res;
   };
   const doc = document as Document & { startViewTransition?: (f: () => void) => unknown };
   if (doc.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches && root.childElementCount) doc.startViewTransition(swap);

@@ -3,7 +3,7 @@
 Autonomous overnight run. The brief lives in `references/almost-press-prompt.md`.
 
 ## Current phase
-Phase 5 — done. Next: Phase 6 (print loop polish: drift, layouts, strip, binding — scaffolding already in).
+Phase 7 — done. Next: Issue 01 data (needed to test export), then Phase 8 export.
 
 ## Done
 - Phase 0: references moved (`references/dream-object-index.html`, `references/almost-press-prompt.md`,
@@ -49,6 +49,20 @@ Phase 5 — done. Next: Phase 6 (print loop polish: drift, layouts, strip, bindi
 - Phase 5: all 10 tools are stored strokes (path, tool, size, intensity, seed, plate) rasterised into
   three RGB mask fields + echo uniforms; each plate runs the stack in the WebGL2 pass. Specimen of all
   tools: `#/specimen?tools=1`.
+
+- Phase 6: `src/print/loop.ts` (commit print with partial plates, nextPage: 2–3 inherited objects
+  misremembered, forgotten objects may return mutated, keepsake grows 14 %/page, mirrored set-off ghost,
+  inks drift toward the dream time, 4th plate appears later), `drift.ts` (27 cards, count 1→5,
+  intensity 0.1→1.0, five-stage tendency), `layouts.ts` (9 templates), language drift in the printed
+  dream line, slug with occasional misprint (p.7½), binding ceremony (`binding.ts`). Verified headless:
+  16 prints → binding → reader.
+- Phase 7: Gate `#/gate` (parallax ≤ 4°, seal press with thud + ink bloom, three-script title printed plate
+  by plate with per-visit misregistration and an SVG riso grain, three taped slips that flutter and peel,
+  drum pull + watercolour dissolve). Reader `#/reader?issue=01|current` (hand scroll right→left, drag/wheel
+  inertia, curl at the left roller, booklet with 3D leaf turns). Weird details: soft-focus panels after
+  28 s, doze after 40 s (mist slows, vials bubble), objects slide after the tab was hidden, label language
+  drift (lock switch in the ticket), wrong twin in the drawer, slug misprints, seal double-strike/rotation,
+  crosshair cursor with brush halo, cursor ink trail that prints.
 
 ## Moodboard
 `references/moodboard/` is **empty**, so per the brief I worked from section 3. What I take from it:
