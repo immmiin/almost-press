@@ -127,16 +127,27 @@
 .x-skip { position: absolute; right: 26px; bottom: 18px; border: 0; background: none; border-bottom: 1px solid var(--sumi); z-index: 30; }
 
 @media (max-width: 900px) {
-  .export { --mw: 94vw; }
-  .x-machine { left: 3vw; bottom: 4vh; }
-  .x-tray { left: 8vw; bottom: calc(4vh + var(--mh) + 40px); }
-  .x-stack { --slot-x: 0; }
-  .x-panel { right: 3%; top: 16%; gap: 6px 10px; }
-  .x-lcd { min-width: 150px; font-size: 10px; }
-  .x-start { width: 78px; height: 78px; }
-  .x-start .enamel-ring { -webkit-mask: radial-gradient(circle, transparent 30px, #000 31px); mask: radial-gradient(circle, transparent 30px, #000 31px); }
-  .x-name-en { margin-right: 60px; font-size: 11px; }
-  .x-done { left: 3vw; width: 94vw; top: 7vh; }
+  .export { --mw: 94vw; --mh: calc(var(--mw) * 1.12); }
+  .x-head { flex-direction: column; gap: 4px; padding: 10px 14px 0; }
+  .x-machine { left: 3vw; bottom: 3vh; }
+  .x-name { left: 6%; top: 4%; }
+  .x-name-en { margin-right: 0; font-size: 11px; }
+  .x-model { display: none; }
+  .x-name-ja { display: none; }
+  .x-window { left: 50%; top: 9%; width: 35%; translate: -50% 0; }
+  .x-slot { top: 30%; }
+  .x-panel { left: 6%; right: 6%; top: auto; bottom: 25%; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 12px; }
+  .x-lcd { width: auto; min-width: 0; font-size: 10.5px; }
+  .x-start { width: 82px; height: 82px; }
+  .x-start .enamel-ring { -webkit-mask: radial-gradient(circle, transparent 32px, #000 33px); mask: radial-gradient(circle, transparent 32px, #000 33px); }
+  .x-hint { grid-column: 2; }
+  .x-seam { top: 78%; }
+  .x-masters { right: 6%; bottom: 4%; width: 42%; height: 17%; }
+  .x-lab { display: none; }
+  .x-feed { right: 12%; width: 40%; }
+  .x-tray { left: 6vw; bottom: calc(3vh + var(--mh) + 40px); height: 120px; }
+  .x-stack { width: 70px; height: 100px; --slot-x: 0; }
+  .x-done { left: 3vw; width: 94vw; top: 9vh; }
   .x-axis { display: none; }
-  .x-jam { left: 3vw; }
+  .x-jam { left: 3vw; right: 3vw; top: 12vh; }
 }

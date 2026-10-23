@@ -15,7 +15,7 @@ import { atmosphere, dissolveTo } from '../atmosphere/atmosphere';
 import { t, tA, onLang, setLabelDrift, getLang } from '../core/i18n';
 import { dreamTimeOf, INK_BY_ID } from '../design/tokens';
 import { kanjiNum } from './util';
-import { roller, thud } from '../core/sound';
+import { roller, thud, tick } from '../core/sound';
 import { reducedMotion, hash, rng } from '../core/rng';
 import { go } from '../core/router';
 import { bindIssue } from '../print/binding';
@@ -29,6 +29,7 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
     <div class="p-ticket"></div><div class="p-drawer"></div>
     <div class="p-stage"><div class="p-vline vert" aria-live="polite"></div><div class="p-roller" aria-hidden="true"><i></i></div><div class="p-drum" aria-hidden="true"></div></div>
     <div class="p-tools"></div><div class="p-inks"></div><div class="p-bench"></div>
+    <nav class="sheet-tabs" aria-label="panels"><button type="button" data-s="drawer" aria-expanded="false"><b class="ja">判</b><span class="mono"></span></button><button type="button" data-s="tools" aria-expanded="false"><b class="ja">道</b><span class="mono"></span></button><button type="button" data-s="inks" aria-expanded="false"><b class="ja">墨</b><span class="mono"></span></button></nav>
     <p class="sr" aria-live="polite" id="p-status"></p></div>`;
   const $ = (s: string) => root.querySelector(s) as HTMLElement;
   const status = (m: string) => { $('#p-status').textContent = m; };
@@ -45,6 +46,18 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
   $('.p-ticket').append(ticket.el);
   $('.p-bench').append(strip.el);
   stage.dishTarget = () => strip.dish.getBoundingClientRect();
+
+  // ---------- under 900 px: drawer, tools and inks become vellum bottom sheets with tabs ----------
+  const tabs = [...root.querySelectorAll<HTMLButtonElement>('.sheet-tabs button')];
+  const tabLabels = () => tabs.forEach((b) => { (b.querySelector('span') as HTMLElement).textContent = tA(b.dataset.s!); });
+  tabLabels();
+  tabs.forEach((b) => b.addEventListener('click', () => {
+    const pe = $('.press');
+    const s = pe.dataset.sheet === b.dataset.s ? '' : b.dataset.s!;
+    if (s) pe.dataset.sheet = s; else delete pe.dataset.sheet;
+    tabs.forEach((x) => x.setAttribute('aria-expanded', String(x.dataset.s === s)));
+    tick();
+  }));
 
   // ---------- tools column ----------
   const toolsWrap = document.createElement('div');
@@ -287,7 +300,7 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
   document.addEventListener('visibilitychange', vis);
 
   const offIssue = onIssue((why) => { if (why === 'forgotten' || why === 'shake' || why === 'print') strip.render(getIssue()); });
-  const offLang = onLang(labels);
+  const offLang = onLang(() => { labels(); tabLabels(); });
   load(); labels(); fit();
 
   return () => {

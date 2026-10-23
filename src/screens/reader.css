@@ -43,4 +43,13 @@
 .r-book-n { position: absolute; bottom: 4vh; left: 50%; translate: -50% 0; }
 .r-turn { position: absolute; top: 50%; border: 0; background: none; font-size: 20px; padding: 10px; }
 .r-prev { left: 3vw; } .r-next { right: 3vw; }
-@media (max-width: 900px) { .r-head { flex-wrap: wrap; gap: 8px; padding: 8px 10px 0; } .r-en { font-size: 16px; } .r-spread { transform: scale(.5); } }
+@media (max-width: 900px) {
+  .r-head { flex-wrap: wrap; gap: 6px 10px; padding: 8px 10px 0; }
+  .r-title { order: 3; flex-basis: 100%; }
+  .r-en { font-size: 16px; }
+  .r-ctl { margin-left: auto; }
+  .r-run { font-size: 13px; padding: 6px 10px; }
+  .r-roll { width: 16px; top: 18vh; bottom: 10vh; }
+  .r-roll-l { left: 4px; } .r-roll-r { right: 4px; }
+  .r-spread { transform: scale(.5); }
+}

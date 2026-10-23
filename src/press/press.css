@@ -180,6 +180,12 @@
 }
 .sheet-tabs { display: none; }
 @media (max-width: 900px) {
-  .sheet-tabs { display: flex; grid-area: sheets; gap: 4px; justify-content: center; align-self: start; }
-  .press[data-sheet] .sheet-tabs { display: none; }
+  .press { grid-template-rows: auto minmax(0, 1fr) auto auto auto; grid-template-areas: "ticket" "stage" "tabs" "sheets" "bench"; }
+  .sheet-tabs { display: flex; grid-area: tabs; gap: 6px; justify-content: center; }
+  .sheet-tabs button { display: flex; align-items: center; gap: 6px; padding: 5px 14px 6px; border: 0; color: var(--sumi);
+    background: linear-gradient(170deg, rgba(250,248,244,.72), rgba(244,240,236,.55)); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    clip-path: polygon(4% 0, 96% 0, 100% 100%, 0 100%); }
+  .sheet-tabs b { font-weight: 800; font-size: 15px; }
+  .sheet-tabs button[aria-expanded="true"] b { color: var(--seal); }
+  .tn-en { margin-right: 76px; }
 }

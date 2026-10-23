@@ -36,4 +36,7 @@
   .g-slip { min-width: 0; padding: 12px 18px 16px; }
   .g-slip-main { font-size: 18px; }
   .g-ins, .g-zine-ja { display: none; }
+  .g-en { font-size: 17px; }
+  .g-sub { top: calc(9% + 22px); }
+  .g-ko { font-size: 62px; right: 12%; }
 }

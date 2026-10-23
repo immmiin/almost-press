@@ -41,7 +41,7 @@ export default async function reader(root: HTMLElement, params: URLSearchParams)
   const offLang = onLang(labels);
 
   // ---------- render pages ----------
-  const H = Math.round(Math.min(innerHeight * 0.64, 760));
+  const H = Math.round(Math.min(innerHeight * 0.64, 760, innerWidth * 0.66 * (216 / 154)));
   const W = Math.round(H * (154 / 216));
   const urls: string[] = [];
   const renderPage = (i: number) => {
