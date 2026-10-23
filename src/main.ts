@@ -1,4 +1,8 @@
 import './styles/base.css';
+import { installPaperTextures } from './design/paper';
+import { route, startRouter } from './core/router';
 
-const app = document.getElementById('app')!;
-app.innerHTML = `<p class="mono">ALMOST PRESS · 거의 인쇄소 · ほぼ印刷所</p>`;
+installPaperTextures();
+route('system', async () => (await import('./screens/system')).default);
+route('gate', async () => (await import('./screens/system')).default);
+startRouter();

@@ -1,3 +1,165 @@
-:root { color-scheme: light; }
-body { margin: 0; background: #F6F2EC; color: #3B3A40; }
-.mono { font-family: "IBM Plex Mono", monospace; font-size: 11px; }
+/* ALMOST PRESS · base styles and materials */
+:root {
+  color-scheme: light;
+  --pearl: #F6F2EC; --rice: #F1ECE2; --peach: #F7C6D4; --mauve: #E6B5C9;
+  --wisteria: #C9B6E4; --lilac: #A88BC9; --celadon: #CFE6D2; --mugwort: #B7CFA6;
+  --mist: #C4D8EC; --moonwater: #A9C6E8; --sumi: #3B3A40; --soft: #6E6A73;
+  --seal: #E5483E; --fluo: #FF48B0;
+  --f-display: "Shippori Mincho B1", "Gowun Batang", serif;
+  --f-ko: "Gowun Batang", serif;
+  --f-accent: "Bodoni Moda", serif;
+  --f-heavy-ja: "Dela Gothic One", sans-serif;
+  --f-heavy-ko: "Black Han Sans", sans-serif;
+  --f-wide: "Rubik Mono One", monospace;
+  --f-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --f-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", sans-serif;
+  --f-pixel: "DotGothic16", monospace;
+  --micro: 160ms; --material: 640ms;
+  --ease-ink: cubic-bezier(.22,.7,.18,1);
+  --ease-paper: cubic-bezier(.45,.05,.2,1);
+  --shadow-sheet: 0 1px 1px rgba(59,58,64,.06), 0 10px 22px -12px rgba(59,58,64,.28), 0 28px 60px -30px rgba(120,100,150,.35);
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0; background: var(--pearl); color: var(--sumi);
+  font: 14px/1.5 var(--f-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+#atmosphere { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 0; display: block; pointer-events: none; }
+#app { position: relative; z-index: 1; min-height: 100%; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--sumi); outline-offset: 3px; }
+.sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* tiny sharp labels */
+.mono { font-family: var(--f-mono); font-size: 10px; letter-spacing: .06em; line-height: 1.35; }
+.mono-up { font-family: var(--f-mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
+.vert { writing-mode: vertical-rl; text-orientation: mixed; }
+.ja { font-family: var(--f-display); }
+.ko { font-family: var(--f-ko); }
+.wide { font-family: var(--f-wide); transform-origin: left; }
+
+/* ---------- rice paper sheet ---------- */
+.sheet {
+  position: relative;
+  background-color: var(--rice);
+  background-image: var(--tex-rice);
+  background-size: 384px;
+  filter: drop-shadow(0 12px 18px rgba(80,70,100,.16)) drop-shadow(0 1px 1px rgba(59,58,64,.08));
+}
+.sheet.pearl { background-color: var(--pearl); background-image: var(--tex-pearl); }
+.sheet-wrap { filter: drop-shadow(0 14px 22px rgba(90,80,120,.18)) drop-shadow(0 1px 1px rgba(59,58,64,.1)); }
+
+/* ---------- vellum: translucent tracing paper, blurs the mist ---------- */
+.vellum {
+  position: relative;
+  background:
+    var(--tex-fibre) 0 0 / 320px,
+    linear-gradient(170deg, rgba(250,248,244,.66), rgba(244,240,236,.52));
+  backdrop-filter: blur(14px) saturate(1.08) brightness(1.03);
+  -webkit-backdrop-filter: blur(14px) saturate(1.08) brightness(1.03);
+  box-shadow: inset 0 0 0 .5px rgba(255,255,255,.6);
+}
+.vellum::after {
+  /* frosted grain */
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5; mix-blend-mode: multiply;
+  background: var(--tex-fibre) 40px 90px / 220px;
+}
+.vellum-wrap { filter: drop-shadow(0 6px 14px rgba(90,80,120,.12)); }
+
+/* ---------- washi tape ---------- */
+.washi {
+  position: absolute; display: block; height: 18px; z-index: 3; pointer-events: none;
+  background-color: var(--washi); opacity: .82; mix-blend-mode: multiply;
+}
+.washi-dots { background-image: radial-gradient(circle, rgba(255,255,255,.75) 1.3px, transparent 1.6px); background-size: 7px 7px; }
+.washi-stripe { background-image: repeating-linear-gradient(90deg, rgba(255,255,255,.55) 0 3px, transparent 3px 8px); }
+.washi-grid { background-image: linear-gradient(rgba(255,255,255,.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.5) 1px, transparent 1px); background-size: 6px 6px; }
+.washi::after { content: ""; position: absolute; inset: 0; background: var(--tex-fibre) 0 0 / 160px; opacity: .6; }
+
+/* ---------- torn slips ---------- */
+.slip {
+  position: relative; display: inline-block; border: 0; text-align: left;
+  padding: 12px 18px 16px; color: var(--sumi);
+  background: var(--pearl) var(--tex-pearl) 0 0 / 384px;
+  transition: transform var(--micro) var(--ease-ink);
+}
+button.slip:hover { transform: translateY(-1px) rotate(-.4deg); }
+
+/* ---------- seal ---------- */
+.seal { display: block; overflow: visible; }
+
+/* ---------- seal-stamp buttons ---------- */
+.stamp {
+  position: relative; display: grid; justify-items: center; gap: 2px;
+  width: 52px; padding: 0; border: 0; background: none;
+}
+.stamp svg { width: 40px; height: 40px; overflow: visible; transition: transform var(--micro) var(--ease-ink); }
+.stamp-edge { fill: none; stroke: var(--sumi); stroke-width: 4; opacity: .8; }
+.stamp-glyph { fill: var(--sumi); }
+.stamp-label { font: 9px/1.1 var(--f-mono); letter-spacing: .06em; color: var(--sumi); text-transform: lowercase; }
+.stamp:hover svg { transform: translateY(-1px) rotate(-2deg); }
+.stamp:active svg { transform: scale(.92); }
+.stamp[aria-pressed="true"] .stamp-edge { fill: var(--seal); stroke: var(--seal); opacity: .95; }
+.stamp[aria-pressed="true"] .stamp-glyph { fill: var(--pearl); }
+.stamp[aria-pressed="true"]::before {
+  /* faint printed mark on the vellum */
+  content: ""; position: absolute; left: 50%; top: 20px; width: 46px; height: 46px; translate: -50% -50%;
+  background: var(--seal); opacity: .09; filter: blur(3px); border-radius: 3px; rotate: 6deg;
+}
+
+/* ---------- ceramic knobs ---------- */
+.knob { display: grid; justify-items: center; gap: 4px; width: 56px; }
+.knob-dial {
+  --a: 0deg; position: relative; width: 38px; height: 38px; border-radius: 50%; touch-action: none; cursor: ns-resize;
+  background: radial-gradient(circle at 36% 30%, #fffdf9 0 22%, #efe9e2 60%, #d9d1cb 100%);
+  box-shadow: 0 3px 6px -2px rgba(59,58,64,.35), inset 0 -2px 3px rgba(120,100,110,.18);
+}
+.knob-dial::before { content: ""; position: absolute; inset: -5px; border-radius: 50%; background: repeating-conic-gradient(from -135deg, rgba(59,58,64,.45) 0 1deg, transparent 1deg 27deg); mask: radial-gradient(circle, transparent 23px, #000 23.5px); -webkit-mask: radial-gradient(circle, transparent 23px, #000 23.5px); clip-path: polygon(50% 50%, 0 100%, 0 0, 100% 0, 100% 100%); }
+.knob-tick { position: absolute; left: 50%; top: 4px; width: 2.5px; height: 11px; margin-left: -1.25px; border-radius: 2px; background: var(--seal); transform-origin: 50% 15px; transform: rotate(var(--a)); }
+.knob-label { font: 9px/1.1 var(--f-mono); letter-spacing: .05em; text-align: center; }
+
+/* ---------- enamel print button ---------- */
+.enamel {
+  --fill: 0; position: relative; width: 108px; height: 108px; border-radius: 50%; border: 0; padding: 0;
+  background: none; touch-action: none; user-select: none; -webkit-user-select: none;
+}
+.enamel-ring {
+  position: absolute; inset: 0; border-radius: 50%;
+  background: conic-gradient(var(--seal) calc(var(--fill) * 360deg), rgba(229,72,62,.18) 0);
+  -webkit-mask: radial-gradient(circle, transparent 43px, #000 44px); mask: radial-gradient(circle, transparent 43px, #000 44px);
+}
+.enamel::before { content: ""; position: absolute; inset: 0; border-radius: 50%; box-shadow: 0 0 0 1.5px var(--seal), 0 14px 22px -10px rgba(120,60,70,.4); }
+.enamel-face {
+  position: absolute; inset: 11px; border-radius: 50%; display: grid; place-content: center; gap: 2px;
+  background: radial-gradient(circle at 38% 30%, #fffefb 0 18%, #f3eee8 55%, #e3dad3 100%);
+  box-shadow: inset 0 -4px 8px rgba(130,100,100,.18), inset 0 2px 2px #fff, 0 2px 3px rgba(59,58,64,.2);
+  transition: transform var(--micro) var(--ease-ink);
+}
+.enamel:active .enamel-face, .enamel.held .enamel-face { transform: scale(.955); box-shadow: inset 0 3px 8px rgba(130,100,100,.25); }
+.enamel-label { font: 15px/1 var(--f-wide); letter-spacing: .02em; transform: scaleX(1.25); color: var(--sumi); }
+.enamel-sub { font: 9px/1 var(--f-mono); color: var(--soft); text-align: center; }
+
+/* ---------- slot switch ---------- */
+.slot-switch { display: flex; align-items: center; gap: 2px; font: 10px var(--f-mono); }
+.slot-label { margin-right: 6px; color: var(--soft); }
+.slot-switch button { border: 0; background: none; padding: 3px 6px; border-bottom: 1.5px solid transparent; }
+.slot-switch button[aria-checked="true"] { border-bottom-color: var(--seal); color: var(--sumi); }
+
+/* vials */
+.vial { width: 34px; height: auto; overflow: visible; display: block; }
+
+/* text inputs drawn as a ruled line on paper */
+.ruled {
+  width: 100%; border: 0; border-bottom: 1px solid rgba(59,58,64,.45); background: transparent; padding: 4px 0;
+  font: 15px/1.4 var(--f-display); color: var(--sumi); border-radius: 0;
+}
+.ruled::placeholder { color: var(--soft); }
+.ruled:focus-visible { outline: none; border-bottom-color: var(--seal); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 1ms !important; animation-duration: 1ms !important; animation-iteration-count: 1 !important; }
+}
