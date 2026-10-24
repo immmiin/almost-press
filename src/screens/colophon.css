@@ -34,7 +34,7 @@
 .c-credits { grid-column: 10 / span 3; grid-row: 4 / span 2; align-self: end; }
 .c-credits i { font-family: var(--f-accent); font-size: 11px; }
 .c-date { position: absolute; left: 1.4vw; top: 22vh; margin: 0; color: var(--soft); letter-spacing: .3em; }
-.c-hand { position: absolute; left: calc(50% + clamp(90px, 9.5vw, 140px)); top: 26%; margin: 0; font: 600 13px/1 var(--f-display); letter-spacing: .5em; color: var(--seal); opacity: .85; }
+.c-hand { position: absolute; left: calc(50% - clamp(120px, 12vw, 176px)); top: 27%; margin: 0; font: 600 13px/1 var(--f-display); letter-spacing: .5em; color: var(--seal); opacity: .85; }
 
 @media (max-width: 900px) {
   .c-sheet { display: flex; flex-direction: column; gap: 22px; padding: 28px 22px 40px; }

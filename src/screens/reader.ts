@@ -168,7 +168,9 @@ export default async function reader(root: HTMLElement, params: URLSearchParams)
   const face = (i: number | null) => (i === null || !pages[i] ? `<div class="r-face r-blank"></div>` : `<div class="r-face" style="background-image:url(${renderPage(i)})" role="img" aria-label="page ${i + 1}"></div>`);
   const drawSpread = () => {
     const [a, b] = spreads[si];
-    spread.style.setProperty('--pw', `${W}px`); spread.style.setProperty('--ph', `${H}px`);
+    // two pages side by side must fit the screen (phones): the booklet's pages are sized down, not scaled
+    const k = Math.min(1, (Math.min(book.clientWidth, innerWidth) * 0.94) / (W * 2), (book.clientHeight * 0.86) / H);
+    spread.style.setProperty('--pw', `${Math.round(W * k)}px`); spread.style.setProperty('--ph', `${Math.round(H * k)}px`);
     spread.innerHTML = `<div class="r-side r-left">${face(a)}</div><div class="r-side r-right">${face(b)}</div><i class="r-spine"></i>`;
     $('.r-book-n').textContent = si === 0 ? tA('cover') : si === spreads.length - 1 ? tA('backcover') : `${a! + 1}–${b! + 1}`;
   };

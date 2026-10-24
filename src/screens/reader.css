@@ -1,4 +1,4 @@
-.reader { position: fixed; inset: 0; display: grid; grid-template-rows: auto 1fr; overflow: hidden; }
+.reader { position: fixed; inset: 0; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); overflow: hidden; }
 .r-loading { position: fixed; left: 50%; top: 50%; translate: -50% -50%; }
 .r-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 24px; padding: 12px 24px 0; }
 .r-acts { flex-basis: 100%; display: flex; justify-content: flex-end; gap: 16px; }
@@ -33,6 +33,7 @@
 .r-run .ja { color: var(--seal); font-weight: 800; }
 .r-scroll { position: relative; overflow: hidden; touch-action: pan-y; cursor: grab; outline: none; display: flex; align-items: center; }
 .r-scroll.grab { cursor: grabbing; }
+.r-scroll[hidden] { display: none; }
 .r-scroll:focus-visible { outline: 1.5px dashed var(--seal); outline-offset: -8px; }
 .r-track { position: relative; display: flex; gap: 0; padding: 0 60px 0 90px; will-change: transform;
   /* one long sheet of scroll paper behind the pages */
@@ -66,7 +67,10 @@
 .r-prev { left: 3vw; } .r-next { right: 3vw; }
 @media (max-width: 900px) {
   .r-head { flex-wrap: wrap; gap: 6px 10px; padding: 8px 10px 0; }
-  .r-title { order: 3; flex-basis: 100%; }
+  .r-title { order: 1; flex-basis: 100%; }
+  .r-ctl { order: 2; flex-basis: 100%; }
+  .r-acts { order: 3; }
+  .r-run { margin-left: 0; }
   .r-en { font-size: 12px; margin-right: 50px; }
   .r-spec { display: none; }
   .r-ctl { margin-left: auto; flex-wrap: wrap; justify-content: flex-end; row-gap: 4px; }
@@ -76,5 +80,4 @@
   .r-run { font-size: 13px; padding: 6px 10px; }
   .r-roll { width: 16px; top: 18vh; bottom: 10vh; }
   .r-roll-l { left: 4px; } .r-roll-r { right: 4px; }
-  .r-spread { transform: scale(.5); }
 }

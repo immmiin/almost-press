@@ -215,11 +215,13 @@ export class Guide {
     host.append(t);
   }
   place(stage: Stage) {
+    // beside the first sheet: the right margin (no drift slips on sheet 1), else the left, else over the page's top
     const h = this.host.getBoundingClientRect(), s = stage.sheet.getBoundingClientRect();
-    const w = 236;
-    let x = s.left - h.left - w - 22, y = s.top - h.top + 64, r = -2.5;
-    if (x < 30) { x = Math.max(6, s.left - h.left + 10); y = s.top - h.top + 10; r = -1.5; this.el.style.width = `${Math.min(w, s.width - 20)}px`; }
-    Object.assign(this.el.style, { left: `${x}px`, top: `${y}px`, rotate: `${r}deg` });
+    const w = 190;
+    let x = s.right - h.left + 10, y = s.top - h.top + 56, r = 2;
+    if (h.right - s.right < w + 12) { x = s.left - h.left - w - 18; r = -2.5; }
+    if (x < 26) { x = Math.max(6, s.left - h.left + 10); y = s.top - h.top + 10; r = -1.5; }
+    Object.assign(this.el.style, { left: `${x}px`, top: `${y}px`, rotate: `${r}deg`, width: `${Math.min(w, s.width - 20)}px` });
   }
   mark(i: number) {
     const p = this.steps[i];
