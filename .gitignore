@@ -5,3 +5,5 @@ overnight.log
 *.local
 .shots
 scripts/.cache
+.vercel
+.env*
