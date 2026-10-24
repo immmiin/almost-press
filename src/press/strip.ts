@@ -50,6 +50,8 @@ export class Strip {
     this.dish.setAttribute('aria-label', tA('forgotten'));
   }
   invalidate(i: number) { this.thumbs.delete(String(i)); }
+  /** Where a sheet hangs on the rod (client px). */
+  leafRect(i: number): DOMRect | null { return (this.rod.querySelector(`[data-i="${i}"] .leaf-sheet`) as HTMLElement | null)?.getBoundingClientRect() ?? null; }
   render(issue: Issue) {
     this.issue = issue;
     const html: string[] = [];

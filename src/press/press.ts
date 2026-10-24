@@ -20,6 +20,7 @@ import { reducedMotion, hash, rng } from '../core/rng';
 import { go } from '../core/router';
 import { bindIssue } from '../print/binding';
 import type { Issue } from '../model/types';
+import { remember, driftColumn, noteSlip, Guide } from './remember';
 
 export default function press(root: HTMLElement, params: URLSearchParams) {
   if (params.get('new')) { setIssue(newIssue(params.get('seed') ? +params.get('seed')! : undefined)); history.replaceState(null, '', '#/press'); }
@@ -27,12 +28,13 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
   if (issue.fixed || issue.bound) { /* a finished or fixed issue opens a fresh one at the press */ setIssue(newIssue()); issue = getIssue(); }
   root.innerHTML = `<div class="press" data-dozing="false">
     <div class="p-ticket"></div><div class="p-drawer"></div>
-    <div class="p-stage"><div class="p-vline vert" aria-live="polite"></div><div class="p-roller" aria-hidden="true"><i></i></div><div class="p-drum" aria-hidden="true"></div></div>
+    <div class="p-stage"><div class="p-vline vert" aria-live="polite"></div><div class="p-roller" aria-hidden="true"><i></i></div><div class="p-drum" aria-hidden="true"></div><div class="p-notes"></div></div>
     <div class="p-tools"></div><div class="p-inks"></div><div class="p-bench"></div>
     <nav class="sheet-tabs" aria-label="panels"><button type="button" data-s="drawer" aria-expanded="false"><b class="ja">判</b><span class="mono"></span></button><button type="button" data-s="tools" aria-expanded="false"><b class="ja">道</b><span class="mono"></span></button><button type="button" data-s="inks" aria-expanded="false"><b class="ja">墨</b><span class="mono"></span></button></nav>
-    <p class="sr" aria-live="polite" id="p-status"></p></div>`;
+    <p class="sr" aria-live="polite" id="p-status"></p><div class="p-fly" aria-hidden="true"></div></div>`;
   const $ = (s: string) => root.querySelector(s) as HTMLElement;
   const status = (m: string) => { $('#p-status').textContent = m; };
+  const notes = () => $('.p-notes');
 
   const stage = new Stage();
   const drawer = new Drawer();
@@ -151,6 +153,10 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
     root.querySelector('.press')!.setAttribute('data-mode', m.type === 'tool' ? `tool-${m.tool}` : m.type);
   };
   stage.onSelect = () => {};
+  // the first-time job ticket: three lines, each gets a red check when done; it peels off after the first print
+  let guide: Guide | null = null;
+  stage.onStamped = () => guide?.mark(0);
+  stage.onStroke = () => guide?.mark(1);
   drawer.onPick = (it) => { stage.setMode({ type: 'stamp', item: it }); status('stamp: press on the page. Short = light, long = ink blooms. Esc to stop.'); };
   drawer.onGround = (g) => { currentPage().ground = g; emit('ground'); stage.render(); };
   strip.onForgotten = (o) => stage.setMode({ type: 'stamp', item: { kind: 'forgotten', obj: o } });
@@ -194,12 +200,27 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
     strip.render(issue);
     syncAtmo();
     vline();
+    if (!guide && Guide.wanted() && issue.current === 0 && !p.printed) guide = new Guide(notes());
+    if (guide && issue.current !== 0) { guide.el.remove(); guide = null; }
+    if (guide && p.objects.some((o) => o.kind !== 'helper')) guide.mark(0);
+    if (guide && p.strokes.length) guide.mark(1);
+    requestAnimationFrame(placeNotes);
+  };
+  /** Slips beside the page follow it when the layout changes. */
+  const placeNotes = () => {
+    driftColumn(notes(), stage, currentPage(), false);
+    guide?.place(stage);
+    const sr = stage.sheet.getBoundingClientRect(), pr = $('.p-stage').getBoundingClientRect();
+    const rl = $('.p-roller');
+    rl.style.setProperty('--rl', `${sr.left - pr.left}px`); rl.style.setProperty('--rw', `${sr.width}px`);
+    rl.style.setProperty('--rt', `${sr.top - pr.top}px`); rl.style.setProperty('--rh', `${sr.height - 14}px`);
   };
 
   // ---------- layout ----------
   const fit = () => {
     const box = $('.p-stage').getBoundingClientRect();
     stage.layout(box.width, box.height);
+    placeNotes();
   };
   const ro = new ResizeObserver(fit);
   ro.observe($('.p-stage'));
@@ -216,6 +237,9 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
     strip.print.classList.add('held');
     stage.setMode({ type: 'select' }); stage.selected.clear(); stage.drawHandles();
     printing = { t0: performance.now(), raf: 0, stopSound: roller(), landed: 0, n };
+    // under the button: the plates as they land ("plate 1 · 2 · 3")
+    const count = (landed: number) => { strip.count.innerHTML = `plate ${Array.from({ length: n }, (_, i) => (i < landed ? `<b>${i + 1}</b>` : `${i + 1}`)).join(' · ')}`; };
+    count(0);
     const frame = () => {
       if (!printing) return;
       const el = (performance.now() - printing.t0) / (PER_PLATE * n);
@@ -229,6 +253,7 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
         atmosphere().flashInk(ink, 0.9);
         inks.drain(inkUse(p).map((u, i) => (i === landed - 1 ? u : 0)));
         printing.landed = landed;
+        count(landed);
         thud(0.35);
       }
       const cur = Math.min(n - 1, Math.floor(prog * n));
@@ -256,12 +281,16 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
     const landed = printing.landed;
     if (landed >= printing.n) return;
     if (landed === 0) { cancelPrint(); return; }
+    // released early: only the plates printed so far stay, and the press says so on a slip
+    const sr = stage.sheet.getBoundingClientRect(), nr = notes().getBoundingClientRect();
+    noteSlip(notes(), `printed <b>${landed}</b> of ${printing.n} plates`, sr.left - nr.left + sr.width / 2, sr.top - nr.top + sr.height * 0.42, 2600, 5);
     finishPrint(landed);
   };
   const cancelPrint = () => {
     if (!printing) return;
     cancelAnimationFrame(printing.raf); printing.stopSound(); printing = null;
     strip.print.classList.remove('held'); ring(0); roll.classList.remove('on');
+    strip.count.textContent = tA('hold');
     stage.render('full');
   };
   let busy = false;
@@ -274,6 +303,8 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
     const p = currentPage();
     commitPrint(is, p, plates);
     strip.invalidate(is.current);
+    if (guide) { guide.peel(); guide = null; }
+    notes().querySelector('.drift-col')?.remove();
     status(`${tA('page')} ${p.n} printed with ${plates} of ${p.inks.length} plates`);
     emit('print');
     // the sheet curls and is pulled into the drum
@@ -293,15 +324,22 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
       go('reader', 'issue=current');
       return;
     }
+    let arriving: { prevIdx: number } | null = null;
     await dissolveTo(() => {
-      if (wasLatest) { is.pages.push(nextPage(is, inks.drift)); is.current = is.pages.length - 1; }
-      else {
+      if (wasLatest) {
+        arriving = { prevIdx: is.current };
+        is.pages.push(nextPage(is, inks.drift, inks.memory));
+        is.current = is.pages.length - 1;
+      } else {
         // reopened sheet: later pages are not regenerated; go back to the sheet on the press
         const firstOpen = is.pages.findIndex((q) => !q.printed);
         is.current = firstOpen >= 0 ? firstOpen : is.pages.length - 1;
       }
       emit('next'); load(); ring(0);
+      strip.count.textContent = tA('hold');
     }, 1100);
+    // the press remembers: set-off ghost, carried objects fly in with their tags, forgotten ones go to the dish
+    if (arriving) await remember({ notes: notes(), flyLayer: $('.p-fly'), stage, strip, issue: is, prev: is.pages[(arriving as { prevIdx: number }).prevIdx], prevIdx: (arriving as { prevIdx: number }).prevIdx, page: currentPage() });
     busy = false;
   };
   strip.print.addEventListener('pointerdown', (e) => { e.preventDefault(); try { strip.print.setPointerCapture(e.pointerId); } catch { /* synthetic pointer */ } startPrint(); });
@@ -309,8 +347,9 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
   strip.print.addEventListener('pointercancel', stopPrint);
   strip.print.addEventListener('keydown', (e) => { if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) { e.preventDefault(); startPrint(); } });
   strip.print.addEventListener('keyup', (e) => { if (e.key === ' ' || e.key === 'Enter') stopPrint(); });
-  const spaceDown = (e: KeyboardEvent) => { if (e.key === ' ' && !e.repeat && !(e.target as HTMLElement).closest('input,textarea,button,[role="slider"]')) { e.preventDefault(); startPrint(); } };
-  const spaceUp = (e: KeyboardEvent) => { if (e.key === ' ' && !(e.target as HTMLElement).closest('input,textarea,button,[role="slider"]')) stopPrint(); };
+  const typing = (e: Event) => !!(e.target as Element | null)?.closest?.('input,textarea,button,[role="slider"]');
+  const spaceDown = (e: KeyboardEvent) => { if (e.key === ' ' && !e.repeat && !typing(e)) { e.preventDefault(); startPrint(); } };
+  const spaceUp = (e: KeyboardEvent) => { if (e.key === ' ' && !typing(e)) stopPrint(); };
   addEventListener('keydown', spaceDown); addEventListener('keyup', spaceUp);
 
   // ---------- weird, never in the way ----------

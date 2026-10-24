@@ -1,5 +1,5 @@
 // The core loop: print a page, feed the drum, bring out the next sheet — misremembered by the machine.
-import type { Issue, Page, PageObj } from '../model/types';
+import type { Issue, Page, PageObj, Memory, Memo } from '../model/types';
 import { PAGE_W } from '../model/types';
 import { blankPage, newId, stripOrigin } from '../model/store';
 import { rng, hash, pick, shuffle, clamp } from '../core/rng';
@@ -8,7 +8,8 @@ import { drawCards, applyCard, type Card } from './drift';
 import { applyLayout, LAYOUTS, type Layout } from './layouts';
 import { OBJ, KEYS, nameOf } from '../objects';
 import { kanjiNum } from '../press/util';
-import { makeHelper } from '../press/edits';
+import { makeHelper, makeStamp } from '../press/edits';
+import { parse } from '../parse/parser';
 
 /** Dream time presets per band; the machine leans toward them as the night goes on. */
 const BAND_PRESETS = [['dawn', 'peachmist'], ['celadon', 'peachmist'], ['wisteria', 'dawn'], ['moonwater', 'wisteria']];
@@ -54,8 +55,31 @@ export function commitPrint(issue: Issue, page: Page, plates: number) {
   }
 }
 
-/** The next sheet, already carrying what the machine misremembers. */
-export function nextPage(issue: Issue, driftKnob: number): Page {
+/** How strongly each memory setting carries things over. */
+const MEMORY: Record<Exclude<Memory, 'off'>, { inherit: [number, number]; jitter: number; keep: number; drift: number; back: number }> = {
+  gentle: { inherit: [1, 2], jitter: 0.45, keep: 0.06, drift: 0.5, back: 0.15 },
+  normal: { inherit: [2, 3], jitter: 1, keep: 0.14, drift: 1, back: 0.3 },
+  wild: { inherit: [3, 4], jitter: 1.5, keep: 0.22, drift: 1.5, back: 0.6 },
+};
+
+/** How a carried object came out, compared with what it was on the sheet before. */
+export function describeMemory(o: PageObj, was: PageObj): string {
+  const f = o.s / Math.max(0.01, was.s);
+  const d = ((((o.r - was.r) % 360) + 540) % 360) - 180;
+  if (o.kind === 'word' && was.kind !== 'word') return 'remembered as a word';
+  if (o.kind === 'obj' && o.key !== was.key) return `remembered as ${(OBJ[o.key]?.en ?? o.key).toLowerCase()}`;
+  if (Math.abs(d) > 130) return 'remembered upside down';
+  if (Math.abs(d) > 55) return 'remembered sideways';
+  if (f > 1.6 || f < 0.6) return `remembered wrong ×${f.toFixed(1)}`;
+  if (!!o.flip !== !!was.flip) return 'remembered backwards';
+  return 'remembered';
+}
+
+/** The next sheet, already carrying what the machine misremembers. `memory` sets how much it carries:
+ *  off = a blank sheet; gentle / normal / wild = more objects, more drift, a faster-growing keepsake.
+ *  `dream`: the press is dreaming the sheets by itself (Fall asleep, Dream it for me) and may stamp the
+ *  dream's objects again when a sheet runs thin. Every choice derives from the issue seed. */
+export function nextPage(issue: Issue, driftKnob: number, memory: Memory = 'normal', opts: { dream?: boolean } = {}): Page {
   const prev = issue.pages[issue.pages.length - 1];
   const n = prev.n + 1;
   const seed = hash(issue.seed, n);
@@ -67,40 +91,78 @@ export function nextPage(issue: Issue, driftKnob: number): Page {
   if (n >= 9 && inks.length < 4 && r() < 0.5) inks.push(pick(r, ['fpink', 'cornflower', 'fgreen', 'sunflower'].filter((x) => !inks.includes(x))));
   const page = blankPage(n, issue.seed, inks);
   page.seed = seed % 100000;
+  const memo: Memo = { level: memory, tags: [], forgot: [] };
+  page.memo = memo;
+  const seal = () => page.objects.push({ ...makeHelper(page, 'seal', 128 + (r() - 0.5) * 6, 186 + (r() - 0.5) * 4, hash(seed, 'seal') % 1e5), s: 10 });
+  if (memory === 'off') {
+    // memory off: every sheet starts blank (the dream time still moves on)
+    seal();
+    refreshText(issue, page);
+    page.origin = JSON.stringify(stripOrigin(page));
+    return page;
+  }
+  const M = MEMORY[memory];
   page.ground = prev.ground === 'rice' && r() < 0.4 ? 'machine' : r() < 0.5 ? prev.ground : 'machine';
   page.mis = clamp(prev.mis + (r() - 0.3) * 0.15, 0.2, 1.6);
   page.grain = clamp(prev.grain + (r() - 0.4) * 0.08, 0.3, 1);
-  // Exquisite Corpse: 2–3 objects inherited, misremembered; the rest are forgotten
+  // Exquisite Corpse: a few objects inherited, misremembered; the rest are forgotten into the dish
   const pool = prev.objects.filter((o) => !o.fx && o.kind !== 'helper' && o.key !== issue.keepsake);
-  const inherit = shuffle(r, pool).slice(0, 2 + (r() < 0.5 ? 1 : 0));
-  page.objects = inherit.map((o) => ({ ...o, id: newId(), x: clamp(o.x + (r() - 0.5) * 30, 10, PAGE_W - 10), y: clamp(o.y + (r() - 0.5) * 24, 20, 195), s: o.s * (0.8 + r() * 0.45), r: o.r + (r() - 0.5) * 14, flip: r() < 0.25 ? !o.flip : o.flip, plates: [0, 1, 2].map((i) => (i + Math.floor(r() * 3)) % inks.length), opacity: 1, crumple: 0, wrong: r() < 0.2 ? 0.4 : o.wrong }));
-  // something forgotten may come back, mutated
-  if (issue.forgotten.length && r() < 0.3) {
+  const inherit = shuffle(r, pool).slice(0, M.inherit[0] + (r() < 0.5 ? M.inherit[1] - M.inherit[0] : 0));
+  const was = new Map<string, PageObj>();
+  page.objects = inherit.map((o) => {
+    const j = M.jitter;
+    const c: PageObj = { ...o, id: newId(), x: clamp(o.x + (r() - 0.5) * 30 * j, 10, PAGE_W - 10), y: clamp(o.y + (r() - 0.5) * 24 * j, 20, 195), s: o.s * (1 + (r() * 0.45 - 0.2) * j), r: o.r + (r() - 0.5) * 14 * j, flip: r() < 0.25 * j ? !o.flip : o.flip, plates: [0, 1, 2].map((i) => (i + Math.floor(r() * 3)) % inks.length), opacity: 1, crumple: 0, wrong: r() < 0.2 * j ? 0.4 : o.wrong };
+    was.set(c.id, o);
+    return c;
+  });
+  const forgotten = pool.filter((o) => !inherit.includes(o));
+  memo.forgot = forgotten.map((o) => o.id);
+  // something forgotten earlier may come back, mutated
+  if (issue.forgotten.length && r() < M.back) {
     const i = Math.floor(r() * issue.forgotten.length);
     const back = issue.forgotten.splice(i, 1)[0];
-    page.objects.push({ ...back, id: newId(), x: 20 + r() * 108, y: 60 + r() * 110, wrong: clamp((back.wrong ?? 0) + 0.5), plates: [0, 1, 2].map((q) => q % inks.length) });
+    const b: PageObj = { ...back, id: newId(), x: 20 + r() * 108, y: 60 + r() * 110, wrong: clamp((back.wrong ?? 0) + 0.5), plates: [0, 1, 2].map((q) => q % inks.length) };
+    page.objects.push(b);
+    memo.tags.push({ id: b.id, tag: 'came back, changed' });
   }
+  issue.forgotten.push(...forgotten.map((o) => ({ ...o, id: newId(), fx: undefined, opacity: 1, crumple: 0 })));
+  if (issue.forgotten.length > 60) issue.forgotten.splice(0, issue.forgotten.length - 60);
   // the keepsake, a little bigger every page
   let keep: PageObj | undefined;
   if (issue.keepsake) {
     const base = issue.keepsakeS ?? 30;
     const prevK = prev.objects.find((o) => o.key === issue.keepsake && !o.fx);
-    keep = { id: newId(), kind: 'obj', key: issue.keepsake, x: prevK ? prevK.x : 40 + r() * 70, y: prevK ? prevK.y : 70 + r() * 60, s: base * (1 + 0.14 * (n - 1)), r: (r() - 0.5) * 6, plates: [0, 1, 2].map((q) => q % inks.length), seed: hash(seed, 'keep') % 1e5 };
+    keep = { id: newId(), kind: 'obj', key: issue.keepsake, x: prevK ? prevK.x : 40 + r() * 70, y: prevK ? prevK.y : 70 + r() * 60, s: base * (1 + M.keep * (n - 1)), r: (r() - 0.5) * 6, plates: [0, 1, 2].map((q) => q % inks.length), seed: hash(seed, 'keep') % 1e5 };
     page.objects.push(keep);
+  }
+  // the press dreams: a thin sheet gets the dream's own objects stamped again
+  if (opts.dream && issue.dream && page.objects.length < 3) {
+    const have = new Set(page.objects.map((o) => o.key));
+    const want = parse(issue.dream).objs.filter((k) => !have.has(k));
+    for (const k of shuffle(r, want).slice(0, 3 - page.objects.length)) {
+      const d = makeStamp(page, k, 24 + r() * 100, 50 + r() * 120, 0.85, hash(seed, k) % 1e6);
+      d.s *= 0.8;
+      page.objects.push(d);
+      memo.tags.push({ id: d.id, tag: 'dreamed again' });
+    }
   }
   // set-off: a faint mirrored ghost of the previous page
   page.setoff = prev.objects.filter((o) => !o.fx && o.kind !== 'helper').map((o) => ({ ...o, id: newId() }));
-  // layout template, then drift cards
-  // never the same template twice in a row; the full-bleed wash is rarer
-  const opts = LAYOUTS.filter((l) => l !== prev.layout && (l !== 'wash' || r() < 0.45));
-  const layout: Layout = pick(r, opts);
+  // layout template, then drift cards; never the same template twice in a row; the full-bleed wash is rarer;
+  // gentle memory keeps to the calm templates (no huge close-ups)
+  const calm = memory === 'gentle' ? ['closeup', 'wash', 'softtype'] : [];
+  const opts2 = LAYOUTS.filter((l) => l !== prev.layout && !calm.includes(l) && (l !== 'wash' || r() < 0.45));
+  const layout: Layout = pick(r, opts2);
   page.layout = layout;
   applyLayout(layout, page, r, keep?.id);
-  const { cards, k } = drawCards(r, n, driftKnob);
+  const { cards, k } = drawCards(r, n, driftKnob * M.drift);
   for (const c of cards) applyCard(c, { r, page, k, earlier: issue.pages.slice(0, -1), lang: issue.lang });
   page.drift = [...new Set([...page.drift, ...cards])] as Card[];
-  // the seal on every page
-  page.objects.push({ ...makeHelper(page, 'seal', 128 + (r() - 0.5) * 6, 186 + (r() - 0.5) * 4, hash(seed, 'seal') % 1e5), s: 10 });
+  page.driftK = k;
+  seal();
+  // what came out of the drum, compared with what went in
+  for (const [id, w] of was) { const o = page.objects.find((q) => q.id === id); if (o) memo.tags.push({ id, tag: describeMemory(o, w), src: w.id }); }
+  if (keep && page.objects.includes(keep)) memo.tags.push({ id: keep.id, tag: 'keepsake · larger', src: prev.objects.find((o) => o.key === issue.keepsake && !o.fx)?.id });
   refreshText(issue, page);
   page.origin = JSON.stringify(stripOrigin(page));
   return page;

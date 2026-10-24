@@ -96,6 +96,9 @@
 .stage[data-mode="tool"] .stage-brush.on { display: block; }
 .stage[data-mode="tool"] .stage-sheet { cursor: none; }
 .stage-over [data-h] { cursor: grab; pointer-events: all; }
+.stage.remembering .stage-sheet { pointer-events: none; }
+.p-fly { position: fixed; inset: 0; pointer-events: none; z-index: 61; mix-blend-mode: multiply; }
+.p-fly .mem-tag { mix-blend-mode: normal; }
 .stage-ghost { position: absolute; pointer-events: none; opacity: .55; filter: blur(.6px); mix-blend-mode: multiply; display: none; z-index: 3; }
 .stage.pressing .stage-ghost { opacity: .85; transform: scale(.94); transition: transform 600ms var(--ease-ink); }
 .p-vline { position: absolute; left: 4px; top: 50%; transform: translateY(-50%); font: 800 13px/1 var(--f-display); letter-spacing: .3em; color: var(--sumi); z-index: 2; pointer-events: none; }
@@ -218,7 +221,7 @@
 .mem-tag { position: absolute; z-index: 6; padding: 4px 8px 6px; font: 500 11px/1.1 var(--f-mono); letter-spacing: .04em; color: var(--sumi); background: rgba(250,248,244,.9); box-shadow: 0 2px 5px rgba(59,58,64,.2); white-space: nowrap; pointer-events: none; translate: -50% 0; }
 .mem-tag.forgot { color: var(--soft); }
 .mem-tag.keep { color: var(--seal); }
-.mem-fly { position: fixed; left: 0; top: 0; z-index: 61; pointer-events: none; mix-blend-mode: multiply; transform-origin: center; }
+.mem-fly { position: absolute; left: 0; top: 0; z-index: 61; pointer-events: none; mix-blend-mode: multiply; transform-origin: center; }
 .job-ticket { position: absolute; z-index: 7; width: 236px; padding: 14px 18px 18px; display: grid; gap: 7px; pointer-events: auto; }
 .job-ticket h3 { margin: 0 0 2px; font: 11px/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--soft); }
 .job-ticket p { margin: 0; font: 600 14px/1.3 var(--f-display); color: var(--sumi); display: grid; grid-template-columns: 20px 1fr 26px; align-items: center; gap: 4px; }
@@ -279,7 +282,8 @@
   .rod { overflow-x: auto; scrollbar-width: none; }
   .leaf { flex: none; width: 30px; }
   .p-vline { display: none; }
-  .drift-col, .job-ticket, .bound-slip { display: none; }
+  .job-ticket { width: 210px !important; padding: 10px 14px 13px; }
+  .job-ticket p { font-size: 13px; }
   .p-notes .note-slip { font-size: 11px; }
   .sheet-tabs { display: flex; grid-area: tabs; gap: 6px; justify-content: center; }
   .sheet-tabs button { display: flex; align-items: center; gap: 6px; padding: 5px 14px 6px; border: 0; color: var(--sumi);

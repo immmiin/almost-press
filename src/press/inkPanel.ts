@@ -6,7 +6,7 @@ import { deckle } from '../design/paper';
 import { t, tA, onLang } from '../core/i18n';
 import { getSide, setSide, type SideLevel } from './edits';
 import { slosh } from '../core/sound';
-import type { Page } from '../model/types';
+import type { Page, Memory } from '../model/types';
 
 export class InkPanel {
   el: HTMLElement;
@@ -17,6 +17,8 @@ export class InkPanel {
   activeSlot = 0;
   view = 0;
   drift = +(localStorage.getItem('ap.drift') ?? 0.6);
+  /** how much the press carries from sheet to sheet */
+  memory: Memory = (['off', 'gentle', 'normal', 'wild'] as Memory[]).find((m) => m === localStorage.getItem('ap.memory')) ?? 'normal';
   levels: Record<string, number> = {};
   onChange: (why: string) => void = () => {};
   onView: (v: number) => void = () => {};
@@ -29,7 +31,7 @@ export class InkPanel {
     const wrap = document.createElement('section');
     wrap.className = 'inks-wrap vellum-wrap';
     wrap.setAttribute('aria-label', tA('a_inks'));
-    wrap.innerHTML = `<div class="inks vellum"><h2 class="mono-up inks-h"></h2><div class="inks-slots"></div><p class="inks-active mono" aria-live="polite"></p><div class="inks-presets"></div><div class="inks-lib" role="listbox"></div><div class="inks-view"></div><div class="inks-knobs"></div><div class="inks-side"></div></div>`;
+    wrap.innerHTML = `<div class="inks vellum"><h2 class="mono-up inks-h"></h2><div class="inks-slots"></div><p class="inks-active mono" aria-live="polite"></p><div class="inks-presets"></div><div class="inks-lib" role="listbox"></div><div class="inks-view"></div><div class="inks-knobs"></div><div class="inks-memory"></div><div class="inks-side"></div></div>`;
     this.el = wrap;
     deckle(wrap.querySelector('.inks')!, 77, 'deckle', 2.5);
     wrap.append(washi(9, { left: '40%', top: '-8px' }, 70), washi(12, { left: '-12px', bottom: '30%', transform: 'rotate(-80deg)' }, 54));
@@ -105,6 +107,11 @@ export class InkPanel {
       knob(tA('grain'), p.grain, (v) => { p.grain = v; this.onChange('knob'); }),
       knob(tA('drift'), this.drift, (v) => { this.drift = v; localStorage.setItem('ap.drift', String(v)); this.onDrift(); }),
     );
+    const mem = this.el.querySelector('.inks-memory')!;
+    mem.innerHTML = '';
+    const ms = slotSwitch(tA('memory'), [['off', t('m_off')], ['gentle', t('m_gentle')], ['normal', t('normal')], ['wild', t('wild')]], this.memory, (v) => { this.memory = v as Memory; localStorage.setItem('ap.memory', v); });
+    ms.querySelector('.slot-label')!.innerHTML = `<b aria-hidden="true">記</b>${t('memory')} · ${tA('memory') === 'memory' ? 'next sheet' : '次の頁'}`;
+    mem.append(ms);
     const side = this.el.querySelector('.inks-side')!;
     side.innerHTML = '';
     side.append(slotSwitch(tA('side'), [['mild', t('mild')], ['normal', t('normal')], ['wild', t('wild')]], getSide(), (v) => setSide(v as SideLevel)));

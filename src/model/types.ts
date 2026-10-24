@@ -47,6 +47,17 @@ export interface Stroke {
   plate2?: number; // bokashi futa-iro: second ink
 }
 
+/** How much the machine carries from one sheet to the next. */
+export type Memory = 'off' | 'gentle' | 'normal' | 'wild';
+/** What the press remembered when it fed this sheet: a tag per carried object, and what it forgot. */
+export interface Memo {
+  level: Memory;
+  /** id on this page → how it was remembered ("remembered", "remembered wrong ×3.2", "keepsake · larger" …) */
+  tags: { id: string; tag: string; src?: string }[];
+  /** ids (on the previous page) of the objects that were forgotten into the dish */
+  forgot: string[];
+}
+
 export interface Page {
   n: number; // 1..16
   inks: string[]; // ink ids, 1..4 plates
@@ -75,6 +86,9 @@ export interface Page {
   dreamLine?: string;
   /** slug: page number, inks, misregistration, drift cards, dream time, seed */
   slug?: string;
+  /** drift intensity the machine used for this sheet (shown on the drift slips: WAVE 0.4) */
+  driftK?: number;
+  memo?: Memo;
   /** tool strength version: 2 = revision-01 gains (one stroke reads clearly); absent = the original gains (Issue 01) */
   fxv?: number;
 }
