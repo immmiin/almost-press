@@ -10,6 +10,8 @@ export class Ticket {
   el: HTMLElement;
   input: HTMLInputElement;
   onDream: (text: string) => void = () => {};
+  /** Dream it for me: the press prints all sixteen sheets from this sentence */
+  onDreamFor: (text: string) => void = () => {};
   private offLang: () => void;
   private issueNo = '';
 
@@ -20,7 +22,7 @@ export class Ticket {
       <a class="ticket-seal" href="#/gate" aria-label="ALMOST PRESS — back to the gate">${sealSVG({ size: 38, seed: 3, doubleStrike: true })}</a>
       <div class="ticket-name"><span class="tn-en">ALMOST PRESS</span><span class="tn-ko">거의 인쇄소</span><span class="tn-ja">ほぼ印刷所</span></div>
       <div class="ticket-issue mono"></div>
-      <form class="ticket-dream"><div class="ticket-dream-in"><label class="mono ticket-dl" for="dream"></label><input id="dream" class="ruled" autocomplete="off" maxlength="160"></div></form>
+      <form class="ticket-dream"><div class="ticket-dream-in"><label class="mono ticket-dl" for="dream"></label><input id="dream" class="ruled" autocomplete="off" maxlength="160"></div><button type="button" class="slip ticket-for"></button></form>
       <div class="ticket-lang" role="group"></div>
       <button type="button" class="ticket-btn mono" data-a="lock"></button>
       <button type="button" class="ticket-btn mono" data-a="sound"></button>
@@ -38,6 +40,11 @@ export class Ticket {
       if (b.dataset.a === 'sound') { setSound(!soundOn()); this.render(); }
       if (b.dataset.a === 'lock') { setLocked(!isLocked()); }
       if (b.dataset.a === 'colophon') go('colophon');
+      if (b.classList.contains('ticket-for')) {
+        const v = this.input.value.trim();
+        if (v) this.onDreamFor(v);
+        else { this.input.focus(); this.input.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-4px)' }, { transform: 'translateX(3px)' }, { transform: 'none' }], { duration: 260 }); }
+      }
     });
     this.offLang = onLang(() => this.render());
     this.render();
@@ -58,5 +65,8 @@ export class Ticket {
     q('[data-a="lock"]').textContent = `${isLocked() ? '鎖' : '漂'} ${t('lock')}`;
     q('[data-a="lock"]').setAttribute('aria-pressed', String(isLocked()));
     q('[data-a="colophon"]').textContent = t('colophon');
+    const f = q('.ticket-for');
+    f.innerHTML = `<span class="ja" aria-hidden="true">夢</span>${tA('dreamFor')}`;
+    f.title = `${tA('dreamFor')} — the press prints all sixteen sheets from the sentence`;
   }
 }

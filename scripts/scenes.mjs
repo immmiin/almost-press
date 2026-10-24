@@ -101,6 +101,23 @@ try {
     await page.keyboard.press('Enter');
     await sleep(6000); await shot('dreamfor-mid');
     await sleep(14000); await shot('dreamfor-bound');
+  } else if (scene === 'share') {
+    // a whole issue dreamt from one sentence, then the Reader: share link, open it, record a reel
+    await go('#/press?new=1&seed=2718&dream=' + encodeURIComponent('a swan in the kitchen and the clock kept getting bigger'), 3200);
+    await page.mouse.click(30, 450); // any click hurries the ceremony
+    await sleep(9000);
+    await page.goto('http://press.local/#/reader?issue=current', { waitUntil: 'load' }); await sleep(5000);
+    await shot('reader-current');
+    await page.click('[data-a="share"]'); await sleep(1200);
+    await shot('reader-share');
+    const link = await page.inputValue('.r-link').catch(() => '');
+    console.log('link length', link.length);
+    if (link) { await page.goto(link.replace(/^https?:\/\/[^/]+\//, 'http://press.local/'), { waitUntil: 'load' }); await sleep(5000); await shot('reader-shared'); }
+    const downloads = [];
+    page.on('download', (d) => downloads.push(d));
+    await page.click('[data-a="reel"]'); await sleep(8000); await shot('reader-reel');
+    await sleep(22000);
+    for (const d of downloads) { const p = join(out, d.suggestedFilename()); await d.saveAs(p); console.log('download', d.suggestedFilename()); }
   } else if (scene === 'gate') {
     await go('#/gate', 3500); await shot('gate');
   } else if (scene === 'reader') {

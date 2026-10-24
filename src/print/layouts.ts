@@ -42,7 +42,8 @@ export function applyLayout(layout: Layout, page: Page, r: Rng, keepsakeId?: str
     }
     case 'softtype': {
       const o = others[0];
-      if (o) page.objects.push({ id: newId(), kind: 'word', key: nameOf(o.key, pick(r, ['en', 'ja'] as const)).toLowerCase(), style: Math.floor(r() * 6), x: PAGE_W / 2, y: 70 + r() * 30, s: 132, r: (r() - 0.5) * 8, plates: [top, 0, 1], seed: 5, opacity: 0.9 });
+      // (a carried word is already a word: its key is its text)
+      if (o) page.objects.push({ id: newId(), kind: 'word', key: (OBJ[o.key] ? nameOf(o.key, pick(r, ['en', 'ja'] as const)) : o.key).toLowerCase(), style: Math.floor(r() * 6), x: PAGE_W / 2, y: 70 + r() * 30, s: 132, r: (r() - 0.5) * 8, plates: [top, 0, 1], seed: 5, opacity: 0.9 });
       page.strokes.push({ tool: 'haze', pts: [[0.1, 0.4], [0.9, 0.42]], size: 0.16, intensity: 0.7, seed: 4 });
       break;
     }

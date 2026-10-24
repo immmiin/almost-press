@@ -64,7 +64,9 @@ export function stampDream(page: Page, text: string, seed: number): PageObj[] {
   for (const key of objs.slice(0, 9)) {
     const o = OBJ[key];
     const [x, y] = o.float && si < sky.length ? sky[si++] : ground[gi++ % ground.length];
-    out.push(makeStamp(page, key, x + (r() - 0.5) * 8, y + (r() - 0.5) * 6, 0.8, hash(seed, key)));
+    const st = makeStamp(page, key, x + (r() - 0.5) * 8, y + (r() - 0.5) * 6, 0.8, hash(seed, key));
+    st.s *= objs.length > 4 ? 0.62 : 0.8; // a whole sentence lands smaller than one stamp by hand
+    out.push(st);
   }
   words.slice(0, 2).forEach((w, i) => out.push(makeWord(page, w, i ? 96 : 66, i ? 104 : 70, hash(seed, w))));
   return out;

@@ -23,6 +23,8 @@ import type { Issue } from '../model/types';
 import { remember, driftColumn, noteSlip, Guide } from './remember';
 
 export default function press(root: HTMLElement, params: URLSearchParams) {
+  // ?new=1 starts a fresh issue; ?dream=… (from the Gate) then dreams all sixteen sheets from that sentence
+  const quick = params.get('dream')?.trim() ?? '';
   if (params.get('new')) { setIssue(newIssue(params.get('seed') ? +params.get('seed')! : undefined)); history.replaceState(null, '', '#/press'); }
   let issue: Issue = getIssue();
   // the fixed Issue 01 is never edited: the press opens a fresh issue. A bound issue stays open: any sheet can be reopened.
@@ -324,7 +326,9 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
     if (wasLatest && p.n >= 16) {
       // the sixteenth sheet: the issue is bound (once) and stays on the press, with a slip to run the edition
       if (!is.bound) { await bindIssue(is, root); is.bound = true; emit('bound'); }
-      busy = false; ring(0); strip.count.textContent = tA('hold');
+      busy = false; ring(0);
+      if (!root.isConnected) return;
+      strip.count.textContent = tA('hold');
       load();
       return;
     }
@@ -340,9 +344,12 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
         const firstOpen = is.pages.findIndex((q) => !q.printed);
         if (!is.bound) is.current = firstOpen >= 0 ? firstOpen : is.pages.length - 1;
       }
-      emit('next'); load(); ring(0);
+      emit('next');
+      if (!root.isConnected) return;
+      load(); ring(0);
       strip.count.textContent = tA('hold');
     }, 1100);
+    if (!root.isConnected) return;
     // the press remembers: set-off ghost, carried objects fly in with their tags, forgotten ones go to the dish
     if (arriving) await remember({ notes: notes(), flyLayer: $('.p-fly'), stage, strip, issue: is, prev: is.pages[(arriving as { prevIdx: number }).prevIdx], prevIdx: (arriving as { prevIdx: number }).prevIdx, page: currentPage() });
     busy = false;
@@ -382,7 +389,7 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
     const rm = reducedMotion();
     let skip = rm;
     const onSkip = (e: Event) => { if (e instanceof KeyboardEvent && e.key !== 'Escape') return; skip = true; };
-    addEventListener('keydown', onSkip); stage.el.addEventListener('pointerdown', onSkip);
+    addEventListener('keydown', onSkip); addEventListener('pointerdown', onSkip);
     const lab = slip('div', 71, '', 'dream-ceremony');
     lab.setAttribute('role', 'status');
     $('.p-stage').append(lab);
@@ -396,24 +403,52 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
     const last = currentPage();
     if (!last.printed) { commitPrint(is, last, last.inks.length); strip.invalidate(is.current); }
     emit('print'); strip.render(is); thud(0.6);
-    while (is.pages.length < 16) {
-      const np = nextPage(is, inks.drift, mem, { dream: true });
-      commitPrint(is, np, np.inks.length);
-      is.pages.push(np); is.current = is.pages.length - 1;
-      say(np.n);
-      stage.setPage(np); syncAtmo(); vline(); strip.render(is);
-      atmosphere().flashInk(INK_BY_ID[np.inks[0]].hex, 0.5); thud(0.2);
-      if (!skip) { stage.canvas.animate([{ opacity: 0.15, filter: 'blur(3px)' }, { opacity: 1, filter: 'none' }], { duration: 520, easing: 'cubic-bezier(.3,.7,.2,1)' }); await pause(800); }
-      else await new Promise((r) => requestAnimationFrame(r));
+    try {
+      while (is.pages.length < 16 && root.isConnected) {
+        const np = nextPage(is, inks.drift, mem, { dream: true });
+        commitPrint(is, np, np.inks.length);
+        is.pages.push(np); is.current = is.pages.length - 1;
+        say(np.n);
+        stage.setPage(np); syncAtmo(); vline(); strip.render(is);
+        atmosphere().flashInk(INK_BY_ID[np.inks[0]].hex, 0.5); thud(0.2);
+        if (!skip) { stage.canvas.animate([{ opacity: 0.15, filter: 'blur(3px)' }, { opacity: 1, filter: 'none' }], { duration: 520, easing: 'cubic-bezier(.3,.7,.2,1)' }); await pause(800); }
+        else await new Promise((r) => requestAnimationFrame(r));
+      }
+    } finally {
+      // whatever happens, the press never stays asleep with its controls locked
+      lab.remove(); stage.el.classList.remove('remembering');
+      removeEventListener('keydown', onSkip); removeEventListener('pointerdown', onSkip);
+      if (is.pages.length < 16 && root.isConnected) { busy = false; load(); }
     }
     emit('dreamt');
-    lab.remove(); stage.el.classList.remove('remembering');
-    removeEventListener('keydown', onSkip); stage.el.removeEventListener('pointerdown', onSkip);
+    // (left the press mid-dream: the sheets so far are kept, binding waits for the next visit)
+    if (!root.isConnected) return;
     await bindIssue(is, root);
     is.bound = true; emit('bound');
     busy = false;
-    load();
+    if (root.isConnected) load();
   };
+  // ---------- Dream it for me: one sentence, and the press prints all sixteen sheets by itself ----------
+  const quickDream = async (text: string) => {
+    text = text.trim();
+    if (!text || busy || printing) return;
+    let is = getIssue();
+    const untouched = !is.bound && is.current === 0 && !is.pages[0].printed && !is.pages[0].objects.some((o) => o.kind !== 'helper');
+    if (!untouched) {
+      if (!(await ask(['a new issue will be dreamt from this sentence', 'この一文から新しい号を夢に見る'], ['Dream it', '夢に見る'], ['Not now', 'やめる']))) return;
+      setIssue(newIssue()); is = getIssue(); guide?.el.remove(); guide = null; load();
+    }
+    is.dream = text;
+    const p = currentPage();
+    p.objects.push(...stampDream(p, text, hash(is.seed, p.n, text)));
+    refreshText(is, p); thud(0.8); emit('dream'); stage.render('full');
+    ticket.input.value = text;
+    status(`dream stamped: ${text}`);
+    if (!reducedMotion()) await new Promise((r) => setTimeout(r, 1000));
+    await dreamTheRest();
+  };
+  ticket.onDreamFor = (text) => { void quickDream(text); };
+
   strip.onSleep = async () => {
     if (busy || printing || getIssue().bound) return;
     if (await ask(tAll('sleepAsk'), tAll('sleepYes'), tAll('sleepNo'))) await dreamTheRest();
@@ -498,6 +533,7 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
   const offLang = onLang(() => { labels(); tabLabels(); applyFold(); });
   applyFold();
   load(); labels(); fit();
+  if (quick) { history.replaceState(null, '', '#/press'); setTimeout(() => void quickDream(quick), reducedMotion() ? 0 : 700); }
 
   return () => {
     ro.disconnect(); offIssue(); offLang(); clearInterval(focusTimer); clearTimeout(idleT);

@@ -156,6 +156,7 @@ export async function remember(c: RememberCtx): Promise<void> {
   if (forgot.length) setTimeout(() => !skip && rustle(0.5), 900);
 
   await wait(Math.min(longest, 1500), isSkip);
+  if (!stage.el.isConnected) { flights.forEach((f) => f.img.remove()); removeEventListener('keydown', onSkip); return; }
   // the real sheet replaces the preview under the landed objects
   stage.setPage(page);
   stage.el.classList.remove('remembering');

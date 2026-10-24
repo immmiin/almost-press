@@ -7,10 +7,10 @@ import './gate.css';
 import { sealSVG } from '../design/seal';
 import { deckle } from '../design/paper';
 import { washi, slip } from '../design/materials';
-import { t, tAll, onLang } from '../core/i18n';
+import { t, tA, tAll, onLang } from '../core/i18n';
 import { go } from '../core/router';
 import { atmosphere, dissolveTo } from '../atmosphere/atmosphere';
-import { thud, tick, rustle } from '../core/sound';
+import { thud, tick, rustle, soundOn, setSound } from '../core/sound';
 import { reducedMotion } from '../core/rng';
 import { getIssue, ISSUE_NO } from '../model/store';
 import { hexToRgb } from '../design/tokens';
@@ -39,6 +39,7 @@ export default function gate(root: HTMLElement) {
         <div class="g-seal" aria-hidden="true">${sealSVG({ size: 190, seed: Math.floor(R() * 40) + 1, doubleStrike: R() < 0.4, rotate: (R() - 0.5) * 9 })}</div>
         <p class="g-sub mono">a dream print shop · 16 pages · A5 risograph<span lang="ja">夢の印刷所 · 十六頁</span></p>
       </div>
+      <button type="button" class="g-sound mono"></button>
       <nav class="g-slips" aria-label="enter"></nav>
     </div>
   </main>`;
@@ -71,6 +72,19 @@ export default function gate(root: HTMLElement) {
       w.append(s, washi(60 + i, { left: `${24 + i * 17}%`, top: '-10px' }, 58));
       nav.append(w);
     });
+    // Dream it for me: one sentence, and the press prints all sixteen sheets
+    const q = document.createElement('div');
+    q.className = 'g-slip-wrap g-dream-wrap';
+    const [dEn, dJa] = tAll('dreamFor');
+    const qs = slip('div', 57, `<form class="g-dream"><label for="g-dream-in"><span class="g-slip-main">${t('dreamFor') === dJa ? dJa : dEn}</span><span class="g-slip-alt" lang="ja">${t('dreamFor') === dJa ? dEn : dJa}</span></label><input id="g-dream-in" class="ruled" autocomplete="off" maxlength="160" placeholder="${tA('dreamPh')}"><button type="submit" class="g-dream-go mono" aria-label="${tA('dreamFor')}">↵</button></form>`, 'g-slip');
+    qs.querySelector('form')!.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const v = (qs.querySelector('input') as HTMLInputElement).value.trim();
+      if (v) leave(() => go('press', `new=1&dream=${encodeURIComponent(v)}`));
+      else (qs.querySelector('input') as HTMLInputElement).focus();
+    });
+    q.append(qs, washi(64, { left: '60%', top: '-9px' }, 50));
+    nav.append(q);
     if (inProgress) {
       const n = document.createElement('button');
       n.type = 'button'; n.className = 'g-new mono'; n.textContent = `${tAll('newIssue')[0]} · ${tAll('newIssue')[1]}`;
@@ -80,6 +94,11 @@ export default function gate(root: HTMLElement) {
   };
   render();
   const offLang = onLang(render);
+  // sound is off until asked for: paper rustle, the seal's thud, the drum's hum (all synthesised, no files)
+  const snd = root.querySelector('.g-sound') as HTMLButtonElement;
+  const sndLabel = () => { snd.textContent = `音 ${tA('sound')} ${soundOn() ? tA('on') : tA('off')}`; snd.setAttribute('aria-pressed', String(soundOn())); };
+  sndLabel();
+  snd.addEventListener('click', () => { setSound(!soundOn()); sndLabel(); if (soundOn()) thud(0.8); });
 
   // the seal is pressed onto the sheet
   const seal = root.querySelector('.g-seal') as HTMLElement;

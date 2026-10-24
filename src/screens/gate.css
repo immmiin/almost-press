@@ -38,6 +38,15 @@
 .g-slip-alt { font: 500 13px/1.2 var(--f-display); color: var(--soft); letter-spacing: .06em; }
 .g-slip-alt[lang="en"] { font-family: var(--f-mono); font-size: 11px; letter-spacing: .04em; }
 .g-slip-note { color: var(--seal); font-size: 11px; }
+.g-dream-wrap { transform: rotate(1.2deg) translateX(14%); margin-top: 6px; }
+.g-dream { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; align-items: end; min-width: min(330px, 100%); }
+.g-dream label { grid-column: 1 / -1; display: grid; gap: 3px; cursor: text; }
+.g-dream .g-slip-main { font-size: 18px; }
+.g-dream input { font-size: 15px; min-width: 0; }
+.g-dream-go { border: 1px solid rgba(59,58,64,.4); background: none; width: 28px; height: 26px; padding: 0; font-size: 14px; }
+.g-dream-go:hover { color: var(--seal); border-color: var(--seal); }
+.g-sound { position: absolute; right: 9%; bottom: 3.4%; z-index: 4; border: 0; background: none; color: var(--sumi); border-bottom: 1px solid rgba(59,58,64,.35); padding: 2px 0; font-size: 11px; }
+.g-sound[aria-pressed="true"] { color: var(--seal); border-bottom-color: var(--seal); }
 .g-new { border: 0; background: none; color: var(--sumi); border-bottom: 1px solid rgba(59,58,64,.4); padding: 2px 0; font-size: 11px; margin-left: 12%; }
 
 /* portrait phones: title at the top, the Hangul block under it, Japanese down the right, slips along the bottom */
@@ -49,7 +58,7 @@
   .g-sub { top: calc(3.6% + min(11.4vw, 5.6vh) * 1.42); left: 5.2%; flex-direction: column; gap: 2px; font-size: 11px; }
   .g-ko { left: 5%; top: 19%; bottom: auto; font-size: min(18.5vw, 10.5vh); }
   .g-ja { right: 4.5%; top: 18.5%; font-size: min(16.5vw, 9.4vh); }
-  .g-seal { left: 35%; top: 47%; }
+  .g-seal { left: 35%; top: 44%; }
   .g-seal .seal { width: min(33vw, 17vh); }
   .g-slips { left: 6%; right: 6%; top: auto; bottom: 4%; width: auto; gap: 14px; }
   .g-slip { padding: 12px 20px 15px; min-width: 0; }
@@ -57,4 +66,8 @@
   .g-slip-1 { transform: rotate(1.8deg) translateX(12%); }
   .g-slip-0 { transform: rotate(-2.4deg) translateX(2%); }
   .g-slip-2 { transform: rotate(-1deg) translateX(6%); }
+  .g-dream-wrap { transform: rotate(.8deg); }
+  .g-sound { right: auto; left: 6%; bottom: auto; top: calc(3.6% + min(11.4vw, 5.6vh) * 1.42 + 34px); }
+  .g-dream { min-width: 0; }
+  .g-slips { gap: 12px; }
 }

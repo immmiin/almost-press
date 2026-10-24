@@ -5,6 +5,7 @@
 // jogged, folded, stapled and sealed, the zine drops toward the viewer and the files download.
 import './export.css';
 import { loadIssue } from '../issues/load';
+import { decodeIssue, heldIssue } from '../issues/share';
 import { runEdition, download, type Kind, type Rendered } from './../export/files';
 import { inspectPdf, summarise, type PdfFacts } from '../export/inspect';
 import { t, onLang } from '../core/i18n';
@@ -31,13 +32,16 @@ export function jamOf(issue: Issue): number {
 
 export default async function exportScreen(root: HTMLElement, params: URLSearchParams) {
   root.innerHTML = `<p class="mono x-loading">warming the drum…</p>`;
-  const which = params.get('issue') ?? 'current';
-  const issue = await loadIssue(which);
+  // a shared issue (link or dropped .almost file) runs its edition too
+  const d = params.get('d');
+  const which = params.get('issue') ?? (d || params.get('held') ? 'shared' : 'current');
+  const issue = d ? await decodeIssue(d) : params.get('held') && heldIssue() ? heldIssue()! : await loadIssue(which);
+  const back = d ? `d=${d}` : params.get('held') ? 'held=1' : `issue=${which}`;
   if (!root.isConnected) return;
   const rm = reducedMotion();
   const no = `#${String(issue.seed).padStart(4, '0')}`;
   root.innerHTML = `<main class="export" data-state="idle">
-    <header class="x-head"><a class="x-back mono" href="#/reader?issue=${which}"></a>
+    <header class="x-head"><a class="x-back mono" href="#/reader?${back}"></a>
       <p class="mono x-spec">ALMOST PRESS AP-16 · ${no} · 16pp · A5 148×210 · bleed 3 mm · 300 dpi</p></header>
     <p class="x-axis ja vert" aria-hidden="true">刷り上げ · ${which === '01' ? '第一号' : no} · 十六頁</p>
     <section class="x-scene">
@@ -240,7 +244,7 @@ export default async function exportScreen(root: HTMLElement, params: URLSearchP
       <ul class="x-files">${files.map((f) => { const u = URL.createObjectURL(f.blob); urls.push(u); return `<li><a class="mono" href="${u}" download="${f.name}">${f.name}</a><span class="mono">${mb(f.blob.size)}</span></li>`; }).join('')}</ul>
       <ul class="x-facts mono" aria-label="read back from the files">${results.map((r) => `<li>${r.name.replace(/^almost-press-\d+-/, '')} · ${mb(r.size)}${r.summary ? ' · ' + r.summary : ''}</li>`).join('')}</ul>
       ${jamKept >= 0 ? `<p class="mono x-done-jam">p.${pad2(jamKept + 1)} kept its jam.</p>` : ''}
-      <div class="x-done-btns"><button type="button" class="slip x-again">${t('x_again')}</button><a class="mono x-back2" href="#/reader?issue=${which}">← ${t('x_reader')}</a></div></div>`;
+      <div class="x-done-btns"><button type="button" class="slip x-again">${t('x_again')}</button><a class="mono x-back2" href="#/reader?${back}">← ${t('x_reader')}</a></div></div>`;
     deckle(done.querySelector('.x-done-sheet') as HTMLElement, 77, 'deckle', 3);
     (done.querySelector('.x-again') as HTMLButtonElement).addEventListener('click', () => { done.hidden = true; reset(); start.focus(); });
     lcdTop.textContent = 'DONE'; lcdCount.textContent = '16/16';
