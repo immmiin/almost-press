@@ -47,83 +47,102 @@ pages.push(page(1, ['forange', 'mint', 'lmauve'], 'rice', [
   seal(130, 22, 13, -4, 3),
 ], [st('bokashi', line(-0.05, 0.03, 1.05, 0.03, 8), 0.15, 0.3, { plate: 0 }), st('bokashi', line(-0.05, 0.09, 1.05, 0.09, 8), 0.1, 0.25, { plate: 2 })], { mis: 0.25, grain: 0.5 }));
 
-// 2 · Crisp kitchen: table, teacup, toast, a small wall clock, lots of empty space, a tiny inscription. Peach Mist.
+// Pages 1–8 are re-art-directed (revision 01): larger objects, extreme scale contrast, stronger bokashi bands, a
+// vertical Japanese line as the axis of each page, and from page 3 on one tool effect already visible. They stay
+// crisper than 9–16, but each works as a poster. They use the revision-01 tool gains (fxv 2); 9–16 keep theirs.
+const R01 = { fxv: 2 } as const;
+// 2 · Crisp kitchen: a huge table cropped by the bottom edge, a big teacup and toast, one tiny wall clock high on
+// a peach wall band, the time running down the left as a vertical line. Peach Mist. No tool yet: crisp.
 pages.push(page(2, ['forange', 'lmauve', 'seafoam'], 'rice', [
-  o('clock', 104, 58, 16, { plates: P(2, 0, 1) }),
-  o('table', 70, 150, 58),
-  o('teacup', 58, 124, 15, { plates: P(1, 0, 2) }),
-  o('toast', 82, 124, 14, { plates: P(0, 2, 1) }),
-  ins('the kitchen at 6:40\nsweep the floor', 16, 34, 24),
-  seal(130, 190, 9, 2, 5),
-], [], { mis: 0.28 }));
+  o('clock', 112, 44, 13, { plates: P(2, 0, 1) }),
+  o('table', 76, 164, 168),
+  o('teacup', 50, 126, 62, { plates: P(1, 0, 2) }),
+  o('toast', 108, 128, 42, { plates: P(0, 2, 1) }),
+  helper('vja', '台所・六時四十分', 18, 74, 9.5, { plates: P(2, 0, 1) }),
+  ins('the kitchen at 6:40\nsweep the floor', 96, 58, 30),
+  seal(130, 191, 9, 2, 5),
+], [st('bokashi', line(-0.05, 0.02, 1.05, 0.02, 8), 0.12, 0.55, { plate: 0 }), st('bokashi', line(-0.05, 0.3, 1.05, 0.31, 8), 0.12, 0.75, { plate: 1 })], { mis: 0.28, ...R01 }));
 
-// 3 · A swan sits at the table. First vertical Japanese line. The clock is a bit bigger.
+// 3 · A swan sits at the table, enormous; the clock is a little bigger; the first vertical Japanese line is the
+// page's axis; ink blooms (滲) where the swan sits.
 pages.push(page(3, ['forange', 'lmauve', 'seafoam'], 'rice', [
-  o('clock', 100, 52, 24, { plates: P(2, 0, 1) }),
-  o('table', 72, 152, 60),
-  o('swan', 46, 134, 34, { flip: true, plates: P(1, 2, 0) }),
-  o('teacup', 82, 126, 14, { plates: P(1, 0, 2) }),
-  helper('vja', '白鳥が台所にいる', 134, 96, 7.2, { plates: P(2, 0, 1) }),
-  ins('someone was already\nsitting there', 14, 180, 26),
-  seal(124, 190, 9, -6, 7),
-], [], { mis: 0.32 }));
+  o('clock', 118, 40, 22, { plates: P(2, 0, 1) }),
+  o('table', 98, 186, 126),
+  o('swan', 58, 118, 122, { flip: true, plates: P(1, 2, 0) }),
+  o('teacup', 116, 142, 18, { plates: P(1, 0, 2) }),
+  helper('vja', '白鳥が台所にいる', 137, 104, 11, { plates: P(2, 0, 1) }),
+  ins('someone was already\nsitting there', 12, 182, 28),
+  seal(124, 192, 9, -6, 7),
+], [st('bokashi', line(-0.05, 0.02, 1.05, 0.02, 8), 0.14, 0.65, { plate: 1 }), st('bokashi', line(-0.05, 0.12, 1.05, 0.13, 8), 0.07, 0.5, { plate: 2 }),
+  st('bleed', line(0.16, 0.74, 0.62, 0.75, 8), 0.07, 0.9)], { mis: 0.32, ...R01 }));
 
-// 4 · The clock is as big as a house; ink blooms from its rim into the floor. A heavy block: 遅れた (late). Dawn.
+// 4 · The clock is as big as a house and runs off every edge; a table the size of a crumb; ink blooms (滲) from
+// the rim into the floor; 遅れた (late) as a heavy block across the foot.
 pages.push(page(4, ['fpink', 'orchid', 'mint'], 'horizon', [
-  o('clock', 78, 98, 128, { plates: P(1, 2, 0) }),
-  o('table', 112, 172, 30, { plates: P(1, 0, 2) }),
-  helper('hangul', '遅れた', 52, 182, 60, { plates: P(0, 1, 2), r: -3 }),
-  ins('p.04 · late\n遅れた', 108, 24, 24),
-  seal(132, 192, 9, 4, 9),
-], [st('bleed', line(0.2, 0.74, 0.86, 0.76, 10), 0.1, 0.95), st('bleed', [[0.32, 0.8], [0.6, 0.82]], 0.07, 0.8, { plate: 0 })], { seed: 1188, mis: 0.38 }));
+  o('clock', 72, 90, 196, { plates: P(1, 2, 0) }),
+  o('table', 128, 176, 20, { plates: P(1, 0, 2) }),
+  helper('hangul', '遅れた', 70, 168, 120, { plates: P(0, 1, 2), r: -3 }),
+  helper('vja', '家ほど大きい時計', 9, 78, 6.5, { plates: P(2, 0, 1) }),
+  ins('p.04 · late\n遅れた', 104, 22, 24),
+  seal(134, 193, 9, 4, 9),
+], [st('bokashi', line(-0.05, 0.02, 1.05, 0.02, 8), 0.16, 0.7, { plate: 0 }),
+  st('bleed', line(0.08, 0.68, 0.92, 0.71, 10), 0.09, 1), st('bleed', [[0.32, 0.76], [0.62, 0.79]], 0.07, 0.9, { plate: 0 })], { seed: 1188, mis: 0.38, ...R01 }));
 
-// 5 · The floor turns into pool tiles under a celadon bokashi; the swan floats; a ladder. Celadon.
+// 5 · The floor is a pool under a heavy celadon bokashi; a ladder too big for the page; the swan a speck afloat;
+// the water ripples (波).
 pages.push(page(5, ['seafoam', 'llime', 'sky'], 'pool', [
-  o('ladder', 118, 136, 44, { plates: P(2, 0, 1) }),
-  o('swan', 62, 150, 40, { plates: P(1, 2, 0) }),
-  o('clock', 40, 60, 52, { plates: P(0, 2, 1), opacity: 0.9 }),
-  ins('the water was warm\n水はぬるかった', 92, 36, 30),
-  seal(128, 191, 9, -2, 11),
-], [st('bokashi', line(-0.05, 0.1, 1.05, 0.1, 8), 0.18, 0.55, { plate: 0 }), st('bokashi', line(-0.05, 0.4, 1.05, 0.42, 8), 0.1, 0.5, { plate: 1 })], { seed: 1221, mis: 0.4 }));
+  o('ladder', 130, 122, 132, { plates: P(2, 0, 1) }),
+  o('clock', 46, 62, 74, { plates: P(0, 2, 1), opacity: 0.9 }),
+  o('swan', 58, 150, 26, { plates: P(1, 2, 0) }),
+  helper('vja', '水はぬるかった', 13, 120, 8, { plates: P(2, 0, 1) }),
+  ins('the water was warm\nlate for a swim', 84, 26, 30),
+  seal(128, 192, 9, -2, 11),
+], [st('bokashi', line(-0.05, 0.06, 1.05, 0.06, 8), 0.22, 0.85, { plate: 0 }), st('bokashi', line(-0.05, 0.41, 1.05, 0.43, 8), 0.1, 0.7, { plate: 1 }),
+  st('wave', line(0.04, 0.74, 0.78, 0.75, 8), 0.1, 0.75)], { seed: 1221, mis: 0.4, ...R01 }));
 
-// 6 · Mist: stairs rise into fog; twelve swans fade from crisp to washed out.
-// one stream of swans receding toward the stairs: crisp and large in front, smaller, fainter and hazier into the fog
+// 6 · Mist (霞): the stairs rise off the top edge into fog; twelve swans recede from one crisp and large in front to
+// the last a washed-out speck at the foot of the stairs.
 const swans6: PageObj[] = Array.from({ length: 12 }, (_, i) => {
   const k = i / 11;
-  return o('swan', 22 + k * 76 + Math.sin(k * Math.PI * 2.2) * 30, 184 - k * 70, 21 - k * 12, { opacity: 1 - k * 0.62, blur: k * 0.7, plates: P(1, 2, 0), flip: i % 3 === 1 });
+  return o('swan', 28 + k * 64 + Math.sin(k * Math.PI * 2.2) * 26, 186 - k * 80, 50 * Math.pow(1 - k, 1.6) + 6, { opacity: 1 - k * 0.66, blur: k * 0.8, plates: P(1, 2, 0), flip: i % 3 === 1 });
 });
 pages.push(page(6, ['seafoam', 'cornflower', 'llime'], 'horizon', [
-  o('stairs', 94, 74, 78, { plates: P(1, 0, 2) }),
-  o('clock', 118, 30, 40, { opacity: 0.6, plates: P(0, 1, 2) }),
+  o('stairs', 98, 66, 146, { plates: P(1, 0, 2) }),
+  o('clock', 126, 24, 34, { opacity: 0.55, blur: 0.5, plates: P(0, 1, 2) }),
   ...swans6,
-  ins('twelve of them\n十二羽', 14, 30, 22),
-  seal(132, 192, 9, 3, 13),
+  helper('vja', '十二羽の白鳥', 11, 70, 8.5, { plates: P(2, 0, 1) }),
+  ins('twelve of them', 14, 22, 22),
+  seal(132, 193, 9, 3, 13),
 ], [
-  st('haze', line(0.4, 0.2, 0.95, 0.34, 6), 0.2, 0.95), st('haze', line(0.1, 0.42, 0.95, 0.46, 6), 0.14, 0.7),
-  st('haze', line(0.5, 0.66, 1.0, 0.7, 6), 0.12, 0.6), st('bokashi', line(-0.05, 0.38, 1.05, 0.4, 8), 0.12, 0.32, { plate: 2 }),
-], { seed: 1259, mis: 0.42 }));
+  st('haze', line(0.35, 0.16, 0.98, 0.32, 6), 0.2, 0.95), st('haze', line(0.1, 0.44, 0.95, 0.48, 6), 0.13, 0.7),
+  st('bokashi', line(-0.05, 0.38, 1.05, 0.4, 8), 0.14, 0.7, { plate: 2 }), st('bokashi', line(-0.05, 0.02, 1.05, 0.02, 8), 0.12, 0.55, { plate: 0 }),
+], { seed: 1259, mis: 0.42, ...R01 }));
 
-// 7 · Haze: the whole kitchen soft-focus; only tiny mono labels stay sharp around the shapes.
+// 7 · Haze (霞): the whole kitchen goes soft-focus — a clock too big for the wall, a chair, a cup, a swan; only the
+// tiny mono labels stay sharp around the shapes.
 pages.push(page(7, ['seafoam', 'cornflower', 'llime'], 'rice', [
-  o('table', 72, 148, 76),
-  o('teacup', 56, 116, 20, { plates: P(1, 0, 2) }),
-  o('clock', 96, 58, 62, { plates: P(2, 0, 1) }),
-  o('chair', 30, 150, 40, { plates: P(1, 2, 0) }),
-  o('swan', 118, 140, 34, { plates: P(1, 2, 0) }),
-  ins('table · 机', 60, 176, 22), ins('cup', 42, 104, 6),
-  ins('clock · 時計', 112, 24, 16), ins('chair', 14, 126, 7), ins('swan?', 112, 118, 8),
-  seal(132, 192, 9, -3, 15),
-], [st('haze', line(0.05, 0.25, 0.95, 0.3, 10), 0.3, 1), st('haze', line(0.05, 0.6, 0.95, 0.7, 10), 0.3, 1), st('haze', line(0.1, 0.45, 0.9, 0.45, 8), 0.22, 0.8)], { seed: 1296, mis: 0.45 }));
+  o('clock', 90, 48, 136, { plates: P(2, 0, 1) }),
+  o('table', 72, 170, 124),
+  o('chair', 20, 158, 58, { plates: P(1, 2, 0) }),
+  o('teacup', 52, 132, 18, { plates: P(1, 0, 2) }),
+  o('swan', 128, 152, 42, { plates: P(1, 2, 0) }),
+  helper('vja', 'ぼやけた台所', 141, 104, 6.4, { plates: P(2, 0, 1) }),
+  ins('table · 机', 62, 188, 20), ins('cup', 44, 118, 6),
+  ins('clock · 時計', 104, 12, 18), ins('chair', 6, 124, 7), ins('swan?', 118, 126, 8),
+  seal(132, 193, 9, -3, 15),
+], [st('haze', line(0.05, 0.22, 0.95, 0.27, 10), 0.24, 0.9), st('haze', line(0.05, 0.66, 0.95, 0.74, 10), 0.24, 0.9), st('haze', line(0.1, 0.46, 0.9, 0.46, 8), 0.18, 0.7),
+  st('bokashi', line(-0.05, 0.56, 1.05, 0.57, 8), 0.12, 0.6, { plate: 2 })], { seed: 1296, mis: 0.45, ...R01 }));
 
 // 8–9 · Spread: the horizon stands vertical; everything ghosted double; giant vertical Japanese across both. Wisteria.
 const ghostPair = (b: PageObj, dx: number, dy: number): PageObj[] => [b, { ...b, id: id(), x: b.x + dx, y: b.y + dy, opacity: 0.38, seed: b.seed + 1 }];
 pages.push(page(8, ['violet', 'lmauve', 'mint'], 'rice', [
-  ...ghostPair(o('table', 96, 70, 56, { r: -90, plates: P(1, 0, 2) }), 6, -5),
-  ...ghostPair(o('swan', 104, 150, 40, { r: -90, plates: P(1, 2, 0) }), -5, 6),
-  helper('vja', '時計が', 136, 82, 22, { plates: P(0, 1, 2) }),
-  ins('the floor is a wall now', 12, 184, 28),
-  seal(18, 30, 9, -8, 17),
-], [st('bokashi', line(0.86, -0.05, 0.86, 1.05, 14), 0.05, 0.45, { plate: 1 }), st('haze', line(0.6, 0.2, 0.6, 0.8, 6), 0.1, 0.75)], { seed: 1333, mis: 0.5 }));
+  ...ghostPair(o('table', 80, 66, 104, { r: -90, plates: P(1, 0, 2) }), 7, -6),
+  ...ghostPair(o('swan', 86, 156, 70, { r: -90, plates: P(1, 2, 0) }), -6, 7),
+  helper('vja', '時計が', 131, 100, 32, { plates: P(0, 1, 2) }),
+  ins('the floor is a wall now', 10, 188, 30),
+  seal(18, 26, 9, -8, 17),
+], [st('bokashi', line(0.86, -0.05, 0.86, 1.05, 14), 0.07, 0.75, { plate: 1 }), st('bokashi', line(0.62, -0.05, 0.62, 1.05, 14), 0.04, 0.45, { plate: 2 }),
+  st('haze', line(0.5, 0.6, 0.62, 0.92, 6), 0.12, 0.8)], { seed: 1333, mis: 0.5, ...R01 }));
 pages.push(page(9, ['violet', 'lmauve', 'mint'], 'rice', [
   ...ghostPair(o('clock', 52, 78, 70, { r: -90, plates: P(2, 0, 1) }), 6, 5),
   ...ghostPair(o('teacup', 40, 156, 22, { r: -90, plates: P(1, 0, 2) }), 5, -4),
@@ -194,9 +213,13 @@ pages.push(page(16, ['cornflower', 'fpink', 'llime', 'lmauve'], 'wash', [
 ], [st('melt', line(0.1, 0.4, 0.9, 0.45, 8), 0.34, 1), st('bokashi', line(-0.05, 0.1, 1.05, 0.12, 8), 0.18, 0.4, { plate: 3 }), st('bleed', [[0.5, 0.4]], 0.3, 0.8, { plate: 2 }), st('melt', line(0.2, 0.7, 0.8, 0.66, 6), 0.2, 0.8)], { seed: 1629, mis: 0.6, groundPlate: 0 }));
 
 // set-off: each page carries a faint mirrored ghost of the one before
-for (let i = 1; i < pages.length; i++) pages[i].setoff = pages[i - 1].objects.filter((q) => q.kind !== 'helper' && !q.fx).map((q) => ({ ...q, id: id() }));
+// (on the re-art-directed pages the ghost stays a whisper, so the huge objects before don't take the page over)
+for (let i = 1; i < pages.length; i++) pages[i].setoff = pages[i - 1].objects.filter((q) => q.kind !== 'helper' && !q.fx).map((q) => ({ ...q, id: id(), ...(i <= 7 ? { opacity: (q.opacity ?? 1) * 0.55 } : {}) }));
 // page 14: ghosts of earlier pages too
-pages[13].setoff = [...(pages[13].setoff ?? []), ...pages[2].objects.filter((q) => q.kind === 'obj').map((q) => ({ ...q, id: id(), opacity: 1.6 })), ...pages[6].objects.filter((q) => q.kind === 'obj').map((q) => ({ ...q, id: id(), opacity: 1.2 }))];
+// (page 14 stays exactly as it was: its ghosts are pages 3 and 7 as they were first drawn, before revision 01)
+const ghost3: PageObj[] = [o('clock', 100, 52, 24, { plates: P(2, 0, 1) }), o('table', 72, 152, 60), o('swan', 46, 134, 34, { flip: true, plates: P(1, 2, 0) }), o('teacup', 82, 126, 14, { plates: P(1, 0, 2) })];
+const ghost7: PageObj[] = [o('table', 72, 148, 76), o('teacup', 56, 116, 20, { plates: P(1, 0, 2) }), o('clock', 96, 58, 62, { plates: P(2, 0, 1) }), o('chair', 30, 150, 40, { plates: P(1, 2, 0) }), o('swan', 118, 140, 34, { plates: P(1, 2, 0) })];
+pages[13].setoff = [...(pages[13].setoff ?? []), ...ghost3.map((q) => ({ ...q, id: id(), opacity: 1.6 })), ...ghost7.map((q) => ({ ...q, id: id(), opacity: 1.2 }))];
 
 const issue: Issue = {
   id: 'issue-01', seed: 1, lang: 'en', fixed: true, bound: true, keepsake: 'clock', keepsakeS: 26, current: 15, forgotten: [],
