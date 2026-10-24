@@ -21,10 +21,11 @@ const defaultPlates = (page: Page, r: () => number): number[] => {
   return [0, 1, 2].map((i) => (i + rot) % Math.min(3, n));
 };
 
+/** Default stamp size (mm, the 200-unit box): the drawing lands at about 28% of the page width. */
+export const stampSize = (key: string) => (OBJ[key]?.float ? 46 : 58);
 export function makeStamp(page: Page, key: string, x: number, y: number, pressure: number, seed: number): PageObj {
   const r = rng(seed);
-  const o = OBJ[key];
-  const s = (o?.float ? 34 : 44) * (0.92 + r() * 0.16);
+  const s = stampSize(key) * (0.92 + r() * 0.16);
   return {
     id: newId(), kind: 'obj', key, x: x + (r() - 0.5) * 0.8, y: y + (r() - 0.5) * 0.8, s, r: (r() - 0.5) * 5,
     // every stamp lands slightly differently; pressure = how much ink
@@ -36,11 +37,11 @@ export function makeWord(page: Page, word: string, x: number, y: number, seed: n
   const cjk = KR.test(word) || JA_RE.test(word);
   return { id: newId(), kind: 'word', key: word, style: Math.floor(r() * 6), x, y, s: Math.min(110, (cjk ? 26 : 16) * Math.max(2, [...word].length) * 0.62 + 20), r: (r() - 0.5) * 10, plates: defaultPlates(page, r), seed };
 }
+export const HELPER_SIZES: Record<string, number> = { vja: 8, hangul: 52, stretch: 70, inscription: 36, date: 3.6, seal: 12, dots: 40 };
 export function makeHelper(page: Page, id: string, x: number, y: number, seed: number, text?: string): PageObj {
   const h = HELPERS.find((q) => q.id === id)!;
   const r = rng(seed);
-  const sizes: Record<string, number> = { vja: 7, hangul: 46, stretch: 64, inscription: 34, date: 3.4, seal: 12 };
-  return { id: newId(), kind: 'helper', key: id, text: text ?? (id === 'date' ? dateText() : h.def), x, y, s: sizes[id] ?? 20, r: id === 'seal' ? (r() - 0.5) * 8 : 0, plates: defaultPlates(page, r), seed };
+  return { id: newId(), kind: 'helper', key: id, text: text ?? (id === 'date' ? dateText() : h.def), x, y, s: HELPER_SIZES[id] ?? 20, r: id === 'seal' ? (r() - 0.5) * 8 : 0, plates: defaultPlates(page, r), seed };
 }
 export function dateText() {
   const d = new Date();

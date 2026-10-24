@@ -21,6 +21,7 @@ export class InkPanel {
   onChange: (why: string) => void = () => {};
   onView: (v: number) => void = () => {};
   onSlot: (i: number) => void = () => {};
+  onDrift: () => void = () => {};
   private offLang: () => void;
   private knobs!: HTMLElement;
 
@@ -28,7 +29,7 @@ export class InkPanel {
     const wrap = document.createElement('section');
     wrap.className = 'inks-wrap vellum-wrap';
     wrap.setAttribute('aria-label', tA('a_inks'));
-    wrap.innerHTML = `<div class="inks vellum"><h2 class="mono-up inks-h"></h2><div class="inks-slots"></div><div class="inks-presets"></div><div class="inks-lib" role="listbox"></div><div class="inks-view"></div><div class="inks-knobs"></div><div class="inks-side"></div></div>`;
+    wrap.innerHTML = `<div class="inks vellum"><h2 class="mono-up inks-h"></h2><div class="inks-slots"></div><p class="inks-active mono" aria-live="polite"></p><div class="inks-presets"></div><div class="inks-lib" role="listbox"></div><div class="inks-view"></div><div class="inks-knobs"></div><div class="inks-side"></div></div>`;
     this.el = wrap;
     deckle(wrap.querySelector('.inks')!, 77, 'deckle', 2.5);
     wrap.append(washi(9, { left: '40%', top: '-8px' }, 70), washi(12, { left: '-12px', bottom: '30%', transform: 'rotate(-80deg)' }, 54));
@@ -102,7 +103,7 @@ export class InkPanel {
       knob(tA('mis'), p.mis, (v) => { p.mis = v; this.onChange('knob'); }, { min: 0, max: 2.4, step: 0.05 }),
       knob(tA('density'), p.density, (v) => { p.density = v; this.onChange('knob'); }),
       knob(tA('grain'), p.grain, (v) => { p.grain = v; this.onChange('knob'); }),
-      knob(tA('drift'), this.drift, (v) => { this.drift = v; localStorage.setItem('ap.drift', String(v)); }),
+      knob(tA('drift'), this.drift, (v) => { this.drift = v; localStorage.setItem('ap.drift', String(v)); this.onDrift(); }),
     );
     const side = this.el.querySelector('.inks-side')!;
     side.innerHTML = '';
@@ -116,7 +117,7 @@ export class InkPanel {
       const v = new Vial(ink.hex, this.levels[id] ?? 0.92, `${t('plate')} ${i + 1}: ${ink.name}`);
       const b = document.createElement('div');
       b.className = 'slot';
-      b.innerHTML = `<button type="button" class="slot-btn" data-slot="${i}" aria-pressed="${i === this.activeSlot}" aria-label="${tA('plate')} ${i + 1}: ${ink.name}"><span class="slot-n mono">${i + 1}</span></button><span class="slot-name mono">${ink.name}${ink.metallic ? ' ≈' : ''}</span>${p.inks.length > 1 ? `<button type="button" class="slot-rm mono" data-rm="${i}" aria-label="remove plate ${i + 1}">×</button>` : ''}`;
+      b.innerHTML = `<button type="button" class="slot-btn" data-slot="${i}" aria-pressed="${i === this.activeSlot}" aria-label="${tA('plate')} ${i + 1}: ${ink.name}" title="${ink.name}${ink.metallic ? ' ≈' : ''}"><span class="slot-n mono">${i + 1}</span></button>${p.inks.length > 1 ? `<button type="button" class="slot-rm mono" data-rm="${i}" aria-label="remove plate ${i + 1}">×</button>` : ''}`;
       b.querySelector('.slot-btn')!.prepend(v.el);
       v.el.addEventListener('pointerenter', () => v.slosh(0.35));
       this.slots.append(b);
@@ -127,5 +128,7 @@ export class InkPanel {
       add.type = 'button'; add.className = 'slot-add mono'; add.dataset.add = '1'; add.textContent = '+ ' + t('plate');
       this.slots.append(add);
     }
+    const act = INK_BY_ID[p.inks[this.activeSlot]];
+    (this.el.querySelector('.inks-active') as HTMLElement).textContent = act ? `${t('plate')} ${this.activeSlot + 1} · ${act.name}${act.metallic ? ' ≈' : ''}` : '';
   }
 }

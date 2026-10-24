@@ -73,8 +73,10 @@ export interface Page {
   jam?: boolean;
   /** the dream sentence as printed on this page (language drift applied) */
   dreamLine?: string;
-  /** slug: page number in three languages, inks, misregistration, drift cards, dream time, seed */
+  /** slug: page number, inks, misregistration, drift cards, dream time, seed */
   slug?: string;
+  /** tool strength version: 2 = revision-01 gains (one stroke reads clearly); absent = the original gains (Issue 01) */
+  fxv?: number;
 }
 
 export interface Issue {

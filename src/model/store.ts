@@ -23,7 +23,7 @@ let uid = Date.now() % 100000;
 export const newId = () => 'o' + (uid++).toString(36);
 
 export function blankPage(n: number, seed: number, inks = PRESETS[0].inks.slice()): Page {
-  return { n, inks, ground: n === 1 ? 'bokashi' : 'rice', objects: [], strokes: [], mis: 0.35, density: 0.8, grain: 0.55, seed: hash(seed, n) % 100000, printed: false, platesPrinted: 0, drift: [], trail: [] };
+  return { n, inks, ground: n === 1 ? 'bokashi' : 'rice', objects: [], strokes: [], mis: 0.35, density: 0.8, grain: 0.55, seed: hash(seed, n) % 100000, printed: false, platesPrinted: 0, drift: [], trail: [], fxv: 2 };
 }
 
 export function newIssue(seed = Math.floor(Math.random() * 10000), dream = ''): Issue {

@@ -20,7 +20,7 @@ export class Ticket {
       <a class="ticket-seal" href="#/gate" aria-label="ALMOST PRESS — back to the gate">${sealSVG({ size: 38, seed: 3, doubleStrike: true })}</a>
       <div class="ticket-name"><span class="tn-en">ALMOST PRESS</span><span class="tn-ko">거의 인쇄소</span><span class="tn-ja">ほぼ印刷所</span></div>
       <div class="ticket-issue mono"></div>
-      <form class="ticket-dream"><label class="mono ticket-dl" for="dream"></label><input id="dream" class="ruled" autocomplete="off" maxlength="160"></form>
+      <form class="ticket-dream"><div class="ticket-dream-in"><label class="mono ticket-dl" for="dream"></label><input id="dream" class="ruled" autocomplete="off" maxlength="160"></div></form>
       <div class="ticket-lang" role="group"></div>
       <button type="button" class="ticket-btn mono" data-a="lock"></button>
       <button type="button" class="ticket-btn mono" data-a="sound"></button>

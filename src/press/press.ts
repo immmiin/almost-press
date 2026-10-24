@@ -12,7 +12,7 @@ import { getIssue, emit, onIssue, ISSUE_NO, currentPage, newIssue, setIssue } fr
 import { commitPrint, nextPage, reprint, refreshText, inkUse } from '../print/loop';
 import { stampDream } from './edits';
 import { atmosphere, dissolveTo } from '../atmosphere/atmosphere';
-import { t, tA, onLang, setLabelDrift, getLang } from '../core/i18n';
+import { tA, onLang, setLabelDrift, getLang } from '../core/i18n';
 import { dreamTimeOf, INK_BY_ID } from '../design/tokens';
 import { kanjiNum } from './util';
 import { roller, thud, tick } from '../core/sound';
@@ -40,6 +40,9 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
   const ticket = new Ticket();
   const strip = new Strip();
   inks.levels = issue.levels ?? (issue.levels = {});
+  // the drift knob also scales how strongly a tool stroke soaks in
+  const strength = () => { stage.toolStrength = 0.55 + inks.drift * 0.9; };
+  strength();
   $('.p-stage').prepend(stage.el);
   $('.p-drawer').append(drawer.el);
   $('.p-inks').append(inks.el);
@@ -59,6 +62,31 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
     tick();
   }));
 
+  // ---------- each panel folds away to a thin tab (remembered) ----------
+  const FOLD: [string, string, string][] = [['drawer', '判', 'drawer'], ['tools', '道', 'tools'], ['inks', '墨', 'inks']];
+  const folded = new Set<string>((localStorage.getItem('ap.fold') ?? '').split(' ').filter(Boolean));
+  const foldTabs = FOLD.map(([key, ch, label]) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'fold-tab';
+    b.innerHTML = `<span class="fold-k" aria-hidden="true">${ch}</span><span class="fold-a" aria-hidden="true"></span><span class="fold-l"></span>`;
+    b.addEventListener('click', () => { folded.has(key) ? folded.delete(key) : folded.add(key); applyFold(); tick(); requestAnimationFrame(fit); });
+    $(`.p-${key}`).prepend(b);
+    return { key, b, label };
+  });
+  const applyFold = () => {
+    $('.press').dataset.fold = [...folded].join(' ');
+    localStorage.setItem('ap.fold', [...folded].join(' '));
+    foldTabs.forEach(({ key, b, label }) => {
+      const f = folded.has(key);
+      $(`.p-${key}`).toggleAttribute('data-folded', f);
+      b.setAttribute('aria-expanded', String(!f));
+      b.setAttribute('aria-label', `${tA(f ? 'expand' : 'collapse')}: ${tA(label)}`);
+      b.title = b.getAttribute('aria-label')!;
+      (b.querySelector('.fold-a') as HTMLElement).textContent = (key === 'drawer') === f ? '›' : '‹';
+      (b.querySelector('.fold-l') as HTMLElement).textContent = f ? tA(label) : '';
+    });
+  };
+
   // ---------- tools column ----------
   const toolsWrap = document.createElement('div');
   toolsWrap.className = 'tools-wrap vellum-wrap';
@@ -66,9 +94,22 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
   const tools = toolsWrap.querySelector('.tools') as HTMLElement;
   deckle(tools, 61, 'deckle', 2);
   toolsWrap.append(washi(21, { left: '6px', top: '-8px' }, 46));
+  // the three-language name of a tool shows only on hover or focus
+  const tip = slip('div', 91, '', 'tool-tip');
+  tip.hidden = true; tip.setAttribute('aria-hidden', 'true');
+  toolsWrap.append(tip);
+  const showTip = (b: HTMLElement, def: (typeof TOOLS)[number]) => {
+    tip.innerHTML = `<b>${def.char}</b><span class="tt-n">${def.en} · ${def.ja}</span><span class="mono">${def.note} · [ ] brush</span>`;
+    tip.style.top = `${b.offsetTop + b.offsetHeight / 2}px`;
+    tip.hidden = false;
+  };
   const toolBtns = TOOLS.map((def, i) => {
     const b = stampButton(def.char, def.en, i + 2);
     b.dataset.tool = def.id;
+    b.addEventListener('pointerenter', () => showTip(b, def));
+    b.addEventListener('focus', () => showTip(b, def));
+    b.addEventListener('pointerleave', () => { tip.hidden = true; });
+    b.addEventListener('blur', () => { tip.hidden = true; });
     b.addEventListener('click', () => stage.setMode(stage.mode.type === 'tool' && stage.mode.tool === def.id ? { type: 'select' } : { type: 'tool', tool: def.id }));
     tools.append(b);
     return b;
@@ -91,10 +132,10 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
       const lang = getLang();
       const name = lang === 'ja' ? def.ja : def.en;
       toolBtns[i].querySelector('.stamp-label')!.textContent = name;
-      toolBtns[i].setAttribute('aria-label', `${name} — ${def.note}`);
-      toolBtns[i].title = def.note;
+      toolBtns[i].setAttribute('aria-label', `${def.char} ${name} — ${def.note}`);
     });
-    reprintBtn.innerHTML = `<span class="mono">${t('reprint')}</span>`;
+    reprintBtn.innerHTML = `<span class="ja" aria-hidden="true">戻</span><span class="mono">reprint</span>`;
+    reprintBtn.setAttribute('aria-label', tA('reprint')); reprintBtn.title = tA('reprint');
     tools.setAttribute('aria-label', tA('tools'));
     vline();
   };
@@ -113,6 +154,7 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
   drawer.onPick = (it) => { stage.setMode({ type: 'stamp', item: it }); status('stamp: press on the page. Short = light, long = ink blooms. Esc to stop.'); };
   drawer.onGround = (g) => { currentPage().ground = g; emit('ground'); stage.render(); };
   strip.onForgotten = (o) => stage.setMode({ type: 'stamp', item: { kind: 'forgotten', obj: o } });
+  inks.onDrift = strength;
   inks.onChange = () => { emit('ink'); syncAtmo(); drawer.setInks(currentPage().inks, hash(issue.seed, currentPage().n)); stage.render(); };
   inks.onView = (v) => { stage.view = v; stage.render(); };
   inks.onSlot = (i) => { stage.activePlate = i; };
@@ -282,11 +324,16 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
   const ev = ['pointermove', 'pointerdown', 'keydown', 'wheel'];
   ev.forEach((e) => addEventListener(e, wake, { passive: true }));
   wake();
-  // soft-focus interface: panels you have not touched for a while drift out of focus
+  // soft-focus interface: after a minute of stillness the panels drift a breath out of focus —
+  // never the one under the cursor or holding focus, never the drawer while it is being searched
   const panels = [$('.p-drawer'), $('.p-inks'), $('.p-tools'), $('.p-ticket')];
-  const touched = new Map<HTMLElement, number>(panels.map((p) => [p, performance.now()]));
-  panels.forEach((p) => { p.addEventListener('pointerenter', () => { touched.set(p, performance.now()); p.classList.remove('unfocused'); }); p.addEventListener('focusin', () => { touched.set(p, performance.now()); p.classList.remove('unfocused'); }); });
-  const focusTimer = setInterval(() => { const now = performance.now(); panels.forEach((p) => p.classList.toggle('unfocused', now - touched.get(p)! > 28000 && !p.matches(':hover,:focus-within'))); }, 2000);
+  let lastInput = performance.now();
+  const touch = () => { lastInput = performance.now(); panels.forEach((q) => q.classList.remove('unfocused')); };
+  ev.forEach((e) => addEventListener(e, touch, { passive: true }));
+  const focusTimer = setInterval(() => {
+    const idle = performance.now() - lastInput > 60000;
+    panels.forEach((q) => q.classList.toggle('unfocused', idle && !q.matches(':hover,:focus-within') && !(q === panels[0] && drawer.searching)));
+  }, 2000);
   // after the tab was hidden, objects on the page have slid slightly (never while visible)
   let hiddenAt = 0;
   const vis = () => {
@@ -300,12 +347,13 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
   document.addEventListener('visibilitychange', vis);
 
   const offIssue = onIssue((why) => { if (why === 'forgotten' || why === 'shake' || why === 'print') strip.render(getIssue()); });
-  const offLang = onLang(() => { labels(); tabLabels(); });
+  const offLang = onLang(() => { labels(); tabLabels(); applyFold(); });
+  applyFold();
   load(); labels(); fit();
 
   return () => {
     ro.disconnect(); offIssue(); offLang(); clearInterval(focusTimer); clearTimeout(idleT);
-    ev.forEach((e) => removeEventListener(e, wake));
+    ev.forEach((e) => { removeEventListener(e, wake); removeEventListener(e, touch); });
     removeEventListener('keydown', spaceDown); removeEventListener('keyup', spaceUp);
     document.removeEventListener('visibilitychange', vis);
     stage.destroy(); drawer.destroy(); inks.destroy(); ticket.destroy(); strip.destroy();

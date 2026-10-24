@@ -23,7 +23,7 @@ const PLATE_FS = `#version 300 es
 precision highp float; in vec2 uv; out vec4 o;
 uniform sampler2D plate, m0, m1, m2;
 uniform vec2 sheet; uniform vec2 off; uniform float pidx, seed, grainAmt, density, washAmt, angle, starve, mm2px;
-uniform vec4 echo[8]; uniform int nEcho;
+uniform vec4 echo[8]; uniform int nEcho; uniform vec4 gA, gB;
 ${COMMON}
 vec2 toUV(vec2 mm){ return mm/sheet; }
 float tone(vec2 t){ vec3 c = texture(plate, t).rgb; return max(c.r, max(c.g*.52, c.b)); }
@@ -33,7 +33,8 @@ void main(){
   vec3 M0 = texture(m0, uv).rgb; // bleed, haze, wave
   vec3 M1 = texture(m1, uv).rgb; // pour, break, tube
   vec3 M2 = texture(m2, uv).rgb; // melt, dither, spare
-  float bleed=M0.r, haze=M0.g, wave=M0.b, pour=M1.r, brk=M1.g, tube=M1.b, melt=M2.r, dith=M2.g;
+  // per-tool gain: revision-01 pages amplify the masks so one stroke reads clearly; Issue 01 keeps gains of 1
+  float bleed=M0.r*gA.x, haze=M0.g*gA.y, wave=M0.b*gA.z, pour=M1.r*gA.w, brk=M1.g*gB.x, tube=M1.b*gB.y, melt=M2.r*gB.z, dith=M2.g*gB.w;
   vec2 p = mm - off; // misregistration per plate
   // 波 wave: torn into horizontal waves; bands tear apart
   if(wave > .002){
@@ -124,7 +125,7 @@ void main(){
   if(tube > .002){
     float fr = (pidx - 1.5) * .9 * tube;
     float cf = tone(toUV(p + vec2(fr, 0.)));
-    c = mix(c, max(c*.6, cf), tube);
+    c = mix(c, max(c*.6, cf), min(tube, 1.));
     c *= 1. - tube*.45*(.5+.5*sin(mm.y*5.2));
   }
   // 點 dither: coarse pixels, posterised into big grainy fields
@@ -362,6 +363,9 @@ class Pipeline {
     gl.uniform1f(U.mm2px, mm2px);
     gl.uniform1f(U.starve, page.drift.includes('ink-starve') ? 0.55 : 0);
     gl.uniform1i(U.nEcho, echoes.length);
+    // bleed, haze, wave, pour · break, tube, melt, dither
+    const G = (page.fxv ?? 1) >= 2 ? [2.4, 1.7, 2.7, 1.35, 1.5, 1.6, 1.45, 1.1] : [1, 1, 1, 1, 1, 1, 1, 1];
+    gl.uniform4f(U.gA, G[0], G[1], G[2], G[3]); gl.uniform4f(U.gB, G[4], G[5], G[6], G[7]);
     if (echoes.length) gl.uniform4fv(U.echo, new Float32Array(echoes.flat().concat(new Array((8 - echoes.length) * 4).fill(0))));
     const spike = page.drift.includes('misregister-spike') ? 3 : 1;
     for (let i = 0; i < n; i++) {

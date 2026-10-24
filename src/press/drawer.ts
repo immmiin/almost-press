@@ -1,6 +1,6 @@
 // The object drawer: a vellum sheet taped to the mist. Search in EN/KO/JA, eight categories as vertical
 // labels, objects as rubber stamps (soft focus; the one under the cursor comes sharp). Also grounds and
-// type & marks. Sometimes an object appears twice: the twin is slightly wrong and stamps the wrong version.
+// type & marks. Rarely (1 in 40) an object appears twice: the twin wears a tiny red 双 and stamps the wrong version.
 import { OBJ, KEYS, CATS, CAT_CHARS, nameOf } from '../objects';
 import { objectThumb } from './thumbs';
 import { t, tA, getLang, onLang } from '../core/i18n';
@@ -66,13 +66,15 @@ export class Drawer {
     input.placeholder = t('search');
     (this.el.querySelector('label') as HTMLElement).textContent = tA('search');
   }
+  /** The drawer is being searched: it never drifts out of focus then. */
+  get searching() { return this.q.length > 0; }
   setInks(inks: string[], twinSeed: number) {
     if (inks.join() === this.inks.join() && twinSeed === this.twinSeed) return;
     this.inks = inks.slice(); this.twinSeed = twinSeed; this.renderGrid();
   }
   private renderCats() {
     const items: [Cat, string][] = [['all', '全'], ...CATS.map((c) => [c, CAT_CHARS[c]] as [Cat, string]), ['ground', '地'], ['type', '字']];
-    this.cats.innerHTML = items.map(([c, ch]) => `<button type="button" role="tab" data-c="${c}" aria-selected="${c === this.cat}" tabindex="${c === this.cat ? 0 : -1}"><span class="cat-ch">${ch}</span><span class="cat-l">${t(c === 'ground' ? 'ground' : c === 'type' ? 'helpers' : c)}</span></button>`).join('');
+    this.cats.innerHTML = items.map(([c, ch]) => `<button type="button" role="tab" data-c="${c}" aria-selected="${c === this.cat}" tabindex="${c === this.cat ? 0 : -1}" title="${tA(c === 'ground' ? 'ground' : c === 'type' ? 'helpers' : c)}"><span class="cat-ch">${ch}</span><span class="cat-l">${t(c === 'ground' ? 'ground' : c === 'type' ? 'helpers' : c)}</span></button>`).join('');
   }
   private matches(key: string) {
     const o = OBJ[key];
@@ -94,15 +96,15 @@ export class Drawer {
       }
       const keys = KEYS.filter((k) => this.matches(k));
       if (!keys.length) { this.grid.innerHTML = `<p class="drawer-empty mono">${t('empty')}</p>`; return; }
-      // the twin: one object shows up twice, slightly wrong
+      // the twin: rarely one object shows up twice, slightly wrong, marked so it reads as intentional
       const r = rng(this.twinSeed);
-      const twinAt = !this.q && keys.length > 6 && r() < 0.8 ? Math.floor(r() * keys.length) : -1;
+      const twinAt = !this.q && keys.length > 6 && r() < 1 / 40 ? Math.floor(r() * keys.length) : -1;
       const list: { key: string; wrong?: number }[] = [];
       keys.forEach((k, i) => { list.push({ key: k }); if (i === twinAt) list.push({ key: k, wrong: 0.6 }); });
       this.grid.innerHTML = list.map(({ key, wrong }) => {
         const o = OBJ[key];
         const label = nameOf(key, lang);
-        return `<button type="button" class="dstamp" data-k="${key}" ${wrong ? `data-w="${wrong}"` : ''} aria-label="${o.en} · ${o.ja}"><img alt="" loading="lazy" decoding="async" data-src="${key}" ${wrong ? `data-wrong="${wrong}"` : ''}><span class="dcap"><span class="dno mono">${String(o.no).padStart(3, '0')}</span><span class="dnm">${label}</span></span></button>`;
+        return `<button type="button" class="dstamp" data-k="${key}" ${wrong ? `data-w="${wrong}"` : ''} aria-label="${o.en} · ${o.ja}${wrong ? ' — the twin, slightly wrong' : ''}" title="${String(o.no).padStart(3, '0')} · ${o.en} · ${o.ja}"><img alt="" loading="lazy" decoding="async" data-src="${key}" ${wrong ? `data-wrong="${wrong}"` : ''}>${wrong ? '<i class="d-twin" aria-hidden="true">双</i>' : ''}<span class="dcap"><span class="dnm">${label}</span></span></button>`;
       }).join('');
       this.fillThumbs();
     };

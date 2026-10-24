@@ -7,8 +7,8 @@ import { emit, forget, getIssue } from '../model/store';
 import { objectThumb } from './thumbs';
 import { tA } from '../core/i18n';
 import { TOOL_BY_ID, type ToolId } from './toolDefs';
-import { makeStamp, makeHelper, bloomStroke, sideMove, sideErase, sideScale, sidePlate, sideDuplicate } from './edits';
-import { thud, tick } from '../core/sound';
+import { makeStamp, makeHelper, bloomStroke, sideMove, sideErase, sideScale, sidePlate, sideDuplicate, stampSize, HELPER_SIZES } from './edits';
+import { thud, tick, rustle } from '../core/sound';
 import { reducedMotion, clamp } from '../core/rng';
 import { onFontsLoaded } from '../type/outlines';
 import { atmosphere } from '../atmosphere/atmosphere';
@@ -34,8 +34,15 @@ export class Stage {
   /** plate slot chosen in the ink panel (bokashi ink) */
   activePlate = 0;
   brushScale = 1;
+  /** tool strength from the drift knob (1 = as designed) */
+  toolStrength = 1;
+  private brush!: SVGSVGElement;
+  private lastXY: [number, number] | null = null;
   onSelect: () => void = () => {};
   onModeChange: () => void = () => {};
+  /** a stamp landed / a tool stroke began (the first-time job ticket listens) */
+  onStamped: () => void = () => {};
+  onStroke: () => void = () => {};
   private scale = 1; // css px per mm
   private raf = 0; private pendingQ: 'low' | 'full' | null = null;
   private trailBuf: [number, number][] = [];
@@ -47,12 +54,13 @@ export class Stage {
   constructor() {
     this.el = document.createElement('div');
     this.el.className = 'stage';
-    this.el.innerHTML = `<svg class="stage-marks" aria-hidden="true"></svg><div class="stage-sheet"><canvas class="stage-canvas" role="img"></canvas><svg class="stage-over"></svg></div><img class="stage-ghost" alt="" aria-hidden="true">`;
+    this.el.innerHTML = `<svg class="stage-marks" aria-hidden="true"></svg><div class="stage-sheet"><canvas class="stage-canvas" role="img"></canvas><svg class="stage-over"></svg><svg class="stage-brush" aria-hidden="true"><circle fill="rgba(229,72,62,.06)" stroke="#E5483E" stroke-width=".35" stroke-dasharray="1.6 1"/><circle r=".5" fill="#3B3A40"/><path stroke="#3B3A40" stroke-width=".25" fill="none"/></svg></div><img class="stage-ghost" alt="" aria-hidden="true">`;
     this.sheet = this.el.querySelector('.stage-sheet')!;
     this.canvas = this.el.querySelector('canvas')!;
     this.overlay = this.el.querySelector('.stage-over')!;
     this.marks = this.el.querySelector('.stage-marks')!;
     this.ghost = this.el.querySelector('.stage-ghost')!;
+    this.brush = this.el.querySelector('.stage-brush')!;
     this.sheet.tabIndex = 0;
     deckle(this.canvas, 17, 'deckle', 3);
     this.sheet.setAttribute('aria-label', tA('a_page'));
@@ -71,17 +79,27 @@ export class Stage {
       this.ghost.src = it.kind === 'obj' ? objectThumb({ key: it.key, wrong: it.wrong }, inks) : it.kind === 'helper' ? objectThumb({ kind: 'helper', key: it.id, text: makeHelper(this.page, it.id, 0, 0, 1).text, s: 60 }, inks) : objectThumb(it.obj, inks);
     }
     this.ghost.style.display = 'none';
+    if (m.type !== 'tool') this.brush.classList.remove('on'); else if (this.lastXY) this.showBrush(...this.lastXY);
     this.onModeChange();
   }
 
-  /** Fit the sheet into a box (css px). */
+  /** css px per page millimetre */
+  get mm() { return this.scale; }
+  /** A page point (mm, trim origin) in client px. */
+  toClient(x: number, y: number): [number, number] {
+    const r = this.sheet.getBoundingClientRect();
+    return [r.left + (x + BLEED) * this.scale, r.top + (y + BLEED) * this.scale];
+  }
+  /** Fit the sheet into a box (css px): page height = available height − 24 px, unless the width runs out first. */
   layout(w: number, h: number) {
-    const s = Math.min(w / (FULL_W + 18), h / (FULL_H + 18));
+    const m = 12;
+    const s = Math.max(0.5, Math.min((h - m * 2) / FULL_H, (w - m * 2) / FULL_W));
     this.scale = s;
     const sw = FULL_W * s, sh = FULL_H * s;
     this.el.style.width = `${w}px`; this.el.style.height = `${h}px`;
     Object.assign(this.sheet.style, { width: `${sw}px`, height: `${sh}px`, left: `${(w - sw) / 2}px`, top: `${(h - sh) / 2}px` });
     this.overlay.setAttribute('viewBox', `${-BLEED} ${-BLEED} ${FULL_W} ${FULL_H}`);
+    this.brush.setAttribute('viewBox', `${-BLEED} ${-BLEED} ${FULL_W} ${FULL_H}`);
     this.drawMarks(w, h, sw, sh);
     this.render('full');
     this.drawHandles();
@@ -89,13 +107,18 @@ export class Stage {
   private drawMarks(w: number, h: number, sw: number, sh: number) {
     const x0 = (w - sw) / 2 + BLEED * this.scale, y0 = (h - sh) / 2 + BLEED * this.scale;
     const x1 = x0 + PAGE_W * this.scale, y1 = y0 + PAGE_H * this.scale;
-    const g = 4 * this.scale, L = 7 * this.scale;
+    // crop marks and registration targets sit in whatever margin the page leaves; short ones when it is tight
+    const bl = BLEED * this.scale;
+    const mv = (h - sh) / 2, mh = (w - sw) / 2;
+    const Lv = Math.max(4, Math.min(7 * this.scale, mv - 3)), Lh = Math.max(4, Math.min(7 * this.scale, mh - 3));
     const crop = [[x0, y0, -1, -1], [x1, y0, 1, -1], [x0, y1, -1, 1], [x1, y1, 1, 1]].map(([x, y, dx, dy]) =>
-      `<path d="M${x + dx * (BLEED * this.scale + 2)} ${y}h${dx * L}M${x} ${y + dy * (BLEED * this.scale + 2)}v${dy * L}"/>`).join('');
-    const reg = (cx: number, cy: number) => `<circle cx="${cx}" cy="${cy}" r="${2.4 * this.scale}"/><path d="M${cx - 4 * this.scale} ${cy}h${8 * this.scale}M${cx} ${cy - 4 * this.scale}v${8 * this.scale}"/>`;
+      `<path d="M${x + dx * (bl + 2)} ${y}h${dx * Lh}M${x} ${y + dy * (bl + 2)}v${dy * Lv}"/>`).join('');
+    const rr = Math.min(2.4 * this.scale, 7);
+    const reg = (cx: number, cy: number) => `<circle cx="${cx}" cy="${cy}" r="${rr}"/><path d="M${cx - rr * 1.7} ${cy}h${rr * 3.4}M${cx} ${cy - rr * 1.7}v${rr * 3.4}"/>`;
     const mx = (x0 + x1) / 2, my = (y0 + y1) / 2;
+    const regs = (mh > rr * 4 ? reg(x0 - bl - rr * 2.4, my) + reg(x1 + bl + rr * 2.4, my) : '') + (mv > rr * 4 ? reg(mx, y0 - bl - rr * 2.4) + reg(mx, y1 + bl + rr * 2.4) : '');
     this.marks.setAttribute('viewBox', `0 0 ${w} ${h}`);
-    this.marks.innerHTML = `<g stroke="#3B3A40" stroke-width=".6" fill="none" opacity=".75">${crop}${reg(mx, y0 - BLEED * this.scale - g - 2)}${reg(mx, y1 + BLEED * this.scale + g + 2)}${reg(x0 - BLEED * this.scale - g - 2, my)}${reg(x1 + BLEED * this.scale + g + 2, my)}</g>`;
+    this.marks.innerHTML = `<g stroke="#3B3A40" stroke-width=".6" fill="none" opacity=".75">${crop}${regs}</g>`;
   }
 
   /** Schedule a render; 'low' while dragging (half resolution), 'full' on release. */
@@ -135,6 +158,22 @@ export class Stage {
     return null;
   }
   private sel(): PageObj[] { return this.page.objects.filter((o) => this.selected.has(o.id)); }
+  /** Width (mm) of the ghost image so the preview matches the stamp: thumbs show a 200-unit box at 140 of 144 mm. */
+  private ghostSize(it: StampItem): number {
+    if (it.kind === 'obj') return stampSize(it.key) * 144 / 140;
+    if (it.kind === 'helper') return (HELPER_SIZES[it.id] ?? 20) * 144 / 60;
+    const o = it.obj;
+    return o.kind === 'helper' ? o.s * 144 / (o.s || 60) : o.s * 144 / 140;
+  }
+  private showBrush(x: number, y: number) {
+    if (this.mode.type !== 'tool') return;
+    const r = TOOL_BY_ID[this.mode.tool].size * this.brushScale * PAGE_W;
+    const [ring, dot, cross] = [...this.brush.children] as SVGElement[];
+    ring.setAttribute('cx', String(x)); ring.setAttribute('cy', String(y)); ring.setAttribute('r', String(r));
+    dot.setAttribute('cx', String(x)); dot.setAttribute('cy', String(y));
+    cross.setAttribute('d', `M${x - 3} ${y}h6M${x} ${y - 3}v6`);
+    this.brush.classList.add('on');
+  }
 
   /** Selection handles drawn like registration marks. */
   drawHandles() {
@@ -191,7 +230,8 @@ export class Stage {
       if (this.mode.type === 'tool') {
         const def = TOOL_BY_ID[this.mode.tool];
         const n = this.page.inks.length;
-        this.page.strokes.push({ tool: this.mode.tool, pts: [[x / PAGE_W, y / PAGE_H]], size: def.size * this.brushScale, intensity: 0.55, seed: Math.floor(Math.random() * 1e5), plate: this.activePlate % n, plate2: e.shiftKey && n > 1 ? (this.activePlate + 1) % n : undefined });
+        this.page.strokes.push({ tool: this.mode.tool, pts: [[x / PAGE_W, y / PAGE_H]], size: def.size * this.brushScale, intensity: 0.85 * this.toolStrength, seed: Math.floor(Math.random() * 1e5), plate: this.activePlate % n, plate2: e.shiftKey && n > 1 ? (this.activePlate + 1) % n : undefined });
+        this.onStroke();
         drag = { ...base, kind: 'tool' };
         this.render('low');
         return;
@@ -211,14 +251,16 @@ export class Stage {
     s.addEventListener('pointermove', (e) => {
       if (touches.has(e.pointerId)) touches.set(e.pointerId, e);
       const [x, y] = this.toMM(e);
-      // ghost stamp follows the cursor
+      // ghost stamp follows the cursor at the size it will land
       if (this.mode.type === 'stamp') {
         const g = this.ghost;
-        const size = (this.mode.item.kind === 'helper' ? 30 : 44) * this.scale;
-        const r = this.sheet.getBoundingClientRect(), er = this.el.getBoundingClientRect();
+        const size = this.ghostSize(this.mode.item) * this.scale;
+        const er = this.el.getBoundingClientRect();
         Object.assign(g.style, { display: 'block', width: `${size}px`, left: `${e.clientX - er.left - size / 2}px`, top: `${e.clientY - er.top - size / 2}px` });
-        void r;
       }
+      // tools: a brush circle the size of the stroke
+      this.lastXY = [x, y];
+      if (this.mode.type === 'tool') this.showBrush(x, y);
       // the cursor's faint ink trail over the paper
       if (!drag && this.mode.type === 'select' && x > 0 && y > 0 && x < PAGE_W && y < PAGE_H) {
         const l = this.trailBuf[this.trailBuf.length - 1];
@@ -249,7 +291,8 @@ export class Stage {
         const st = this.page.strokes[this.page.strokes.length - 1];
         const l = st.pts[st.pts.length - 1];
         if (Math.hypot(l[0] - x / PAGE_W, l[1] - y / PAGE_H) > 0.006) st.pts.push([x / PAGE_W, y / PAGE_H]);
-        st.intensity = clamp(0.5 + (performance.now() - drag.t0) / 4000, 0.5, 1);
+        // holding the brush longer soaks more in; the drift knob scales the whole stroke
+        st.intensity = clamp(0.85 + (performance.now() - drag.t0) / 6000, 0.85, 1.35) * this.toolStrength;
         this.render('low');
       } else if (drag.kind === 'shake') {
         const ddx = e.clientX - drag.px0!;
@@ -286,7 +329,9 @@ export class Stage {
         atmosphere().bloom((e.clientX) / innerWidth, 1 - e.clientY / innerHeight, INK_BY_ID[this.page.inks[0]].hex, 0.6 + pressure * 0.4);
         void er;
         this.selected.clear(); this.selected.add(o.id);
+        rustle(0.6);
         emit('stamp');
+        this.onStamped();
       } else if (d.kind === 'move') {
         const moved = d.orig.some((q) => { const o = this.page.objects.find((z) => z.id === q.id); return o && Math.hypot(o.x - q.x, o.y - q.y) > 1; });
         if (moved) { for (const q of d.orig) { const o = this.page.objects.find((z) => z.id === q.id); if (o) sideMove(this.page, o, q); } tick(); emit('move'); }
@@ -303,7 +348,7 @@ export class Stage {
     };
     s.addEventListener('pointerup', end);
     s.addEventListener('pointercancel', end);
-    s.addEventListener('pointerleave', () => { this.ghost.style.display = 'none'; });
+    s.addEventListener('pointerleave', () => { this.ghost.style.display = 'none'; this.brush.classList.remove('on'); });
     addEventListener('keydown', this.onKey);
     addEventListener('keyup', this.onKeyUp);
   }
@@ -317,11 +362,11 @@ export class Stage {
   // ---------- keyboard ----------
   private onKey = (e: KeyboardEvent) => {
     const tgt = e.target as HTMLElement;
-    if (tgt.closest('input, textarea, [role="slider"], select') || !this.el.isConnected) return;
+    if (tgt?.closest?.('input, textarea, [role="slider"], select') || !this.el.isConnected) return;
     const sel = this.sel();
     const k = e.key;
     if (k === 'Escape') { if (this.mode.type !== 'select') this.setMode({ type: 'select' }); else { this.selected.clear(); this.drawHandles(); this.onSelect(); } return; }
-    if (this.mode.type === 'tool' && (k === '[' || k === ']')) { this.brushScale = clamp(this.brushScale * (k === ']' ? 1.2 : 1 / 1.2), 0.3, 3); return; }
+    if (this.mode.type === 'tool' && (k === '[' || k === ']')) { this.brushScale = clamp(this.brushScale * (k === ']' ? 1.2 : 1 / 1.2), 0.3, 3); if (this.lastXY) this.showBrush(...this.lastXY); return; }
     if (!sel.length) { if (k === 'Tab' && tgt === this.sheet && this.page.objects.length) { e.preventDefault(); this.cycle(e.shiftKey ? -1 : 1); } return; }
     let changed = true; let why = 'key';
     const n = this.page.inks.length;

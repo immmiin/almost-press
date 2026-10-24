@@ -10,6 +10,8 @@ export class Strip {
   rod: HTMLElement;
   dish: HTMLElement;
   print: HTMLButtonElement;
+  /** under PRINT: "hold to print", then the plates as they land */
+  count: HTMLElement;
   private thumbs = new Map<string, string>();
   onOpen: (i: number) => void = () => {};
   onForgotten: (o: PageObj) => void = () => {};
@@ -21,12 +23,13 @@ export class Strip {
     el.className = 'bench';
     el.innerHTML = `<div class="rod-wrap"><div class="rod" role="list"></div></div>
       <div class="dish-wrap"><div class="dish" aria-label=""></div><span class="mono dish-l"></span></div>
-      <div class="print-wrap"></div>`;
+      <div class="print-wrap"><div class="print-col"><span class="print-count mono" aria-live="polite"></span></div></div>`;
     this.el = el;
     this.rod = el.querySelector('.rod')!;
     this.dish = el.querySelector('.dish')!;
-    this.print = enamelButton(t('print'), t('hold'));
-    el.querySelector('.print-wrap')!.append(this.print);
+    this.print = enamelButton(t('print'), '');
+    this.count = el.querySelector('.print-count')!;
+    el.querySelector('.print-col')!.prepend(this.print);
     this.rod.addEventListener('click', (e) => {
       const b = (e.target as HTMLElement).closest('button'); if (!b || b.disabled) return;
       this.onOpen(+b.dataset.i!);
@@ -41,7 +44,7 @@ export class Strip {
   destroy() { this.offLang(); }
   private labels() {
     this.print.querySelector('.enamel-label')!.textContent = t('print');
-    this.print.querySelector('.enamel-sub')!.textContent = t('hold');
+    if (!this.print.classList.contains('held')) this.count.textContent = t('hold');
     this.print.setAttribute('aria-label', `${tA('print')} — ${tA('hold')} (space)`);
     (this.el.querySelector('.dish-l') as HTMLElement).textContent = t('forgotten');
     this.dish.setAttribute('aria-label', tA('forgotten'));
@@ -59,8 +62,9 @@ export class Strip {
         if (p.printed && !this.thumbs.has(k)) this.thumbs.set(k, pageThumb(p, 64));
         img = p.printed ? `<img alt="" src="${this.thumbs.get(k)}">` : '';
       }
-      const label = `${tA('page')} ${i + 1}${p?.printed ? '' : cur ? ' (on the press)' : ''}`;
-      html.push(`<button type="button" role="listitem" class="leaf${cur ? ' cur' : ''}${p?.printed ? ' printed' : ''}" data-i="${i}" ${p?.printed || cur ? '' : 'disabled'} aria-label="${label}" aria-current="${cur}"><span class="leaf-clip"></span><span class="leaf-sheet">${img}</span><span class="leaf-n mono">${kanjiNum(i + 1)}</span></button>`);
+      const label = `${tA('page')} ${i + 1}${p?.printed ? '' : cur ? ' (on the press)' : ' (blank)'}`;
+      const blank = !p || (!p.printed && !cur);
+      html.push(`<button type="button" role="listitem" class="leaf${cur ? ' cur' : ''}${p?.printed ? ' printed' : ''}${blank ? ' blank' : ''}" data-i="${i}" ${p?.printed || cur ? '' : 'disabled'} aria-label="${label}" aria-current="${cur}"><span class="leaf-clip"></span><span class="leaf-sheet">${img}</span><span class="leaf-n">${i + 1}</span><span class="leaf-k" aria-hidden="true">${kanjiNum(i + 1)}</span></button>`);
     }
     this.rod.innerHTML = html.join('');
     const f = issue.forgotten.slice(-14);

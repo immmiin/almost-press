@@ -4,6 +4,7 @@ import { KEYS, OBJ } from '../objects';
 import type { Page, PageObj } from '../model/types';
 import { PRESETS } from '../design/tokens';
 import { onFontsLoaded } from '../type/outlines';
+import { TOOL_BY_ID } from '../press/toolDefs';
 
 export function samplePage(): Page {
   const o = (key: string, x: number, y: number, s: number, extra: Partial<PageObj> = {}): PageObj => ({ id: key + x, kind: 'obj', key, x, y, s, r: 0, plates: [0, 1, 2], seed: x | 0, ...extra });
@@ -51,7 +52,11 @@ export default async function specimen(root: HTMLElement) {
       const p = samplePage();
       p.ground = 'rice';
       const pts: [number, number][] = tool === 'echo' ? [[0.7, 0.28], [0.78, 0.3]] : tool === 'pour' ? [[0.3, 0.55], [0.75, 0.55]] : [[0.15, 0.62], [0.5, 0.66], [0.85, 0.7]];
-      p.strokes.push({ tool: tool as never, pts, size: tool === 'echo' ? 0.16 : 0.2, intensity: 1, seed: 1, plate: 1, plate2: 2 });
+      // ?def=1: one ordinary stroke as a visitor makes it (default brush size, ?i= intensity), on page 1
+      const def = q.get('def');
+      if (def) { p.n = 1; p.fxv = +(q.get('fxv') ?? 2); }
+      const size = def ? TOOL_BY_ID[tool as keyof typeof TOOL_BY_ID].size * +(q.get('b') ?? 1) : tool === 'echo' ? 0.16 : 0.2;
+      p.strokes.push({ tool: tool as never, pts, size, intensity: +(q.get('i') ?? 1), seed: 1, plate: 1, plate2: def ? undefined : 2 });
       const src = pipeline().render(p, 360);
       const c = document.createElement('canvas'); c.width = src.width; c.height = src.height; c.style.width = '230px'; c.title = tool;
       c.getContext('2d')!.drawImage(src, 0, 0);
