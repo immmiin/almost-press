@@ -29,6 +29,17 @@ export function tick() {
   const g = c.createGain(); g.gain.setValueAtTime(0.08, t); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.035);
   n.connect(f).connect(g).connect(c.destination); n.start(t);
 }
+/** Paper rustle: a few crinkles of filtered noise (stamping, peeling a slip). */
+export function rustle(strength = 1) {
+  if (!on) return; const c = ac(); const t = c.currentTime;
+  const n = noise(c, 0.32); const f = c.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 2400; f.Q.value = 0.7;
+  const hp = c.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 900;
+  const g = c.createGain(); g.gain.setValueAtTime(0.0001, t);
+  // uneven crinkles: the envelope jumps a few times as fibres slide over each other
+  for (let i = 0, x = t; i < 5; i++) { x += 0.025 + Math.random() * 0.05; g.gain.exponentialRampToValueAtTime((0.025 + Math.random() * 0.05) * strength, x); g.gain.exponentialRampToValueAtTime(0.004, x + 0.03); }
+  g.gain.exponentialRampToValueAtTime(0.0001, t + 0.32);
+  n.connect(f).connect(hp).connect(g).connect(c.destination); n.start(t); n.stop(t + 0.34);
+}
 /** Drum / roller hum while printing. Returns a stop function. */
 export function roller(): () => void {
   if (!on) return () => {};
