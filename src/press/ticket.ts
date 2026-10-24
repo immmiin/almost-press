@@ -43,16 +43,16 @@ export class Ticket {
     this.render();
   }
   destroy() { this.offLang(); }
-  setIssue(no: string, dream: string) { this.issueNo = no; if (document.activeElement !== this.input) this.input.value = dream; this.render(); }
+  setIssue(no: string) { this.issueNo = no; this.render(); }
   render() {
     const q = (s: string) => this.el.querySelector(s) as HTMLElement;
     q('.ticket-issue').innerHTML = `<span>${t('issue')}</span> <b>${this.issueNo}</b>`;
     q('.ticket-dl').textContent = t('dream');
-    this.input.placeholder = 'a swan in the kitchen · 부엌의 백조 · 台所の白鳥 — Enter';
+    this.input.placeholder = t('dreamPh');
     this.input.setAttribute('aria-label', tA('dream'));
     const lang = getLang();
     q('.ticket-lang').setAttribute('aria-label', tA('a_lang'));
-    q('.ticket-lang').innerHTML = (['en', 'ko', 'ja'] as Lang[]).map((l) => `<button type="button" class="mono" data-l="${l}" aria-pressed="${l === lang}">${l === 'en' ? 'EN' : l === 'ko' ? '한' : '日'}</button>`).join('');
+    q('.ticket-lang').innerHTML = (['en', 'ja'] as Lang[]).map((l) => `<button type="button" class="mono" data-l="${l}" aria-pressed="${l === lang}">${l === 'en' ? 'EN' : '日'}</button>`).join('');
     q('[data-a="sound"]').textContent = `${t('sound')} ${soundOn() ? t('on') : t('off')}`;
     q('[data-a="sound"]').setAttribute('aria-pressed', String(soundOn()));
     q('[data-a="lock"]').textContent = `${isLocked() ? '鎖' : '漂'} ${t('lock')}`;

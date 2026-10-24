@@ -13,10 +13,10 @@ import { reducedMotion } from '../core/rng';
 import { thud } from '../core/sound';
 
 const FONTS: [string, string][] = [
-  ['Shippori Mincho B1', 'display · 表題'], ['Gowun Batang', '제목 · 화제'], ['Bodoni Moda Italic', 'accents'],
-  ['Dela Gothic One', '太字'], ['Black Han Sans', '굵은 한글'], ['Rubik Mono One', 'STRETCHED LABELS'],
-  ['IBM Plex Mono', 'tiny labels'], ['IBM Plex Sans KR', '본문'], ['DotGothic16', 'LCD · ドット'],
-  ['Bagel Fat One', 'type objects'], ['Do Hyeon', '글자 도장'],
+  ['Shippori Mincho B1', 'display · 表題'], ['Gowun Batang', 'serif fallback'], ['Bodoni Moda Italic', 'accents'],
+  ['Dela Gothic One', 'heavy blocks · 太字'], ['Black Han Sans', 'the brand block'], ['Rubik Mono One', 'STRETCHED LABELS'],
+  ['IBM Plex Mono', 'tiny labels'], ['IBM Plex Sans KR', 'body · 本文'], ['DotGothic16', 'LCD · ドット'],
+  ['Bagel Fat One', 'type objects'], ['Do Hyeon', 'type stamps'],
 ];
 
 export default function colophon(root: HTMLElement) {
@@ -24,42 +24,40 @@ export default function colophon(root: HTMLElement) {
   const issue01Inks = ['forange', 'mint', 'lmauve', 'llime', 'seafoam', 'sky', 'cornflower', 'orchid', 'violet', 'fpink', 'aqua'].filter((id) => INK_BY_ID[id]);
   root.innerHTML = `<main class="colophon">
     <nav class="c-nav mono"><a href="#/gate">← ${t('gate')}</a><a href="#/press">${t('press')}</a><a href="#/reader?issue=01">${t('scroll')}</a></nav>
-    <div class="c-sheet-wrap"><article class="c-sheet sheet" aria-label="colophon · 판권 · 奥付">
-      <h1 class="c-title"><span class="c-t-ja">奥付</span><span class="c-t-ko">판권</span><span class="c-t-en">colophon</span></h1>
+    <div class="c-sheet-wrap"><article class="c-sheet sheet" aria-label="colophon · 奥付">
+      <h1 class="c-title"><span class="c-t-ja">奥付</span><span class="c-t-en">colophon</span></h1>
       <div class="c-seal" aria-hidden="true">${sealSVG({ size: 260, seed: 21, doubleStrike: true, rotate: -2.5 })}</div>
 
       <section class="c-blk c-about-en" lang="en"><h2 class="mono-up">the press</h2>
         <p>ALMOST PRESS is a dream print shop floating in ink-wash mist. A visitor prints one dream into a sixteen-page A5
-        risograph zine, <i>A Day I Almost Remember</i>. Every page starts as crisp, ordinary drawn objects; each edit makes them
+        risograph zine, named only by its issue number. Every page starts as crisp, ordinary drawn objects; each edit makes them
         bleed, blur, pour, break and melt, until the last page is a soft painting with a seal and a few sharp words.</p>
         <p class="mono">SVA · graphic design · class project, ${new Date().getFullYear()}</p></section>
 
-      <section class="c-blk c-about-ko" lang="ko"><p>거의 인쇄소는 수묵의 안개 속에 떠 있는 꿈의 인쇄소입니다. 꿈 한 줄을 열여섯 쪽의 A5 리소 진으로 찍습니다.
-        첫 쪽의 사물은 또렷하고, 손이 닿을 때마다 번지고, 흐려지고, 쏟아지고, 부서지고, 녹아서, 마지막 쪽에는 낙관과 작은 글자 몇 개만 남습니다.</p></section>
-
       <section class="c-blk c-about-ja vert" lang="ja"><p>ほぼ印刷所は、水墨の霞に浮かぶ夢の印刷所。夢をひとこと、十六頁のリソグラフの冊子に刷る。はじめの頁はくっきりと、刷るたびに滲み、ぼやけ、流れ、砕け、溶けて、最後には落款と小さな文字だけが残る。</p></section>
 
-      <section class="c-blk c-inks"><h2 class="mono-up">inks · 잉크 · インク</h2>
+      <section class="c-blk c-inks"><h2 class="mono-up">inks · インク</h2>
         <ul>${INKS.map((i) => `<li class="mono"><i style="background:${i.hex}"></i>${i.name.toLowerCase()}${i.metallic ? ' *' : ''}</li>`).join('')}</ul>
         <p class="mono">multiplied on screen, as on the drum. * metallic is approximate.<br>presets: ${PRESETS.map((p) => p.name.toLowerCase()).join(' · ')}</p></section>
 
-      <section class="c-blk c-fonts"><h2 class="mono-up">type · 글꼴 · 書体</h2>
+      <section class="c-blk c-fonts"><h2 class="mono-up">type · 書体</h2>
         <ul>${FONTS.map(([f, role]) => `<li><span style="font-family:'${f.replace(' Italic', '')}'${f.includes('Italic') ? ';font-style:italic' : ''}${f === 'Rubik Mono One' ? ';font-size:11px' : ''}">${f}</span><span class="mono">${role}</span></li>`).join('')}</ul>
         <p class="mono">all SIL Open Font License 1.1, via Google Fonts; outlines for type objects from the self-hosted TTFs.</p></section>
 
-      <section class="c-blk c-seeds mono"><h2 class="mono-up">seeds · 씨앗 · 種</h2>
+      <section class="c-blk c-seeds mono"><h2 class="mono-up">seeds · 種</h2>
         <p>issue 01 · #0001 · art-directed, fixed data<br>
         tonight · ${ISSUE_NO(is)} · p.${String(is.pages[is.current]?.n ?? 1).padStart(2, '0')}/16<br>
         every random choice in an issue comes from its seed; the same number prints the same issue.</p>
         <p>issue 01 inks · ${issue01Inks.map((id) => INK_BY_ID[id].name.toLowerCase()).join(' / ')}</p></section>
 
-      <section class="c-blk c-mood mono"><h2 class="mono-up">moodboard · 무드보드 · 参照</h2>
+      <section class="c-blk c-mood mono"><h2 class="mono-up">moodboard · 参照</h2>
         <p>ABPPW riso poster torn into waves · soft-focus objects with tiny labels · a portrait behind vellum ·
         Marisa Purcell's wet paintings · crayon haze on torn slips · 24 solar-term riso posters · a pixel-sorted waterfall ·
         a CRT angel · dreamcore haze · pixel-sorted flowers · a noise-dissolved poster · lilac pop art.<br>
-        수묵 발묵 · 선염 · 운무 · 여백 · 화제 · 낙관 — ぼかし (一文字 · 二色 · あてなし) — 千住博の滝 — 絵巻.</p></section>
+        ink wash: splashed ink · graded wash · mist · empty space · inscription · seal (水墨 · 潑墨 · 渲染 · 雲霧 · 余白 · 画題 · 落款) —
+        ぼかし (一文字 · 二色 · あてなし) — 千住博の滝 — 絵巻.</p></section>
 
-      <section class="c-blk c-credits mono"><h2 class="mono-up">credits · 만든 이 · 制作</h2>
+      <section class="c-blk c-credits mono"><h2 class="mono-up">credits · 制作</h2>
         <p>concept, art direction, the hundred drawings and the dream: the student (SVA).<br>
         built in code, every image drawn and processed in the browser — no image models, no paid services.</p>
         <p>matter-js (MIT) · opentype.js (MIT) · jsPDF (MIT) · JSZip (MIT) · Vite (MIT) · TypeScript (Apache-2.0)<br>
@@ -68,7 +66,7 @@ export default function colophon(root: HTMLElement) {
         shaders (mist, grain, bokashi, halftone, dither, the ten tools): raw WebGL2, written here.</p></section>
 
       <p class="c-date mono vert" aria-hidden="true">二〇二六 · 十月 · 殆 · ALMOST PRESS · 거의 인쇄소 · ほぼ印刷所</p>
-      <p class="c-hand ja vert" aria-hidden="true">夢はほとんど覚えている</p>
+      <p class="c-hand ja vert" aria-hidden="true">夢をひとこと刷る</p>
     </article></div>
   </main>`;
   const sheet = root.querySelector('.c-sheet') as HTMLElement;

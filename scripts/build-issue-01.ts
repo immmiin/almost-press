@@ -35,13 +35,16 @@ function page(n: number, inks: string[], ground: GroundId, objects: PageObj[], s
 
 const pages: Page[] = [];
 
-// 1 · Cover. Vast rice paper, bokashi peach band at the top, a small crisp clock, three-language title, seal. Dawn.
+// 1 · Cover. Vast rice paper, bokashi peach band at the top, the press's name in three scripts (ALMOST PRESS wide and
+// flat, 거의 인쇄소 as a heavy block, ほぼ印刷所 vertical), the issue number on a second small seal, a small crisp clock. Dawn.
 pages.push(page(1, ['forange', 'mint', 'lmauve'], 'rice', [
-  o('clock', 102, 132, 26, { plates: P(2, 1, 0) }),
-  helper('title', '', 60, 78, 94, { plates: P(1, 0, 2) }),
-  ins('issue 01\n#0001 · 16pp · A5\nrisograph, 3 inks', 16, 176, 26),
-  helper('date', '二〇二六', 140, 150, 3.4),
-  seal(126, 188, 13, -4, 3),
+  helper('title', '', 72, 100, 128, { plates: P(1, 0, 2) }),
+  o('clock', 30, 170, 22, { plates: P(2, 1, 0), r: -4 }),
+  helper('stretch', 'ISSUE #0001', 96, 176, 62, { plates: P(0, 1, 2) }),
+  ins('16pp · A5 · risograph · 3 inks\nseed #0001 · dawn → moonlight', 66, 186, 44),
+  helper('date', '二〇二六', 141, 52, 3.4),
+  helper('issueSeal', '0001', 112, 22, 9, { r: 3, seed: 5 }),
+  seal(130, 22, 13, -4, 3),
 ], [st('bokashi', line(-0.05, 0.03, 1.05, 0.03, 8), 0.15, 0.3, { plate: 0 }), st('bokashi', line(-0.05, 0.09, 1.05, 0.09, 8), 0.1, 0.25, { plate: 2 })], { mis: 0.25, grain: 0.5 }));
 
 // 2 · Crisp kitchen: table, teacup, toast, a small wall clock, lots of empty space, a tiny inscription. Peach Mist.
@@ -65,12 +68,12 @@ pages.push(page(3, ['forange', 'lmauve', 'seafoam'], 'rice', [
   seal(124, 190, 9, -6, 7),
 ], [], { mis: 0.32 }));
 
-// 4 · The clock is as big as a house; ink blooms from its rim into the floor. Big Hangul "늦었다". Dawn.
+// 4 · The clock is as big as a house; ink blooms from its rim into the floor. A heavy block: 遅れた (late). Dawn.
 pages.push(page(4, ['fpink', 'orchid', 'mint'], 'horizon', [
   o('clock', 78, 98, 128, { plates: P(1, 2, 0) }),
   o('table', 112, 172, 30, { plates: P(1, 0, 2) }),
-  helper('hangul', '늦었다', 52, 182, 60, { plates: P(0, 1, 2), r: -3 }),
-  ins('p.04 · late\n늦었다 · 遅れた', 108, 24, 24),
+  helper('hangul', '遅れた', 52, 182, 60, { plates: P(0, 1, 2), r: -3 }),
+  ins('p.04 · late\n遅れた', 108, 24, 24),
   seal(132, 192, 9, 4, 9),
 ], [st('bleed', line(0.2, 0.74, 0.86, 0.76, 10), 0.1, 0.95), st('bleed', [[0.32, 0.8], [0.6, 0.82]], 0.07, 0.8, { plate: 0 })], { seed: 1188, mis: 0.38 }));
 
@@ -79,7 +82,7 @@ pages.push(page(5, ['seafoam', 'llime', 'sky'], 'pool', [
   o('ladder', 118, 136, 44, { plates: P(2, 0, 1) }),
   o('swan', 62, 150, 40, { plates: P(1, 2, 0) }),
   o('clock', 40, 60, 52, { plates: P(0, 2, 1), opacity: 0.9 }),
-  ins('the water was warm\n물이 따뜻했다\n水はぬるかった', 92, 36, 30),
+  ins('the water was warm\n水はぬるかった', 92, 36, 30),
   seal(128, 191, 9, -2, 11),
 ], [st('bokashi', line(-0.05, 0.1, 1.05, 0.1, 8), 0.18, 0.55, { plate: 0 }), st('bokashi', line(-0.05, 0.4, 1.05, 0.42, 8), 0.1, 0.5, { plate: 1 })], { seed: 1221, mis: 0.4 }));
 
@@ -93,7 +96,7 @@ pages.push(page(6, ['seafoam', 'cornflower', 'llime'], 'horizon', [
   o('stairs', 94, 74, 78, { plates: P(1, 0, 2) }),
   o('clock', 118, 30, 40, { opacity: 0.6, plates: P(0, 1, 2) }),
   ...swans6,
-  ins('twelve of them\n열두 마리\n十二羽', 14, 30, 22),
+  ins('twelve of them\n十二羽', 14, 30, 22),
   seal(132, 192, 9, 3, 13),
 ], [
   st('haze', line(0.4, 0.2, 0.95, 0.34, 6), 0.2, 0.95), st('haze', line(0.1, 0.42, 0.95, 0.46, 6), 0.14, 0.7),
@@ -107,7 +110,7 @@ pages.push(page(7, ['seafoam', 'cornflower', 'llime'], 'rice', [
   o('clock', 96, 58, 62, { plates: P(2, 0, 1) }),
   o('chair', 30, 150, 40, { plates: P(1, 2, 0) }),
   o('swan', 118, 140, 34, { plates: P(1, 2, 0) }),
-  ins('table · 식탁 · 机', 60, 176, 22), ins('cup', 42, 104, 6),
+  ins('table · 机', 60, 176, 22), ins('cup', 42, 104, 6),
   ins('clock · 時計', 112, 24, 16), ins('chair', 14, 126, 7), ins('swan?', 112, 118, 8),
   seal(132, 192, 9, -3, 15),
 ], [st('haze', line(0.05, 0.25, 0.95, 0.3, 10), 0.3, 1), st('haze', line(0.05, 0.6, 0.95, 0.7, 10), 0.3, 1), st('haze', line(0.1, 0.45, 0.9, 0.45, 8), 0.22, 0.8)], { seed: 1296, mis: 0.45 }));
@@ -148,24 +151,24 @@ pages.push(page(11, ['fpink', 'lmauve', 'aqua'], 'wash', [
 
 // 12 · Break: objects turn into their names and the names break into soft datamosh blocks.
 pages.push(page(12, ['violet', 'forange', 'mint'], 'rice', [
-  word('chair', 46, 50, 70, 1, { r: -4 }), word('의자', 104, 72, 50, 0, { plates: P(1, 0, 2) }), word('椅子', 58, 104, 52, 2, { plates: P(2, 1, 0) }),
-  word('clock', 98, 130, 66, 3), word('時計', 40, 152, 44, 5, { plates: P(1, 2, 0) }), word('백조', 104, 170, 44, 4, { plates: P(2, 0, 1) }),
+  word('chair', 46, 50, 70, 1, { r: -4 }), word('いす', 104, 72, 50, 0, { plates: P(1, 0, 2) }), word('椅子', 58, 104, 52, 2, { plates: P(2, 1, 0) }),
+  word('clock', 98, 130, 66, 3), word('時計', 40, 152, 44, 5, { plates: P(1, 2, 0) }), word('白鳥', 104, 170, 44, 4, { plates: P(2, 0, 1) }),
   o('teacup', 128, 32, 16),
   seal(130, 194, 9, 2, 25),
 ], [st('break', line(0.1, 0.3, 0.9, 0.36, 8), 0.2, 1), st('break', line(0.2, 0.64, 0.95, 0.8, 8), 0.2, 0.9), st('wave', line(0.0, 0.5, 1.0, 0.5, 6), 0.06, 0.4)], { seed: 1481, mis: 0.6 }));
 
-// 13 · Tube: a glowing white swan silhouette with scanlines on a pale moonwater wash; "백조 in the 台所". Moonwater.
+// 13 · Tube: a glowing white swan silhouette with scanlines on a pale moonwater wash; "白鳥 in the 台所". Moonwater.
 pages.push(page(13, ['cornflower', 'orchid', 'llime'], 'wash', [
   o('swan', 74, 110, 116, { fx: 'hole', plates: P(0, 1, 2) }),
   o('clock', 116, 40, 26, { opacity: 0.5, plates: P(1, 0, 2) }),
-  helper('stretch', '백조 in the 台所', 74, 176, 92, { plates: P(1, 0, 2) }),
+  helper('stretch', '白鳥 in the 台所', 74, 176, 92, { plates: P(1, 0, 2) }),
   seal(128, 194, 9, -5, 27),
 ], [st('tube', line(0.1, 0.5, 0.9, 0.5, 6), 0.42, 1), st('bokashi', line(-0.05, 0.06, 1.05, 0.06, 8), 0.12, 0.35, { plate: 1 })], { seed: 1518, mis: 0.55, groundPlate: 0 }));
 
 // 14 · Echo + ink starvation: the clock repeats into itself; streaks; misregistration; ghosts of earlier pages.
 pages.push(page(14, ['cornflower', 'orchid', 'llime'], 'rice', [
   o('clock', 74, 96, 120, { plates: P(1, 0, 2) }),
-  ins('again · 다시 · また', 14, 182, 24),
+  ins('again · また', 14, 182, 24),
   seal(126, 190, 9, 8, 29),
 ], [st('echo', [[0.5, 0.44], [0.56, 0.46]], 0.26, 1), st('pour', line(0.1, 0.7, 0.9, 0.7, 6), 0.08, 0.5)], { seed: 1555, mis: 1.4, drift: ['ink-starve', 'misregister-spike'] }));
 
@@ -186,7 +189,7 @@ pages.push(page(15, ['cornflower', 'fpink', 'llime', 'lmauve'], 'wash', [
 // 16 · Back cover: luminous abstraction, one seal, colophon in tiny type.
 pages.push(page(16, ['cornflower', 'fpink', 'llime', 'lmauve'], 'wash', [
   o('clock', 74, 80, 70, { opacity: 0.18, plates: P(0, 3, 2) }),
-  ins('A DAY I ALMOST REMEMBER · issue 01 · seed #0001\n\n“I was late for a swim, but the pool was in my grandmother’s kitchen\nand the clock kept getting bigger.”\ninks: fluorescent orange, mint, light mauve, light lime, seafoam, sky blue,\ncornflower, orchid, violet, fluorescent pink, aqua\ndrift: bleed, mist, haze, horizon, wave, pour, break, tube, echo, melt\nALMOST PRESS · 거의 인쇄소 · ほぼ印刷所', 12, 160, 100),
+  ins('ALMOST PRESS · Issue #0001 · seed #0001\n\n“I was late for a swim, but the pool was in my grandmother’s kitchen\nand the clock kept getting bigger.”\ninks: fluorescent orange, mint, light mauve, light lime, seafoam, sky blue,\ncornflower, orchid, violet, fluorescent pink, aqua\ndrift: bleed, mist, haze, horizon, wave, pour, break, tube, echo, melt\nALMOST PRESS · 거의 인쇄소 · ほぼ印刷所', 12, 160, 100),
   seal(74, 128, 16, -2, 33),
 ], [st('melt', line(0.1, 0.4, 0.9, 0.45, 8), 0.34, 1), st('bokashi', line(-0.05, 0.1, 1.05, 0.12, 8), 0.18, 0.4, { plate: 3 }), st('bleed', [[0.5, 0.4]], 0.3, 0.8, { plate: 2 }), st('melt', line(0.2, 0.7, 0.8, 0.66, 6), 0.2, 0.8)], { seed: 1629, mis: 0.6, groundPlate: 0 }));
 

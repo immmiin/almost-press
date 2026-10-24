@@ -7,7 +7,7 @@ import { PRESETS, INK_BY_ID, dreamTimeOf } from '../design/tokens';
 import { drawCards, applyCard, type Card } from './drift';
 import { applyLayout, LAYOUTS, type Layout } from './layouts';
 import { OBJ, KEYS, nameOf } from '../objects';
-import { kanjiNum, koNum } from '../press/util';
+import { kanjiNum } from '../press/util';
 import { makeHelper } from '../press/edits';
 
 /** Dream time presets per band; the machine leans toward them as the night goes on. */
@@ -25,7 +25,8 @@ export function driftSentence(dream: string, n: number, seed: number, extra = 0)
     const tok = m[2].toLowerCase().replace(/'s$/, '');
     const key = KEYS.find((k) => OBJ[k].al.includes(tok) || OBJ[k].al.includes(tok.replace(/s$/, '')));
     if (!key || r() > p) return w;
-    const lang = pick(r, ['ko', 'ja', 'en'] as const);
+    // the machine drifts into Japanese or back into English; Korean only ever comes from what the visitor typed
+    const lang = pick(r, ['ja', 'ja', 'en'] as const);
     return m[1] + nameOf(key, lang).toLowerCase() + m[3];
   }).join('');
 }
@@ -35,7 +36,7 @@ export function slugOf(issue: Issue, page: Page): string {
   const misprint = r() < 0.12 ? `${page.n}½` : String(page.n).padStart(2, '0');
   const dt = dreamTimeOf(page.n);
   const inks = page.inks.map((i) => INK_BY_ID[i]?.name.toLowerCase()).join('/');
-  return `p.${misprint} · ${kanjiNum(page.n)} · ${koNum(page.n)} · ${inks} · mis ${page.mis.toFixed(2)} · ${page.drift.length ? page.drift.join(', ') : 'no drift'} · ${dt.ja} ${dt.en} · #${String(issue.seed).padStart(4, '0')}`;
+  return `p.${misprint} · ${kanjiNum(page.n)} · ${inks} · mis ${page.mis.toFixed(2)} · ${page.drift.length ? page.drift.join(', ') : 'no drift'} · ${dt.ja} ${dt.en} · #${String(issue.seed).padStart(4, '0')}`;
 }
 /** Refresh the page's printed text (dream line + slug). */
 export function refreshText(issue: Issue, page: Page) {

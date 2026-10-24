@@ -12,8 +12,7 @@
 
 .c-title { grid-column: 1 / span 3; grid-row: 1 / span 2; margin: 0; display: flex; align-items: flex-start; gap: 14px; }
 .c-t-ja { writing-mode: vertical-rl; font: 800 clamp(40px, 5vw, 72px)/1 var(--f-display); letter-spacing: .12em; }
-.c-t-ko { font: 400 clamp(26px, 3vw, 44px)/1 var(--f-heavy-ko); margin-top: 1.6em; }
-.c-t-en { font: italic 400 clamp(18px, 1.6vw, 24px)/1 var(--f-accent); margin-top: 5.2em; color: var(--soft); }
+.c-t-en { font: italic 400 clamp(18px, 1.6vw, 24px)/1 var(--f-accent); margin-top: 3.4em; color: var(--soft); }
 
 .c-seal { position: absolute; left: 50%; top: 39%; translate: -50% -50%; z-index: 1; mix-blend-mode: multiply; opacity: .94; pointer-events: none; }
 .c-seal .seal { width: clamp(150px, 16vw, 240px); height: auto; }
@@ -23,8 +22,7 @@
 .c-about-ja { grid-column: 11 / span 2; grid-row: 1 / span 3; justify-self: end; font: 600 14px/1.9 var(--f-display); letter-spacing: .14em; max-height: 46vh; }
 .c-about-ja p { margin: 0; }
 .c-seeds { grid-column: 8 / span 3; grid-row: 1; }
-.c-mood { grid-column: 1 / span 3; grid-row: 3 / span 2; align-self: end; }
-.c-about-ko { grid-column: 1 / span 3; grid-row: 5; font: 400 13.5px/1.8 var(--f-ko); align-self: end; }
+.c-mood { grid-column: 1 / span 3; grid-row: 3 / span 3; align-self: end; }
 .c-fonts { grid-column: 4 / span 3; grid-row: 5; align-self: end; }
 .c-fonts li { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; font-size: 15px; line-height: 1.5; white-space: nowrap; border-bottom: .5px solid rgba(59,58,64,.15); }
 .c-fonts li span:first-child { overflow: hidden; text-overflow: ellipsis; }

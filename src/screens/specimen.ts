@@ -14,7 +14,7 @@ export function samplePage(): Page {
       { id: 'v', kind: 'helper', key: 'vja', text: '白鳥のいる台所', x: 136, y: 70, s: 6, r: 0, plates: [1, 0, 2], seed: 1 },
       { id: 'i', kind: 'helper', key: 'inscription', text: 'sweep the floor\nmop the floor', x: 30, y: 100, s: 28, r: 0, plates: [0, 1, 2], seed: 1 },
       { id: 'sl', kind: 'helper', key: 'seal', text: '殆', x: 130, y: 186, s: 11, r: 3, plates: [0, 1, 2], seed: 5 }],
-    strokes: [], dreamLine: 'I was late for a swim, but the pool was in my grandmother’s kitchen', slug: 'p.03 · 三 · 셋 · forange/lmauve/seafoam · mis 0.5 · #0427 · dawn',
+    strokes: [], dreamLine: 'I was late for a swim, but the pool was in my grandmother’s kitchen', slug: 'p.03 · 三 · forange/lmauve/seafoam · mis 0.5 · #0427 · dawn',
   };
 }
 
@@ -26,8 +26,8 @@ export default async function specimen(root: HTMLElement) {
     const from = +(qq.get('from') ?? 1), to = +(qq.get('to') ?? 16), w = +(qq.get('w') ?? 330);
     root.innerHTML = `<main style="padding:10px;display:flex;flex-wrap:wrap;gap:10px"></main>`;
     const m = root.querySelector('main')!;
-    const go = () => { m.innerHTML = ''; for (const p of is.pages.filter((p) => p.n >= from && p.n <= to)) { const src = pipeline().render(p, w * 1.5); const c = document.createElement('canvas'); c.width = src.width; c.height = src.height; c.style.width = w + 'px'; c.getContext('2d')!.drawImage(src, 0, 0); m.append(c); } };
-    go(); onFontsLoaded(go);
+    const go = () => { m.innerHTML = ''; for (const p of is.pages.filter((p) => p.n >= from && p.n <= to)) { const src = pipeline().render(p, w * 1.5, { view: +(qq.get('view') ?? 0) }); const c = document.createElement('canvas'); c.width = src.width; c.height = src.height; c.style.width = w + 'px'; c.getContext('2d')!.drawImage(src, 0, 0); m.append(c); } };
+    go(); onFontsLoaded(() => { pipeline().invalidate(); go(); });
     return;
   }
   root.innerHTML = `<main style="padding:24px;display:grid;gap:24px"><div style="display:flex;gap:16px;align-items:flex-start" id="row"></div><div id="grid" style="display:grid;grid-template-columns:repeat(auto-fill,96px);gap:6px"></div></main>`;
@@ -64,7 +64,7 @@ export default async function specimen(root: HTMLElement) {
   onFontsLoaded(draw);
   const grid = root.querySelector('#grid')!;
   for (const key of KEYS) {
-    const p: Page = { ...samplePage(), ground: 'rice', objects: [{ id: key, kind: 'obj', key, x: 74, y: 105, s: 150, r: 0, plates: [0, 1, 2], seed: 1 }], dreamLine: '', slug: OBJ[key].en + ' · ' + OBJ[key].ko + ' · ' + OBJ[key].ja };
+    const p: Page = { ...samplePage(), ground: 'rice', objects: [{ id: key, kind: 'obj', key, x: 74, y: 105, s: 150, r: 0, plates: [0, 1, 2], seed: 1 }], dreamLine: '', slug: OBJ[key].en + ' · ' + OBJ[key].ja };
     const src = pipeline().render(p, 192);
     const c = document.createElement('canvas'); c.width = src.width; c.height = src.height; c.style.width = '96px';
     c.getContext('2d')!.drawImage(src, 0, 0);

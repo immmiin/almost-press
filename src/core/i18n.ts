@@ -1,85 +1,105 @@
-// UI language: English default, Korean and Japanese. Labels can drift between languages as an issue progresses.
-export type Lang = 'en' | 'ko' | 'ja';
-export const LANGS: Lang[] = ['en', 'ko', 'ja'];
+// UI language: English default, switchable to Japanese. Labels can drift between the two as an issue progresses.
+// The only Korean on the site is the brand name 거의 인쇄소 (the dream input still reads Korean).
+export type Lang = 'en' | 'ja';
+export const LANGS: Lang[] = ['en', 'ja'];
 
-type Dict = Record<string, [string, string, string]>;
+type Dict = Record<string, [string, string]>;
 const D: Dict = {
-  press: ['press', '인쇄소', '印刷所'],
-  title: ['ALMOST PRESS', '거의 인쇄소', 'ほぼ印刷所'],
-  zine: ['A Day I Almost Remember', '거의 기억나는 하루', 'ほとんど覚えている一日'],
-  start: ['Start tonight’s dream', '오늘 밤의 꿈을 시작', '今夜の夢をはじめる'],
-  unroll: ['Unroll Issue 01', '제1호 펼치기', '第一号をひらく'],
-  about: ['About the press', '인쇄소에 대하여', '印刷所について'],
-  drawer: ['stamps', '도장', '判子'],
-  search: ['search: swan, 고래, 時計…', '찾기: swan, 고래, 時計…', 'さがす: swan, 고래, 時計…'],
-  inks: ['inks', '잉크', 'インク'],
-  tools: ['tools', '도구', '道具'],
-  print: ['PRINT', '인쇄', '刷る'],
-  hold: ['hold to print', '누르고 있기', '長押し'],
-  dream: ['the dream, one line', '꿈 한 줄', '夢をひとこと'],
-  sound: ['sound', '소리', '音'],
-  on: ['on', '켜짐', '入'],
-  off: ['off', '꺼짐', '切'],
-  plate: ['plate', '판', '版'],
-  plates: ['plate view', '판 보기', '版を見る'],
-  mis: ['misreg.', '어긋남', 'ずれ'],
-  density: ['density', '농도', '濃度'],
-  grain: ['grain', '입자', '粒'],
-  drift: ['drift', '표류', '漂い'],
-  side: ['side effects', '부작용', '副作用'],
-  mild: ['mild', '약', '弱'],
-  normal: ['normal', '보통', '中'],
-  wild: ['wild', '강', '強'],
-  forgotten: ['forgotten', '잊힌 것', '忘れもの'],
-  reprint: ['Reprint this page', '이 쪽 다시 찍기', 'この頁を刷り直す'],
-  ground: ['ground', '바탕', '地'],
-  helpers: ['type & marks', '글자와 표식', '文字としるし'],
-  page: ['page', '쪽', '頁'],
-  issue: ['issue', '호', '号'],
-  run: ['Run the edition', '부수 찍기', '刷り上げる'],
-  booklet: ['booklet', '책자', '冊子'],
-  scroll: ['hand scroll', '두루마리', '絵巻'],
-  colophon: ['colophon', '판권', '奥付'],
-  back: ['back to the press', '인쇄소로', '印刷所へ'],
-  gate: ['gate', '문', '門'],
-  lock: ['lock language', '언어 고정', '言語を固定'],
-  keepJam: ['Keep the jam', '걸린 채로 두기', '紙づまりを残す'],
-  reprintJam: ['Reprint', '다시 찍기', '刷り直す'],
-  start_btn: ['START', '시작', '開始'],
-  empty: ['nothing answers to that. write it in the dream and it prints as type.', '그런 도장은 없어요. 꿈에 쓰면 글자로 찍혀요.', 'その判子はない。夢に書けば文字として刷られる。'],
-  all: ['all', '전부', '全部'],
-  a_drawer: ['object drawer', '사물 서랍', '判子の引き出し'],
-  a_inks: ['inks and plates', '잉크와 판', 'インクと版'],
-  a_fwd: ['bring forward', '앞으로', '前へ'],
-  a_bwd: ['send back', '뒤로', '後ろへ'],
-  a_page: ['the page: click an object to select it, Tab cycles objects, arrow keys nudge', '쪽: 사물을 눌러 고르고, Tab으로 넘기고, 화살표로 옮기기', '頁: 判子を押して選ぶ、Tab で順に、矢印で動かす'],
-  a_lang: ['language', '언어', '言語'],
-  unrolling: ['unrolling…', '펼치는 중…', 'ひらいています…'],
-  cover: ['cover', '표지', '表紙'],
-  backcover: ['back cover', '뒤표지', '裏表紙'],
-  prevSpread: ['previous spread', '이전 펼침면', '前の見開き'],
-  nextSpread: ['next spread', '다음 펼침면', '次の見開き'],
-  x_zine: ['Zine PDF', '진 PDF', 'ジン PDF'],
-  x_spreads: ['Spreads PDF', '펼침면 PDF', '見開き PDF'],
-  x_plates: ['Plates (masters)', '판 (마스터)', '版 (マスター)'],
-  x_instagram: ['Instagram images', '인스타그램 이미지', 'インスタグラム画像'],
-  x_all: ['All', '전부', '全部'],
-  x_hold: ['hold START', 'START를 누르고 있기', 'START を長押し'],
-  x_jam: ['paper jam', '종이 걸림', '紙づまり'],
-  x_files: ['the edition', '판본', '刷り上がり'],
-  x_again: ['Run again', '다시 돌리기', 'もう一度刷る'],
-  x_skip: ['skip', '건너뛰기', 'とばす'],
-  x_reader: ['back to the scroll', '두루마리로', '絵巻へ'],
-  home: ['home', '집', '家'],
-  table: ['table', '식탁', '食卓'],
-  sky: ['sky', '하늘', '空'],
-  nature: ['garden & sea', '정원과 바다', '庭と海'],
-  creature: ['creatures', '생물', '生きもの'],
-  thing: ['things', '물건', 'もの'],
-  body: ['body', '몸', '体'],
-  place: ['places', '장소', '場所'],
+  press: ['press', '印刷所'],
+  title: ['ALMOST PRESS', 'ほぼ印刷所'],
+  start: ['Start tonight’s dream', '今夜の夢をはじめる'],
+  unroll: ['Unroll Issue 01', '第一号をひらく'],
+  about: ['About the press', '印刷所について'],
+  drawer: ['stamps', '判子'],
+  search: ['search: swan, 時計…', 'さがす: swan, 時計…'],
+  inks: ['inks', 'インク'],
+  tools: ['tools', '道具'],
+  print: ['PRINT', '刷る'],
+  hold: ['hold to print', '長押し'],
+  dream: ['the dream, one line', '夢をひとこと'],
+  dreamPh: ['a swan in the kitchen…', '台所の白鳥…'],
+  sound: ['sound', '音'],
+  on: ['on', '入'],
+  off: ['off', '切'],
+  plate: ['plate', '版'],
+  plates: ['plate view', '版を見る'],
+  mis: ['misreg.', 'ずれ'],
+  density: ['density', '濃度'],
+  grain: ['grain', '粒'],
+  drift: ['drift', '漂い'],
+  side: ['side effects', '副作用'],
+  mild: ['mild', '弱'],
+  normal: ['normal', '中'],
+  wild: ['wild', '強'],
+  memory: ['memory', '記憶'],
+  m_off: ['off', '無'],
+  m_gentle: ['gentle', '淡'],
+  forgotten: ['forgotten', '忘れもの'],
+  reprint: ['Reprint this page', 'この頁を刷り直す'],
+  ground: ['ground', '地'],
+  helpers: ['type & marks', '文字としるし'],
+  page: ['page', '頁'],
+  issue: ['issue', '号'],
+  run: ['Run the edition', '刷り上げる'],
+  booklet: ['booklet', '冊子'],
+  scroll: ['hand scroll', '絵巻'],
+  colophon: ['colophon', '奥付'],
+  back: ['back to the press', '印刷所へ'],
+  gate: ['gate', '門'],
+  lock: ['lock language', '言語を固定'],
+  keepJam: ['Keep the jam', '紙づまりを残す'],
+  reprintJam: ['Reprint', '刷り直す'],
+  start_btn: ['START', '開始'],
+  empty: ['nothing answers to that. write it in the dream and it prints as type.', 'その判子はない。夢に書けば文字として刷られる。'],
+  all: ['all', '全部'],
+  a_drawer: ['object drawer', '判子の引き出し'],
+  a_inks: ['inks and plates', 'インクと版'],
+  a_fwd: ['bring forward', '前へ'],
+  a_bwd: ['send back', '後ろへ'],
+  a_page: ['the page: click an object to select it, Tab cycles objects, arrow keys nudge', '頁: 判子を押して選ぶ、Tab で順に、矢印で動かす'],
+  a_lang: ['language', '言語'],
+  unrolling: ['unrolling…', 'ひらいています…'],
+  cover: ['cover', '表紙'],
+  backcover: ['back cover', '裏表紙'],
+  prevSpread: ['previous spread', '前の見開き'],
+  nextSpread: ['next spread', '次の見開き'],
+  x_zine: ['Zine PDF', 'ジン PDF'],
+  x_spreads: ['Spreads PDF', '見開き PDF'],
+  x_plates: ['Plates (masters)', '版 (マスター)'],
+  x_instagram: ['Instagram images', 'インスタグラム画像'],
+  x_all: ['All', '全部'],
+  x_hold: ['hold START', 'START を長押し'],
+  x_jam: ['paper jam', '紙づまり'],
+  x_files: ['the edition', '刷り上がり'],
+  x_again: ['Run again', 'もう一度刷る'],
+  x_skip: ['skip', 'とばす'],
+  x_reader: ['back to the scroll', '絵巻へ'],
+  home: ['home', '家'],
+  table: ['table', '食卓'],
+  sky: ['sky', '空'],
+  nature: ['garden & sea', '庭と海'],
+  creature: ['creatures', '生きもの'],
+  thing: ['things', 'もの'],
+  body: ['body', '体'],
+  place: ['places', '場所'],
+  newIssue: ['+ new issue', '新しい号'],
+  sleep: ['Fall asleep', '眠る'],
+  sleepAsk: ['the press will dream the remaining sheets', '残りの頁は印刷所が夢に見る'],
+  sleepYes: ['Dream them', '夢に見る'],
+  sleepNo: ['Stay awake', '起きている'],
+  dreamFor: ['Dream it for me', '夢を刷ってもらう'],
+  dreamForPh: ['one sentence: a swan in the kitchen…', 'ひとこと: 台所の白鳥…'],
+  poster: ['Print this sheet', 'この頁を刷る'],
+  share: ['Share this issue', 'この号を共有'],
+  reel: ['Record a reel', 'リールを撮る'],
+  open: ['Open a .almost file', '.almost を開く'],
+  bound: ['bound · sixteen sheets', '製本 · 十六頁'],
+  remembers: ['the press remembers', '印刷所は覚えている'],
+  collapse: ['fold away', 'たたむ'],
+  expand: ['unfold', 'ひらく'],
 };
-let lang: Lang = (localStorage.getItem('ap.lang') as Lang) || 'en';
+const stored = localStorage.getItem('ap.lang');
+let lang: Lang = stored === 'ja' ? 'ja' : 'en';
 let locked = localStorage.getItem('ap.lock') === '1';
 const listeners = new Set<() => void>();
 /** 0..1 how much labels drift away from the chosen language. */
@@ -90,7 +110,7 @@ export const getLang = () => lang;
 export const isLocked = () => locked;
 export function setLang(l: Lang) {
   lang = l; localStorage.setItem('ap.lang', l);
-  document.documentElement.lang = l === 'ko' ? 'ko' : l === 'ja' ? 'ja' : 'en';
+  document.documentElement.lang = l;
   listeners.forEach((f) => f());
 }
 export function setLocked(v: boolean) { locked = v; localStorage.setItem('ap.lock', v ? '1' : '0'); listeners.forEach((f) => f()); }
@@ -103,9 +123,10 @@ export function t(key: string): string {
   const e = D[key];
   if (!e) return key;
   let li = LANGS.indexOf(lang);
-  if (!locked && driftAmount > 0 && h(key) < driftAmount * 0.45) li = (li + 1 + Math.floor(h(key + '·') * 2)) % 3;
+  if (!locked && driftAmount > 0 && h(key) < driftAmount * 0.45) li = 1 - li;
   return e[li];
 }
 export const tA = (key: string) => (D[key] ? D[key][LANGS.indexOf(lang)] : key);
-export const tAll = (key: string) => D[key] ?? [key, key, key];
-document.documentElement.lang = lang === 'ko' ? 'ko' : lang === 'ja' ? 'ja' : 'en';
+/** Both languages of a key: [en, ja]. */
+export const tAll = (key: string): [string, string] => D[key] ?? [key, key];
+document.documentElement.lang = lang;

@@ -21,43 +21,43 @@
    "objects": [
     {
      "id": "a0",
-     "kind": "obj",
-     "key": "clock",
-     "x": 102,
-     "y": 132,
-     "s": 26,
-     "r": 0,
-     "plates": [
-      2,
-      1,
-      0
-     ],
-     "seed": 18
-    },
-    {
-     "id": "a1",
      "kind": "helper",
      "key": "title",
      "text": "",
-     "x": 60,
-     "y": 78,
-     "s": 94,
+     "x": 72,
+     "y": 100,
+     "s": 128,
      "r": 0,
      "plates": [
       1,
       0,
       2
      ],
-     "seed": 29
+     "seed": 16
+    },
+    {
+     "id": "a1",
+     "kind": "obj",
+     "key": "clock",
+     "x": 30,
+     "y": 170,
+     "s": 22,
+     "r": -4,
+     "plates": [
+      2,
+      1,
+      0
+     ],
+     "seed": 25
     },
     {
      "id": "a2",
      "kind": "helper",
-     "key": "inscription",
-     "text": "issue 01\n#0001 · 16pp · A5\nrisograph, 3 inks",
-     "x": 29,
-     "y": 181.04010695187165,
-     "s": 26,
+     "key": "stretch",
+     "text": "ISSUE #0001",
+     "x": 96,
+     "y": 176,
+     "s": 62,
      "r": 0,
      "plates": [
       0,
@@ -69,11 +69,11 @@
     {
      "id": "a3",
      "kind": "helper",
-     "key": "date",
-     "text": "二〇二六",
-     "x": 140,
-     "y": 150,
-     "s": 3.4,
+     "key": "inscription",
+     "text": "16pp · A5 · risograph · 3 inks\nseed #0001 · dawn → moonlight",
+     "x": 88,
+     "y": 189.33333333333334,
+     "s": 44,
      "r": 0,
      "plates": [
       0,
@@ -85,10 +85,42 @@
     {
      "id": "a4",
      "kind": "helper",
+     "key": "date",
+     "text": "二〇二六",
+     "x": 141,
+     "y": 52,
+     "s": 3.4,
+     "r": 0,
+     "plates": [
+      0,
+      1,
+      2
+     ],
+     "seed": 68
+    },
+    {
+     "id": "a5",
+     "kind": "helper",
+     "key": "issueSeal",
+     "text": "0001",
+     "x": 112,
+     "y": 22,
+     "s": 9,
+     "r": 3,
+     "plates": [
+      0,
+      1,
+      2
+     ],
+     "seed": 5
+    },
+    {
+     "id": "a6",
+     "kind": "helper",
      "key": "seal",
      "text": "殆",
-     "x": 126,
-     "y": 188,
+     "x": 130,
+     "y": 22,
      "s": 13,
      "r": -4,
      "plates": [
@@ -142,7 +174,7 @@
      ],
      "size": 0.15,
      "intensity": 0.3,
-     "seed": 105,
+     "seed": 107,
      "plate": 0
     },
     {
@@ -187,7 +219,7 @@
      ],
      "size": 0.1,
      "intensity": 0.25,
-     "seed": 106,
+     "seed": 108,
      "plate": 2
     }
    ],
@@ -210,7 +242,7 @@
    "ground": "rice",
    "objects": [
     {
-     "id": "a7",
+     "id": "a9",
      "kind": "obj",
      "key": "clock",
      "x": 104,
@@ -222,10 +254,10 @@
       0,
       1
      ],
-     "seed": 67
+     "seed": 81
     },
     {
-     "id": "a8",
+     "id": "aa",
      "kind": "obj",
      "key": "table",
      "x": 70,
@@ -237,10 +269,10 @@
       1,
       2
      ],
-     "seed": 74
+     "seed": 88
     },
     {
-     "id": "a9",
+     "id": "ab",
      "kind": "obj",
      "key": "teacup",
      "x": 58,
@@ -252,10 +284,10 @@
       0,
       2
      ],
-     "seed": 81
+     "seed": 95
     },
     {
-     "id": "aa",
+     "id": "ac",
      "kind": "obj",
      "key": "toast",
      "x": 82,
@@ -267,10 +299,10 @@
       2,
       1
      ],
-     "seed": 88
+     "seed": 102
     },
     {
-     "id": "ab",
+     "id": "ad",
      "kind": "helper",
      "key": "inscription",
      "text": "the kitchen at 6:40\nsweep the floor",
@@ -283,10 +315,10 @@
       1,
       2
      ],
-     "seed": 159
+     "seed": 185
     },
     {
-     "id": "ac",
+     "id": "ae",
      "kind": "helper",
      "key": "seal",
      "text": "殆",
@@ -313,19 +345,19 @@
    "layout": "art-directed",
    "setoff": [
     {
-     "id": "a3z",
+     "id": "a41",
      "kind": "obj",
      "key": "clock",
-     "x": 102,
-     "y": 132,
-     "s": 26,
-     "r": 0,
+     "x": 30,
+     "y": 170,
+     "s": 22,
+     "r": -4,
      "plates": [
       2,
       1,
       0
      ],
-     "seed": 18
+     "seed": 25
     }
    ]
   },
@@ -339,7 +371,7 @@
    "ground": "rice",
    "objects": [
     {
-     "id": "ad",
+     "id": "af",
      "kind": "obj",
      "key": "clock",
      "x": 100,
@@ -351,10 +383,10 @@
       0,
       1
      ],
-     "seed": 109
+     "seed": 123
     },
     {
-     "id": "ae",
+     "id": "ag",
      "kind": "obj",
      "key": "table",
      "x": 72,
@@ -366,10 +398,10 @@
       1,
       2
      ],
-     "seed": 116
+     "seed": 130
     },
     {
-     "id": "af",
+     "id": "ah",
      "kind": "obj",
      "key": "swan",
      "x": 46,
@@ -381,11 +413,11 @@
       2,
       0
      ],
-     "seed": 123,
+     "seed": 137,
      "flip": true
     },
     {
-     "id": "ag",
+     "id": "ai",
      "kind": "obj",
      "key": "teacup",
      "x": 82,
@@ -397,10 +429,10 @@
       0,
       2
      ],
-     "seed": 130
+     "seed": 144
     },
     {
-     "id": "ah",
+     "id": "aj",
      "kind": "helper",
      "key": "vja",
      "text": "白鳥が台所にいる",
@@ -413,10 +445,10 @@
       0,
       1
      ],
-     "seed": 237
+     "seed": 263
     },
     {
-     "id": "ai",
+     "id": "ak",
      "kind": "helper",
      "key": "inscription",
      "text": "someone was already\nsitting there",
@@ -429,10 +461,10 @@
       1,
       2
      ],
-     "seed": 250
+     "seed": 276
     },
     {
-     "id": "aj",
+     "id": "al",
      "kind": "helper",
      "key": "seal",
      "text": "殆",
@@ -459,7 +491,7 @@
    "layout": "art-directed",
    "setoff": [
     {
-     "id": "a40",
+     "id": "a42",
      "kind": "obj",
      "key": "clock",
      "x": 104,
@@ -471,10 +503,10 @@
       0,
       1
      ],
-     "seed": 67
+     "seed": 81
     },
     {
-     "id": "a41",
+     "id": "a43",
      "kind": "obj",
      "key": "table",
      "x": 70,
@@ -486,10 +518,10 @@
       1,
       2
      ],
-     "seed": 74
+     "seed": 88
     },
     {
-     "id": "a42",
+     "id": "a44",
      "kind": "obj",
      "key": "teacup",
      "x": 58,
@@ -501,10 +533,10 @@
       0,
       2
      ],
-     "seed": 81
+     "seed": 95
     },
     {
-     "id": "a43",
+     "id": "a45",
      "kind": "obj",
      "key": "toast",
      "x": 82,
@@ -516,7 +548,7 @@
       2,
       1
      ],
-     "seed": 88
+     "seed": 102
     }
    ]
   },
@@ -530,7 +562,7 @@
    "ground": "horizon",
    "objects": [
     {
-     "id": "ak",
+     "id": "am",
      "kind": "obj",
      "key": "clock",
      "x": 78,
@@ -542,10 +574,10 @@
       2,
       0
      ],
-     "seed": 158
+     "seed": 172
     },
     {
-     "id": "al",
+     "id": "an",
      "kind": "obj",
      "key": "table",
      "x": 112,
@@ -557,13 +589,13 @@
       0,
       2
      ],
-     "seed": 165
+     "seed": 179
     },
     {
-     "id": "am",
+     "id": "ao",
      "kind": "helper",
      "key": "hangul",
-     "text": "늦었다",
+     "text": "遅れた",
      "x": 52,
      "y": 182,
      "s": 60,
@@ -573,13 +605,13 @@
       1,
       2
      ],
-     "seed": 302
+     "seed": 328
     },
     {
-     "id": "an",
+     "id": "ap",
      "kind": "helper",
      "key": "inscription",
-     "text": "p.04 · late\n늦었다 · 遅れた",
+     "text": "p.04 · late\n遅れた",
      "x": 120,
      "y": 28.958677685950413,
      "s": 24,
@@ -589,10 +621,10 @@
       1,
       2
      ],
-     "seed": 315
+     "seed": 341
     },
     {
-     "id": "ao",
+     "id": "aq",
      "kind": "helper",
      "key": "seal",
      "text": "殆",
@@ -659,7 +691,7 @@
      ],
      "size": 0.1,
      "intensity": 0.95,
-     "seed": 125
+     "seed": 127
     },
     {
      "tool": "bleed",
@@ -675,7 +707,7 @@
      ],
      "size": 0.07,
      "intensity": 0.8,
-     "seed": 126,
+     "seed": 128,
      "plate": 0
     }
    ],
@@ -689,7 +721,7 @@
    "layout": "art-directed",
    "setoff": [
     {
-     "id": "a44",
+     "id": "a46",
      "kind": "obj",
      "key": "clock",
      "x": 100,
@@ -701,10 +733,10 @@
       0,
       1
      ],
-     "seed": 109
+     "seed": 123
     },
     {
-     "id": "a45",
+     "id": "a47",
      "kind": "obj",
      "key": "table",
      "x": 72,
@@ -716,10 +748,10 @@
       1,
       2
      ],
-     "seed": 116
+     "seed": 130
     },
     {
-     "id": "a46",
+     "id": "a48",
      "kind": "obj",
      "key": "swan",
      "x": 46,
@@ -731,11 +763,11 @@
       2,
       0
      ],
-     "seed": 123,
+     "seed": 137,
      "flip": true
     },
     {
-     "id": "a47",
+     "id": "a49",
      "kind": "obj",
      "key": "teacup",
      "x": 82,
@@ -747,7 +779,7 @@
       0,
       2
      ],
-     "seed": 130
+     "seed": 144
     }
    ]
   },
@@ -761,7 +793,7 @@
    "ground": "pool",
    "objects": [
     {
-     "id": "ar",
+     "id": "at",
      "kind": "obj",
      "key": "ladder",
      "x": 118,
@@ -773,10 +805,10 @@
       0,
       1
      ],
-     "seed": 207
+     "seed": 221
     },
     {
-     "id": "as",
+     "id": "au",
      "kind": "obj",
      "key": "swan",
      "x": 62,
@@ -788,10 +820,10 @@
       2,
       0
      ],
-     "seed": 214
+     "seed": 228
     },
     {
-     "id": "at",
+     "id": "av",
      "kind": "obj",
      "key": "clock",
      "x": 40,
@@ -803,16 +835,16 @@
       2,
       1
      ],
-     "seed": 221,
+     "seed": 235,
      "opacity": 0.9
     },
     {
-     "id": "au",
+     "id": "aw",
      "kind": "helper",
      "key": "inscription",
-     "text": "the water was warm\n물이 따뜻했다\n水はぬるかった",
+     "text": "the water was warm\n水はぬるかった",
      "x": 107,
-     "y": 41.49242424242424,
+     "y": 39.78787878787879,
      "s": 30,
      "r": 0,
      "plates": [
@@ -820,10 +852,10 @@
       1,
       2
      ],
-     "seed": 406
+     "seed": 432
     },
     {
-     "id": "av",
+     "id": "ax",
      "kind": "helper",
      "key": "seal",
      "text": "殆",
@@ -882,7 +914,7 @@
      ],
      "size": 0.18,
      "intensity": 0.55,
-     "seed": 132,
+     "seed": 134,
      "plate": 0
     },
     {
@@ -927,7 +959,7 @@
      ],
      "size": 0.1,
      "intensity": 0.5,
-     "seed": 133,
+     "seed": 135,
      "plate": 1
     }
    ],
@@ -941,7 +973,7 @@
    "layout": "art-directed",
    "setoff": [
     {
-     "id": "a48",
+     "id": "a4a",
      "kind": "obj",
      "key": "clock",
      "x": 78,
@@ -953,10 +985,10 @@
       2,
       0
      ],
-     "seed": 158
+     "seed": 172
     },
     {
-     "id": "a49",
+     "id": "a4b",
      "kind": "obj",
      "key": "table",
      "x": 112,
@@ -968,7 +1000,7 @@
       0,
       2
      ],
-     "seed": 165
+     "seed": 179
     }
    ]
   },
@@ -982,7 +1014,7 @@
    "ground": "horizon",
    "objects": [
     {
-     "id": "a1a",
+     "id": "a1c",
      "kind": "obj",
      "key": "stairs",
      "x": 94,
@@ -994,10 +1026,10 @@
       0,
       2
      ],
-     "seed": 340
+     "seed": 354
     },
     {
-     "id": "a1b",
+     "id": "a1d",
      "kind": "obj",
      "key": "clock",
      "x": 118,
@@ -1009,11 +1041,11 @@
       1,
       2
      ],
-     "seed": 347,
+     "seed": 361,
      "opacity": 0.6
     },
     {
-     "id": "ay",
+     "id": "a10",
      "kind": "obj",
      "key": "swan",
      "x": 22,
@@ -1025,13 +1057,13 @@
       2,
       0
      ],
-     "seed": 256,
+     "seed": 270,
      "opacity": 1,
      "blur": 0,
      "flip": false
     },
     {
-     "id": "az",
+     "id": "a11",
      "kind": "obj",
      "key": "swan",
      "x": 46.54264847786511,
@@ -1043,13 +1075,13 @@
       2,
       0
      ],
-     "seed": 263,
+     "seed": 277,
      "opacity": 0.9436363636363636,
      "blur": 0.06363636363636363,
      "flip": true
     },
     {
-     "id": "a10",
+     "id": "a12",
      "kind": "obj",
      "key": "swan",
      "x": 64.34987730703642,
@@ -1061,13 +1093,13 @@
       2,
       0
      ],
-     "seed": 270,
+     "seed": 284,
      "opacity": 0.8872727272727272,
      "blur": 0.12727272727272726,
      "flip": false
     },
     {
-     "id": "a11",
+     "id": "a13",
      "kind": "obj",
      "key": "swan",
      "x": 71.25896821612733,
@@ -1079,13 +1111,13 @@
       2,
       0
      ],
-     "seed": 277,
+     "seed": 291,
      "opacity": 0.8309090909090909,
      "blur": 0.1909090909090909,
      "flip": false
     },
     {
-     "id": "a12",
+     "id": "a14",
      "kind": "obj",
      "key": "swan",
      "x": 67.26992120513782,
@@ -1097,13 +1129,13 @@
       2,
       0
      ],
-     "seed": 284,
+     "seed": 298,
      "opacity": 0.7745454545454545,
      "blur": 0.2545454545454545,
      "flip": true
     },
     {
-     "id": "a13",
+     "id": "a15",
      "kind": "obj",
      "key": "swan",
      "x": 56.545454545454554,
@@ -1115,13 +1147,13 @@
       2,
       0
      ],
-     "seed": 291,
+     "seed": 305,
      "opacity": 0.7181818181818183,
      "blur": 0.3181818181818182,
      "flip": false
     },
     {
-     "id": "a14",
+     "id": "a16",
      "kind": "obj",
      "key": "swan",
      "x": 45.82098788577126,
@@ -1133,13 +1165,13 @@
       2,
       0
      ],
-     "seed": 298,
+     "seed": 312,
      "opacity": 0.6618181818181819,
      "blur": 0.3818181818181818,
      "flip": false
     },
     {
-     "id": "a15",
+     "id": "a17",
      "kind": "obj",
      "key": "swan",
      "x": 41.83194087478175,
@@ -1151,13 +1183,13 @@
       2,
       0
      ],
-     "seed": 305,
+     "seed": 319,
      "opacity": 0.6054545454545455,
      "blur": 0.44545454545454544,
      "flip": true
     },
     {
-     "id": "a16",
+     "id": "a18",
      "kind": "obj",
      "key": "swan",
      "x": 48.741031783872685,
@@ -1169,13 +1201,13 @@
       2,
       0
      ],
-     "seed": 312,
+     "seed": 326,
      "opacity": 0.5490909090909091,
      "blur": 0.509090909090909,
      "flip": false
     },
     {
-     "id": "a17",
+     "id": "a19",
      "kind": "obj",
      "key": "swan",
      "x": 66.54826061304401,
@@ -1187,13 +1219,13 @@
       2,
       0
      ],
-     "seed": 319,
+     "seed": 333,
      "opacity": 0.4927272727272727,
      "blur": 0.5727272727272728,
      "flip": false
     },
     {
-     "id": "a18",
+     "id": "a1a",
      "kind": "obj",
      "key": "swan",
      "x": 91.09090909090908,
@@ -1205,13 +1237,13 @@
       2,
       0
      ],
-     "seed": 326,
+     "seed": 340,
      "opacity": 0.4363636363636364,
      "blur": 0.6363636363636364,
      "flip": true
     },
     {
-     "id": "a19",
+     "id": "a1b",
      "kind": "obj",
      "key": "swan",
      "x": 115.63355756877421,
@@ -1223,18 +1255,18 @@
       2,
       0
      ],
-     "seed": 333,
+     "seed": 347,
      "opacity": 0.38,
      "blur": 0.7,
      "flip": false
     },
     {
-     "id": "a1c",
+     "id": "a1e",
      "kind": "helper",
      "key": "inscription",
-     "text": "twelve of them\n열두 마리\n十二羽",
+     "text": "twelve of them\n十二羽",
      "x": 25,
-     "y": 35.17857142857143,
+     "y": 33.57142857142857,
      "s": 22,
      "r": 0,
      "plates": [
@@ -1242,10 +1274,10 @@
       1,
       2
      ],
-     "seed": 640
+     "seed": 666
     },
     {
-     "id": "a1d",
+     "id": "a1f",
      "kind": "helper",
      "key": "seal",
      "text": "殆",
@@ -1296,7 +1328,7 @@
      ],
      "size": 0.2,
      "intensity": 0.95,
-     "seed": 150
+     "seed": 152
     },
     {
      "tool": "haze",
@@ -1332,7 +1364,7 @@
      ],
      "size": 0.14,
      "intensity": 0.7,
-     "seed": 151
+     "seed": 153
     },
     {
      "tool": "haze",
@@ -1368,7 +1400,7 @@
      ],
      "size": 0.12,
      "intensity": 0.6,
-     "seed": 152
+     "seed": 154
     },
     {
      "tool": "bokashi",
@@ -1412,7 +1444,7 @@
      ],
      "size": 0.12,
      "intensity": 0.32,
-     "seed": 153,
+     "seed": 155,
      "plate": 2
     }
    ],
@@ -1426,7 +1458,7 @@
    "layout": "art-directed",
    "setoff": [
     {
-     "id": "a4a",
+     "id": "a4c",
      "kind": "obj",
      "key": "ladder",
      "x": 118,
@@ -1438,10 +1470,10 @@
       0,
       1
      ],
-     "seed": 207
+     "seed": 221
     },
     {
-     "id": "a4b",
+     "id": "a4d",
      "kind": "obj",
      "key": "swan",
      "x": 62,
@@ -1453,10 +1485,10 @@
       2,
       0
      ],
-     "seed": 214
+     "seed": 228
     },
     {
-     "id": "a4c",
+     "id": "a4e",
      "kind": "obj",
      "key": "clock",
      "x": 40,
@@ -1468,7 +1500,7 @@
       2,
       1
      ],
-     "seed": 221,
+     "seed": 235,
      "opacity": 0.9
     }
    ]
@@ -1483,7 +1515,7 @@
    "ground": "rice",
    "objects": [
     {
-     "id": "a1i",
+     "id": "a1k",
      "kind": "obj",
      "key": "table",
      "x": 72,
@@ -1495,10 +1527,10 @@
       1,
       2
      ],
-     "seed": 396
+     "seed": 410
     },
     {
-     "id": "a1j",
+     "id": "a1l",
      "kind": "obj",
      "key": "teacup",
      "x": 56,
@@ -1510,10 +1542,10 @@
       0,
       2
      ],
-     "seed": 403
+     "seed": 417
     },
     {
-     "id": "a1k",
+     "id": "a1m",
      "kind": "obj",
      "key": "clock",
      "x": 96,
@@ -1525,10 +1557,10 @@
       0,
       1
      ],
-     "seed": 410
+     "seed": 424
     },
     {
-     "id": "a1l",
+     "id": "a1n",
      "kind": "obj",
      "key": "chair",
      "x": 30,
@@ -1540,10 +1572,10 @@
       2,
       0
      ],
-     "seed": 417
+     "seed": 431
     },
     {
-     "id": "a1m",
+     "id": "a1o",
      "kind": "obj",
      "key": "swan",
      "x": 118,
@@ -1555,48 +1587,16 @@
       2,
       0
      ],
-     "seed": 424
-    },
-    {
-     "id": "a1n",
-     "kind": "helper",
-     "key": "inscription",
-     "text": "table · 식탁 · 机",
-     "x": 71,
-     "y": 177.96428571428572,
-     "s": 22,
-     "r": 0,
-     "plates": [
-      0,
-      1,
-      2
-     ],
-     "seed": 783
-    },
-    {
-     "id": "a1o",
-     "kind": "helper",
-     "key": "inscription",
-     "text": "cup",
-     "x": 45,
-     "y": 104.825,
-     "s": 6,
-     "r": 0,
-     "plates": [
-      0,
-      1,
-      2
-     ],
-     "seed": 796
+     "seed": 438
     },
     {
      "id": "a1p",
      "kind": "helper",
      "key": "inscription",
-     "text": "clock · 時計",
-     "x": 120,
-     "y": 26,
-     "s": 16,
+     "text": "table · 机",
+     "x": 71,
+     "y": 179.025,
+     "s": 22,
      "r": 0,
      "plates": [
       0,
@@ -1609,10 +1609,10 @@
      "id": "a1q",
      "kind": "helper",
      "key": "inscription",
-     "text": "chair",
-     "x": 17.5,
-     "y": 126.9625,
-     "s": 7,
+     "text": "cup",
+     "x": 45,
+     "y": 104.825,
+     "s": 6,
      "r": 0,
      "plates": [
       0,
@@ -1625,10 +1625,10 @@
      "id": "a1r",
      "kind": "helper",
      "key": "inscription",
-     "text": "swan?",
-     "x": 116,
-     "y": 119.1,
-     "s": 8,
+     "text": "clock · 時計",
+     "x": 120,
+     "y": 26,
+     "s": 16,
      "r": 0,
      "plates": [
       0,
@@ -1639,6 +1639,38 @@
     },
     {
      "id": "a1s",
+     "kind": "helper",
+     "key": "inscription",
+     "text": "chair",
+     "x": 17.5,
+     "y": 126.9625,
+     "s": 7,
+     "r": 0,
+     "plates": [
+      0,
+      1,
+      2
+     ],
+     "seed": 848
+    },
+    {
+     "id": "a1t",
+     "kind": "helper",
+     "key": "inscription",
+     "text": "swan?",
+     "x": 116,
+     "y": 119.1,
+     "s": 8,
+     "r": 0,
+     "plates": [
+      0,
+      1,
+      2
+     ],
+     "seed": 861
+    },
+    {
+     "id": "a1u",
      "kind": "helper",
      "key": "seal",
      "text": "殆",
@@ -1705,7 +1737,7 @@
      ],
      "size": 0.3,
      "intensity": 1,
-     "seed": 165
+     "seed": 167
     },
     {
      "tool": "haze",
@@ -1757,7 +1789,7 @@
      ],
      "size": 0.3,
      "intensity": 1,
-     "seed": 166
+     "seed": 168
     },
     {
      "tool": "haze",
@@ -1801,7 +1833,7 @@
      ],
      "size": 0.22,
      "intensity": 0.8,
-     "seed": 167
+     "seed": 169
     }
    ],
    "mis": 0.45,
@@ -1814,7 +1846,7 @@
    "layout": "art-directed",
    "setoff": [
     {
-     "id": "a4d",
+     "id": "a4f",
      "kind": "obj",
      "key": "stairs",
      "x": 94,
@@ -1826,10 +1858,10 @@
       0,
       2
      ],
-     "seed": 340
+     "seed": 354
     },
     {
-     "id": "a4e",
+     "id": "a4g",
      "kind": "obj",
      "key": "clock",
      "x": 118,
@@ -1841,11 +1873,11 @@
       1,
       2
      ],
-     "seed": 347,
+     "seed": 361,
      "opacity": 0.6
     },
     {
-     "id": "a4f",
+     "id": "a4h",
      "kind": "obj",
      "key": "swan",
      "x": 22,
@@ -1857,13 +1889,13 @@
       2,
       0
      ],
-     "seed": 256,
+     "seed": 270,
      "opacity": 1,
      "blur": 0,
      "flip": false
     },
     {
-     "id": "a4g",
+     "id": "a4i",
      "kind": "obj",
      "key": "swan",
      "x": 46.54264847786511,
@@ -1875,13 +1907,13 @@
       2,
       0
      ],
-     "seed": 263,
+     "seed": 277,
      "opacity": 0.9436363636363636,
      "blur": 0.06363636363636363,
      "flip": true
     },
     {
-     "id": "a4h",
+     "id": "a4j",
      "kind": "obj",
      "key": "swan",
      "x": 64.34987730703642,
@@ -1893,13 +1925,13 @@
       2,
       0
      ],
-     "seed": 270,
+     "seed": 284,
      "opacity": 0.8872727272727272,
      "blur": 0.12727272727272726,
      "flip": false
     },
     {
-     "id": "a4i",
+     "id": "a4k",
      "kind": "obj",
      "key": "swan",
      "x": 71.25896821612733,
@@ -1911,13 +1943,13 @@
       2,
       0
      ],
-     "seed": 277,
+     "seed": 291,
      "opacity": 0.8309090909090909,
      "blur": 0.1909090909090909,
      "flip": false
     },
     {
-     "id": "a4j",
+     "id": "a4l",
      "kind": "obj",
      "key": "swan",
      "x": 67.26992120513782,
@@ -1929,13 +1961,13 @@
       2,
       0
      ],
-     "seed": 284,
+     "seed": 298,
      "opacity": 0.7745454545454545,
      "blur": 0.2545454545454545,
      "flip": true
     },
     {
-     "id": "a4k",
+     "id": "a4m",
      "kind": "obj",
      "key": "swan",
      "x": 56.545454545454554,
@@ -1947,13 +1979,13 @@
       2,
       0
      ],
-     "seed": 291,
+     "seed": 305,
      "opacity": 0.7181818181818183,
      "blur": 0.3181818181818182,
      "flip": false
     },
     {
-     "id": "a4l",
+     "id": "a4n",
      "kind": "obj",
      "key": "swan",
      "x": 45.82098788577126,
@@ -1965,13 +1997,13 @@
       2,
       0
      ],
-     "seed": 298,
+     "seed": 312,
      "opacity": 0.6618181818181819,
      "blur": 0.3818181818181818,
      "flip": false
     },
     {
-     "id": "a4m",
+     "id": "a4o",
      "kind": "obj",
      "key": "swan",
      "x": 41.83194087478175,
@@ -1983,13 +2015,13 @@
       2,
       0
      ],
-     "seed": 305,
+     "seed": 319,
      "opacity": 0.6054545454545455,
      "blur": 0.44545454545454544,
      "flip": true
     },
     {
-     "id": "a4n",
+     "id": "a4p",
      "kind": "obj",
      "key": "swan",
      "x": 48.741031783872685,
@@ -2001,13 +2033,13 @@
       2,
       0
      ],
-     "seed": 312,
+     "seed": 326,
      "opacity": 0.5490909090909091,
      "blur": 0.509090909090909,
      "flip": false
     },
     {
-     "id": "a4o",
+     "id": "a4q",
      "kind": "obj",
      "key": "swan",
      "x": 66.54826061304401,
@@ -2019,13 +2051,13 @@
       2,
       0
      ],
-     "seed": 319,
+     "seed": 333,
      "opacity": 0.4927272727272727,
      "blur": 0.5727272727272728,
      "flip": false
     },
     {
-     "id": "a4p",
+     "id": "a4r",
      "kind": "obj",
      "key": "swan",
      "x": 91.09090909090908,
@@ -2037,13 +2069,13 @@
       2,
       0
      ],
-     "seed": 326,
+     "seed": 340,
      "opacity": 0.4363636363636364,
      "blur": 0.6363636363636364,
      "flip": true
     },
     {
-     "id": "a4q",
+     "id": "a4s",
      "kind": "obj",
      "key": "swan",
      "x": 115.63355756877421,
@@ -2055,7 +2087,7 @@
       2,
       0
      ],
-     "seed": 333,
+     "seed": 347,
      "opacity": 0.38,
      "blur": 0.7,
      "flip": false
@@ -2072,7 +2104,7 @@
    "ground": "rice",
    "objects": [
     {
-     "id": "a1w",
+     "id": "a1y",
      "kind": "obj",
      "key": "table",
      "x": 96,
@@ -2084,10 +2116,10 @@
       0,
       2
      ],
-     "seed": 494
+     "seed": 508
     },
     {
-     "id": "a1x",
+     "id": "a1z",
      "kind": "obj",
      "key": "table",
      "x": 102,
@@ -2099,11 +2131,11 @@
       0,
       2
      ],
-     "seed": 495,
+     "seed": 509,
      "opacity": 0.38
     },
     {
-     "id": "a1y",
+     "id": "a20",
      "kind": "obj",
      "key": "swan",
      "x": 104,
@@ -2115,10 +2147,10 @@
       2,
       0
      ],
-     "seed": 508
+     "seed": 522
     },
     {
-     "id": "a1z",
+     "id": "a21",
      "kind": "obj",
      "key": "swan",
      "x": 99,
@@ -2130,11 +2162,11 @@
       2,
       0
      ],
-     "seed": 509,
+     "seed": 523,
      "opacity": 0.38
     },
     {
-     "id": "a20",
+     "id": "a22",
      "kind": "helper",
      "key": "vja",
      "text": "時計が",
@@ -2147,10 +2179,10 @@
       1,
       2
      ],
-     "seed": 952
+     "seed": 978
     },
     {
-     "id": "a21",
+     "id": "a23",
      "kind": "helper",
      "key": "inscription",
      "text": "the floor is a wall now",
@@ -2163,10 +2195,10 @@
       1,
       2
      ],
-     "seed": 965
+     "seed": 991
     },
     {
-     "id": "a22",
+     "id": "a24",
      "kind": "helper",
      "key": "seal",
      "text": "殆",
@@ -2249,7 +2281,7 @@
      ],
      "size": 0.05,
      "intensity": 0.45,
-     "seed": 175,
+     "seed": 177,
      "plate": 1
     },
     {
@@ -2286,7 +2318,7 @@
      ],
      "size": 0.1,
      "intensity": 0.75,
-     "seed": 176
+     "seed": 178
     }
    ],
    "mis": 0.5,
@@ -2299,7 +2331,7 @@
    "layout": "art-directed",
    "setoff": [
     {
-     "id": "a4r",
+     "id": "a4t",
      "kind": "obj",
      "key": "table",
      "x": 72,
@@ -2311,10 +2343,10 @@
       1,
       2
      ],
-     "seed": 396
+     "seed": 410
     },
     {
-     "id": "a4s",
+     "id": "a4u",
      "kind": "obj",
      "key": "teacup",
      "x": 56,
@@ -2326,10 +2358,10 @@
       0,
       2
      ],
-     "seed": 403
+     "seed": 417
     },
     {
-     "id": "a4t",
+     "id": "a4v",
      "kind": "obj",
      "key": "clock",
      "x": 96,
@@ -2341,10 +2373,10 @@
       0,
       1
      ],
-     "seed": 410
+     "seed": 424
     },
     {
-     "id": "a4u",
+     "id": "a4w",
      "kind": "obj",
      "key": "chair",
      "x": 30,
@@ -2356,10 +2388,10 @@
       2,
       0
      ],
-     "seed": 417
+     "seed": 431
     },
     {
-     "id": "a4v",
+     "id": "a4x",
      "kind": "obj",
      "key": "swan",
      "x": 118,
@@ -2371,7 +2403,7 @@
       2,
       0
      ],
-     "seed": 424
+     "seed": 438
     }
    ]
   },
@@ -2385,7 +2417,7 @@
    "ground": "rice",
    "objects": [
     {
-     "id": "a25",
+     "id": "a27",
      "kind": "obj",
      "key": "clock",
      "x": 52,
@@ -2397,10 +2429,10 @@
       0,
       1
      ],
-     "seed": 557
+     "seed": 571
     },
     {
-     "id": "a26",
+     "id": "a28",
      "kind": "obj",
      "key": "clock",
      "x": 58,
@@ -2412,11 +2444,11 @@
       0,
       1
      ],
-     "seed": 558,
+     "seed": 572,
      "opacity": 0.38
     },
     {
-     "id": "a27",
+     "id": "a29",
      "kind": "obj",
      "key": "teacup",
      "x": 40,
@@ -2428,10 +2460,10 @@
       0,
       2
      ],
-     "seed": 571
+     "seed": 585
     },
     {
-     "id": "a28",
+     "id": "a2a",
      "kind": "obj",
      "key": "teacup",
      "x": 45,
@@ -2443,11 +2475,11 @@
       0,
       2
      ],
-     "seed": 572,
+     "seed": 586,
      "opacity": 0.38
     },
     {
-     "id": "a29",
+     "id": "a2b",
      "kind": "helper",
      "key": "vja",
      "text": "大きくなる",
@@ -2460,10 +2492,10 @@
       1,
       2
      ],
-     "seed": 1069
+     "seed": 1095
     },
     {
-     "id": "a2a",
+     "id": "a2c",
      "kind": "helper",
      "key": "inscription",
      "text": "and bigger",
@@ -2476,10 +2508,10 @@
       1,
       2
      ],
-     "seed": 1082
+     "seed": 1108
     },
     {
-     "id": "a2b",
+     "id": "a2d",
      "kind": "helper",
      "key": "seal",
      "text": "殆",
@@ -2562,7 +2594,7 @@
      ],
      "size": 0.05,
      "intensity": 0.45,
-     "seed": 184,
+     "seed": 186,
      "plate": 1
     },
     {
@@ -2599,7 +2631,7 @@
      ],
      "size": 0.1,
      "intensity": 0.75,
-     "seed": 185
+     "seed": 187
     }
    ],
    "mis": 0.5,
@@ -2612,7 +2644,7 @@
    "layout": "art-directed",
    "setoff": [
     {
-     "id": "a4w",
+     "id": "a4y",
      "kind": "obj",
      "key": "table",
      "x": 96,
@@ -2624,10 +2656,10 @@
       0,
       2
      ],
-     "seed": 494
+     "seed": 508
     },
     {
-     "id": "a4x",
+     "id": "a4z",
      "kind": "obj",
      "key": "table",
      "x": 102,
@@ -2639,11 +2671,11 @@
       0,
       2
      ],
-     "seed": 495,
+     "seed": 509,
      "opacity": 0.38
     },
     {
-     "id": "a4y",
+     "id": "a50",
      "kind": "obj",
      "key": "swan",
      "x": 104,
@@ -2655,10 +2687,10 @@
       2,
       0
      ],
-     "seed": 508
+     "seed": 522
     },
     {
-     "id": "a4z",
+     "id": "a51",
      "kind": "obj",
      "key": "swan",
      "x": 99,
@@ -2670,7 +2702,7 @@
       2,
       0
      ],
-     "seed": 509,
+     "seed": 523,
      "opacity": 0.38
     }
    ]
@@ -2685,7 +2717,7 @@
    "ground": "checker",
    "objects": [
     {
-     "id": "a2e",
+     "id": "a2g",
      "kind": "obj",
      "key": "clock",
      "x": 74,
@@ -2697,10 +2729,10 @@
       0,
       1
      ],
-     "seed": 620
+     "seed": 634
     },
     {
-     "id": "a2f",
+     "id": "a2h",
      "kind": "obj",
      "key": "table",
      "x": 50,
@@ -2712,10 +2744,10 @@
       1,
       2
      ],
-     "seed": 627
+     "seed": 641
     },
     {
-     "id": "a2g",
+     "id": "a2i",
      "kind": "obj",
      "key": "swan",
      "x": 112,
@@ -2727,10 +2759,10 @@
       2,
       0
      ],
-     "seed": 634
+     "seed": 648
     },
     {
-     "id": "a2h",
+     "id": "a2j",
      "kind": "helper",
      "key": "stretch",
      "text": "LATE",
@@ -2743,10 +2775,10 @@
       0,
       2
      ],
-     "seed": 1173
+     "seed": 1199
     },
     {
-     "id": "a2i",
+     "id": "a2k",
      "kind": "helper",
      "key": "seal",
      "text": "殆",
@@ -2805,7 +2837,7 @@
      ],
      "size": 0.24,
      "intensity": 1,
-     "seed": 191
+     "seed": 193
     },
     {
      "tool": "wave",
@@ -2849,7 +2881,7 @@
      ],
      "size": 0.16,
      "intensity": 0.7,
-     "seed": 192
+     "seed": 194
     },
     {
      "tool": "wave",
@@ -2885,7 +2917,7 @@
      ],
      "size": 0.08,
      "intensity": 0.5,
-     "seed": 193
+     "seed": 195
     }
    ],
    "mis": 0.55,
@@ -2898,7 +2930,7 @@
    "layout": "art-directed",
    "setoff": [
     {
-     "id": "a50",
+     "id": "a52",
      "kind": "obj",
      "key": "clock",
      "x": 52,
@@ -2910,10 +2942,10 @@
       0,
       1
      ],
-     "seed": 557
+     "seed": 571
     },
     {
-     "id": "a51",
+     "id": "a53",
      "kind": "obj",
      "key": "clock",
      "x": 58,
@@ -2925,11 +2957,11 @@
       0,
       1
      ],
-     "seed": 558,
+     "seed": 572,
      "opacity": 0.38
     },
     {
-     "id": "a52",
+     "id": "a54",
      "kind": "obj",
      "key": "teacup",
      "x": 40,
@@ -2941,10 +2973,10 @@
       0,
       2
      ],
-     "seed": 571
+     "seed": 585
     },
     {
-     "id": "a53",
+     "id": "a55",
      "kind": "obj",
      "key": "teacup",
      "x": 45,
@@ -2956,7 +2988,7 @@
       0,
       2
      ],
-     "seed": 572,
+     "seed": 586,
      "opacity": 0.38
     }
    ]
@@ -2971,7 +3003,7 @@
    "ground": "wash",
    "objects": [
     {
-     "id": "a2m",
+     "id": "a2o",
      "kind": "obj",
      "key": "stairs",
      "x": 76,
@@ -2983,10 +3015,10 @@
       2,
       1
      ],
-     "seed": 676
+     "seed": 690
     },
     {
-     "id": "a2n",
+     "id": "a2p",
      "kind": "obj",
      "key": "swan",
      "x": 104,
@@ -2998,11 +3030,11 @@
       1,
       0
      ],
-     "seed": 683,
+     "seed": 697,
      "opacity": 0.8
     },
     {
-     "id": "a2o",
+     "id": "a2q",
      "kind": "helper",
      "key": "vja",
      "text": "流れる",
@@ -3015,10 +3047,10 @@
       1,
       2
      ],
-     "seed": 1264
+     "seed": 1290
     },
     {
-     "id": "a2p",
+     "id": "a2r",
      "kind": "helper",
      "key": "seal",
      "text": "殆",
@@ -3085,7 +3117,7 @@
      ],
      "size": 0.2,
      "intensity": 1,
-     "seed": 198
+     "seed": 200
     },
     {
      "tool": "pour",
@@ -3129,7 +3161,7 @@
      ],
      "size": 0.14,
      "intensity": 0.9,
-     "seed": 199
+     "seed": 201
     },
     {
      "tool": "bleed",
@@ -3141,7 +3173,7 @@
      ],
      "size": 0.18,
      "intensity": 0.6,
-     "seed": 200,
+     "seed": 202,
      "plate": 2
     }
    ],
@@ -3155,7 +3187,7 @@
    "layout": "art-directed",
    "setoff": [
     {
-     "id": "a54",
+     "id": "a56",
      "kind": "obj",
      "key": "clock",
      "x": 74,
@@ -3167,10 +3199,10 @@
       0,
       1
      ],
-     "seed": 620
+     "seed": 634
     },
     {
-     "id": "a55",
+     "id": "a57",
      "kind": "obj",
      "key": "table",
      "x": 50,
@@ -3182,10 +3214,10 @@
       1,
       2
      ],
-     "seed": 627
+     "seed": 641
     },
     {
-     "id": "a56",
+     "id": "a58",
      "kind": "obj",
      "key": "swan",
      "x": 112,
@@ -3197,7 +3229,7 @@
       2,
       0
      ],
-     "seed": 634
+     "seed": 648
     }
    ]
   },
@@ -3211,7 +3243,7 @@
    "ground": "rice",
    "objects": [
     {
-     "id": "a2t",
+     "id": "a2v",
      "kind": "word",
      "key": "chair",
      "style": 1,
@@ -3224,12 +3256,12 @@
       1,
       2
      ],
-     "seed": 107
+     "seed": 109
     },
     {
-     "id": "a2u",
+     "id": "a2w",
      "kind": "word",
-     "key": "의자",
+     "key": "いす",
      "style": 0,
      "x": 104,
      "y": 72,
@@ -3240,10 +3272,10 @@
       0,
       2
      ],
-     "seed": 108
+     "seed": 110
     },
     {
-     "id": "a2v",
+     "id": "a2x",
      "kind": "word",
      "key": "椅子",
      "style": 2,
@@ -3256,10 +3288,10 @@
       1,
       0
      ],
-     "seed": 109
+     "seed": 111
     },
     {
-     "id": "a2w",
+     "id": "a2y",
      "kind": "word",
      "key": "clock",
      "style": 3,
@@ -3272,10 +3304,10 @@
       1,
       2
      ],
-     "seed": 110
+     "seed": 112
     },
     {
-     "id": "a2x",
+     "id": "a2z",
      "kind": "word",
      "key": "時計",
      "style": 5,
@@ -3288,12 +3320,12 @@
       2,
       0
      ],
-     "seed": 111
+     "seed": 113
     },
     {
-     "id": "a2y",
+     "id": "a30",
      "kind": "word",
-     "key": "백조",
+     "key": "白鳥",
      "style": 4,
      "x": 104,
      "y": 170,
@@ -3304,10 +3336,10 @@
       0,
       1
      ],
-     "seed": 112
+     "seed": 114
     },
     {
-     "id": "a2z",
+     "id": "a31",
      "kind": "obj",
      "key": "teacup",
      "x": 128,
@@ -3319,10 +3351,10 @@
       1,
       2
      ],
-     "seed": 767
+     "seed": 781
     },
     {
-     "id": "a30",
+     "id": "a32",
      "kind": "helper",
      "key": "seal",
      "text": "殆",
@@ -3381,7 +3413,7 @@
      ],
      "size": 0.2,
      "intensity": 1,
-     "seed": 209
+     "seed": 211
     },
     {
      "tool": "break",
@@ -3425,7 +3457,7 @@
      ],
      "size": 0.2,
      "intensity": 0.9,
-     "seed": 210
+     "seed": 212
     },
     {
      "tool": "wave",
@@ -3461,7 +3493,7 @@
      ],
      "size": 0.06,
      "intensity": 0.4,
-     "seed": 211
+     "seed": 213
     }
    ],
    "mis": 0.6,
@@ -3474,7 +3506,7 @@
    "layout": "art-directed",
    "setoff": [
     {
-     "id": "a57",
+     "id": "a59",
      "kind": "obj",
      "key": "stairs",
      "x": 76,
@@ -3486,10 +3518,10 @@
       2,
       1
      ],
-     "seed": 676
+     "seed": 690
     },
     {
-     "id": "a58",
+     "id": "a5a",
      "kind": "obj",
      "key": "swan",
      "x": 104,
@@ -3501,7 +3533,7 @@
       1,
       0
      ],
-     "seed": 683,
+     "seed": 697,
      "opacity": 0.8
     }
    ]
@@ -3516,7 +3548,7 @@
    "ground": "wash",
    "objects": [
     {
-     "id": "a34",
+     "id": "a36",
      "kind": "obj",
      "key": "swan",
      "x": 74,
@@ -3528,11 +3560,11 @@
       1,
       2
      ],
-     "seed": 802,
+     "seed": 816,
      "fx": "hole"
     },
     {
-     "id": "a35",
+     "id": "a37",
      "kind": "obj",
      "key": "clock",
      "x": 116,
@@ -3544,14 +3576,14 @@
       0,
       2
      ],
-     "seed": 809,
+     "seed": 823,
      "opacity": 0.5
     },
     {
-     "id": "a36",
+     "id": "a38",
      "kind": "helper",
      "key": "stretch",
-     "text": "백조 in the 台所",
+     "text": "白鳥 in the 台所",
      "x": 74,
      "y": 176,
      "s": 92,
@@ -3561,10 +3593,10 @@
       0,
       2
      ],
-     "seed": 1498
+     "seed": 1524
     },
     {
-     "id": "a37",
+     "id": "a39",
      "kind": "helper",
      "key": "seal",
      "text": "殆",
@@ -3615,7 +3647,7 @@
      ],
      "size": 0.42,
      "intensity": 1,
-     "seed": 216
+     "seed": 218
     },
     {
      "tool": "bokashi",
@@ -3659,7 +3691,7 @@
      ],
      "size": 0.12,
      "intensity": 0.35,
-     "seed": 217,
+     "seed": 219,
      "plate": 1
     }
    ],
@@ -3674,7 +3706,7 @@
    "groundPlate": 0,
    "setoff": [
     {
-     "id": "a59",
+     "id": "a5b",
      "kind": "word",
      "key": "chair",
      "style": 1,
@@ -3687,12 +3719,12 @@
       1,
       2
      ],
-     "seed": 107
+     "seed": 109
     },
     {
-     "id": "a5a",
+     "id": "a5c",
      "kind": "word",
-     "key": "의자",
+     "key": "いす",
      "style": 0,
      "x": 104,
      "y": 72,
@@ -3703,10 +3735,10 @@
       0,
       2
      ],
-     "seed": 108
+     "seed": 110
     },
     {
-     "id": "a5b",
+     "id": "a5d",
      "kind": "word",
      "key": "椅子",
      "style": 2,
@@ -3719,10 +3751,10 @@
       1,
       0
      ],
-     "seed": 109
+     "seed": 111
     },
     {
-     "id": "a5c",
+     "id": "a5e",
      "kind": "word",
      "key": "clock",
      "style": 3,
@@ -3735,10 +3767,10 @@
       1,
       2
      ],
-     "seed": 110
+     "seed": 112
     },
     {
-     "id": "a5d",
+     "id": "a5f",
      "kind": "word",
      "key": "時計",
      "style": 5,
@@ -3751,12 +3783,12 @@
       2,
       0
      ],
-     "seed": 111
+     "seed": 113
     },
     {
-     "id": "a5e",
+     "id": "a5g",
      "kind": "word",
-     "key": "백조",
+     "key": "白鳥",
      "style": 4,
      "x": 104,
      "y": 170,
@@ -3767,10 +3799,10 @@
       0,
       1
      ],
-     "seed": 112
+     "seed": 114
     },
     {
-     "id": "a5f",
+     "id": "a5h",
      "kind": "obj",
      "key": "teacup",
      "x": 128,
@@ -3782,7 +3814,7 @@
       1,
       2
      ],
-     "seed": 767
+     "seed": 781
     }
    ]
   },
@@ -3796,7 +3828,7 @@
    "ground": "rice",
    "objects": [
     {
-     "id": "a3a",
+     "id": "a3c",
      "kind": "obj",
      "key": "clock",
      "x": 74,
@@ -3808,15 +3840,15 @@
       0,
       2
      ],
-     "seed": 844
+     "seed": 858
     },
     {
-     "id": "a3b",
+     "id": "a3d",
      "kind": "helper",
      "key": "inscription",
-     "text": "again · 다시 · また",
+     "text": "again · また",
      "x": 26,
-     "y": 184,
+     "y": 185,
      "s": 24,
      "r": 0,
      "plates": [
@@ -3824,10 +3856,10 @@
       1,
       2
      ],
-     "seed": 1563
+     "seed": 1589
     },
     {
-     "id": "a3c",
+     "id": "a3e",
      "kind": "helper",
      "key": "seal",
      "text": "殆",
@@ -3858,7 +3890,7 @@
      ],
      "size": 0.26,
      "intensity": 1,
-     "seed": 221
+     "seed": 223
     },
     {
      "tool": "pour",
@@ -3894,7 +3926,7 @@
      ],
      "size": 0.08,
      "intensity": 0.5,
-     "seed": 222
+     "seed": 224
     }
    ],
    "mis": 1.4,
@@ -3910,7 +3942,7 @@
    "layout": "art-directed",
    "setoff": [
     {
-     "id": "a5g",
+     "id": "a5i",
      "kind": "obj",
      "key": "clock",
      "x": 116,
@@ -3922,11 +3954,11 @@
       0,
       2
      ],
-     "seed": 809,
+     "seed": 823,
      "opacity": 0.5
     },
     {
-     "id": "a5m",
+     "id": "a5o",
      "kind": "obj",
      "key": "clock",
      "x": 100,
@@ -3938,11 +3970,11 @@
       0,
       1
      ],
-     "seed": 109,
+     "seed": 123,
      "opacity": 1.6
     },
     {
-     "id": "a5n",
+     "id": "a5p",
      "kind": "obj",
      "key": "table",
      "x": 72,
@@ -3954,11 +3986,11 @@
       1,
       2
      ],
-     "seed": 116,
+     "seed": 130,
      "opacity": 1.6
     },
     {
-     "id": "a5o",
+     "id": "a5q",
      "kind": "obj",
      "key": "swan",
      "x": 46,
@@ -3970,12 +4002,12 @@
       2,
       0
      ],
-     "seed": 123,
+     "seed": 137,
      "flip": true,
      "opacity": 1.6
     },
     {
-     "id": "a5p",
+     "id": "a5r",
      "kind": "obj",
      "key": "teacup",
      "x": 82,
@@ -3987,11 +4019,11 @@
       0,
       2
      ],
-     "seed": 130,
+     "seed": 144,
      "opacity": 1.6
     },
     {
-     "id": "a5q",
+     "id": "a5s",
      "kind": "obj",
      "key": "table",
      "x": 72,
@@ -4003,11 +4035,11 @@
       1,
       2
      ],
-     "seed": 396,
+     "seed": 410,
      "opacity": 1.2
     },
     {
-     "id": "a5r",
+     "id": "a5t",
      "kind": "obj",
      "key": "teacup",
      "x": 56,
@@ -4019,11 +4051,11 @@
       0,
       2
      ],
-     "seed": 403,
+     "seed": 417,
      "opacity": 1.2
     },
     {
-     "id": "a5s",
+     "id": "a5u",
      "kind": "obj",
      "key": "clock",
      "x": 96,
@@ -4035,11 +4067,11 @@
       0,
       1
      ],
-     "seed": 410,
+     "seed": 424,
      "opacity": 1.2
     },
     {
-     "id": "a5t",
+     "id": "a5v",
      "kind": "obj",
      "key": "chair",
      "x": 30,
@@ -4051,11 +4083,11 @@
       2,
       0
      ],
-     "seed": 417,
+     "seed": 431,
      "opacity": 1.2
     },
     {
-     "id": "a5u",
+     "id": "a5w",
      "kind": "obj",
      "key": "swan",
      "x": 118,
@@ -4067,7 +4099,7 @@
       2,
       0
      ],
-     "seed": 424,
+     "seed": 438,
      "opacity": 1.2
     }
    ]
@@ -4083,7 +4115,7 @@
    "ground": "wash",
    "objects": [
     {
-     "id": "a3f",
+     "id": "a3h",
      "kind": "obj",
      "key": "clock",
      "x": 72,
@@ -4095,11 +4127,11 @@
       3,
       2
      ],
-     "seed": 879,
+     "seed": 893,
      "opacity": 0.35
     },
     {
-     "id": "a3g",
+     "id": "a3i",
      "kind": "obj",
      "key": "swan",
      "x": 50,
@@ -4111,10 +4143,10 @@
       2,
       0
      ],
-     "seed": 886
+     "seed": 900
     },
     {
-     "id": "a3h",
+     "id": "a3j",
      "kind": "obj",
      "key": "table",
      "x": 104,
@@ -4126,10 +4158,10 @@
       1,
       0
      ],
-     "seed": 893
+     "seed": 907
     },
     {
-     "id": "a3i",
+     "id": "a3k",
      "kind": "obj",
      "key": "stairs",
      "x": 110,
@@ -4141,10 +4173,10 @@
       0,
       2
      ],
-     "seed": 900
+     "seed": 914
     },
     {
-     "id": "a3j",
+     "id": "a3l",
      "kind": "helper",
      "key": "dots",
      "text": "",
@@ -4160,7 +4192,7 @@
      "seed": 41
     },
     {
-     "id": "a3k",
+     "id": "a3m",
      "kind": "helper",
      "key": "dots",
      "text": "",
@@ -4176,7 +4208,7 @@
      "seed": 57
     },
     {
-     "id": "a3l",
+     "id": "a3n",
      "kind": "helper",
      "key": "dots",
      "text": "",
@@ -4192,7 +4224,7 @@
      "seed": 73
     },
     {
-     "id": "a3m",
+     "id": "a3o",
      "kind": "helper",
      "key": "dots",
      "text": "",
@@ -4208,7 +4240,7 @@
      "seed": 89
     },
     {
-     "id": "a3n",
+     "id": "a3p",
      "kind": "helper",
      "key": "seal",
      "text": "殆",
@@ -4267,7 +4299,7 @@
      ],
      "size": 0.3,
      "intensity": 1,
-     "seed": 232
+     "seed": 234
     },
     {
      "tool": "melt",
@@ -4311,7 +4343,7 @@
      ],
      "size": 0.3,
      "intensity": 1,
-     "seed": 233
+     "seed": 235
     },
     {
      "tool": "bleed",
@@ -4347,7 +4379,7 @@
      ],
      "size": 0.2,
      "intensity": 0.9,
-     "seed": 234
+     "seed": 236
     },
     {
      "tool": "bokashi",
@@ -4391,7 +4423,7 @@
      ],
      "size": 0.14,
      "intensity": 0.45,
-     "seed": 235,
+     "seed": 237,
      "plate": 3
     }
    ],
@@ -4405,7 +4437,7 @@
    "layout": "art-directed",
    "setoff": [
     {
-     "id": "a5h",
+     "id": "a5j",
      "kind": "obj",
      "key": "clock",
      "x": 74,
@@ -4417,7 +4449,7 @@
       0,
       2
      ],
-     "seed": 844
+     "seed": 858
     }
    ]
   },
@@ -4432,7 +4464,7 @@
    "ground": "wash",
    "objects": [
     {
-     "id": "a3s",
+     "id": "a3u",
      "kind": "obj",
      "key": "clock",
      "x": 74,
@@ -4444,14 +4476,14 @@
       3,
       2
      ],
-     "seed": 970,
+     "seed": 984,
      "opacity": 0.18
     },
     {
-     "id": "a3t",
+     "id": "a3v",
      "kind": "helper",
      "key": "inscription",
-     "text": "A DAY I ALMOST REMEMBER · issue 01 · seed #0001\n\n“I was late for a swim, but the pool was in my grandmother’s kitchen\nand the clock kept getting bigger.”\ninks: fluorescent orange, mint, light mauve, light lime, seafoam, sky blue,\ncornflower, orchid, violet, fluorescent pink, aqua\ndrift: bleed, mist, haze, horizon, wave, pour, break, tube, echo, melt\nALMOST PRESS · 거의 인쇄소 · ほぼ印刷所",
+     "text": "ALMOST PRESS · Issue #0001 · seed #0001\n\n“I was late for a swim, but the pool was in my grandmother’s kitchen\nand the clock kept getting bigger.”\ninks: fluorescent orange, mint, light mauve, light lime, seafoam, sky blue,\ncornflower, orchid, violet, fluorescent pink, aqua\ndrift: bleed, mist, haze, horizon, wave, pour, break, tube, echo, melt\nALMOST PRESS · 거의 인쇄소 · ほぼ印刷所",
      "x": 62,
      "y": 171.21212121212122,
      "s": 100,
@@ -4461,10 +4493,10 @@
       1,
       2
      ],
-     "seed": 1797
+     "seed": 1823
     },
     {
-     "id": "a3u",
+     "id": "a3w",
      "kind": "helper",
      "key": "seal",
      "text": "殆",
@@ -4523,7 +4555,7 @@
      ],
      "size": 0.34,
      "intensity": 1,
-     "seed": 239
+     "seed": 241
     },
     {
      "tool": "bokashi",
@@ -4567,7 +4599,7 @@
      ],
      "size": 0.18,
      "intensity": 0.4,
-     "seed": 240,
+     "seed": 242,
      "plate": 3
     },
     {
@@ -4580,7 +4612,7 @@
      ],
      "size": 0.3,
      "intensity": 0.8,
-     "seed": 241,
+     "seed": 243,
      "plate": 2
     },
     {
@@ -4617,7 +4649,7 @@
      ],
      "size": 0.2,
      "intensity": 0.8,
-     "seed": 242
+     "seed": 244
     }
    ],
    "mis": 0.6,
@@ -4631,7 +4663,7 @@
    "groundPlate": 0,
    "setoff": [
     {
-     "id": "a5i",
+     "id": "a5k",
      "kind": "obj",
      "key": "clock",
      "x": 72,
@@ -4643,11 +4675,11 @@
       3,
       2
      ],
-     "seed": 879,
+     "seed": 893,
      "opacity": 0.35
     },
     {
-     "id": "a5j",
+     "id": "a5l",
      "kind": "obj",
      "key": "swan",
      "x": 50,
@@ -4659,10 +4691,10 @@
       2,
       0
      ],
-     "seed": 886
+     "seed": 900
     },
     {
-     "id": "a5k",
+     "id": "a5m",
      "kind": "obj",
      "key": "table",
      "x": 104,
@@ -4674,10 +4706,10 @@
       1,
       0
      ],
-     "seed": 893
+     "seed": 907
     },
     {
-     "id": "a5l",
+     "id": "a5n",
      "kind": "obj",
      "key": "stairs",
      "x": 110,
@@ -4689,7 +4721,7 @@
       0,
       2
      ],
-     "seed": 900
+     "seed": 914
     }
    ]
   }

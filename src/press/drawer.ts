@@ -85,11 +85,11 @@ export class Drawer {
     const lang = getLang();
     const doIt = () => {
       if (this.cat === 'ground') {
-        this.grid.innerHTML = GROUNDS.map((g) => `<button type="button" class="dgnd" data-g="${g.id}" aria-pressed="${g.id === this.currentGround}"><span class="dgnd-ch">${g.char}</span><span class="mono">${lang === 'ko' ? g.ko : lang === 'ja' ? g.ja : g.en}</span></button>`).join('');
+        this.grid.innerHTML = GROUNDS.map((g) => `<button type="button" class="dgnd" data-g="${g.id}" aria-pressed="${g.id === this.currentGround}"><span class="dgnd-ch">${g.char}</span><span class="mono">${lang === 'ja' ? g.ja : g.en}</span></button>`).join('');
         return;
       }
       if (this.cat === 'type') {
-        this.grid.innerHTML = HELPERS.map((h) => `<button type="button" class="dstamp dhelp" data-h="${h.id}" aria-label="${lang === 'ko' ? h.ko : lang === 'ja' ? h.ja : h.en}"><span class="dhelp-ch">${h.char}</span><span class="dcap mono">${lang === 'ko' ? h.ko : lang === 'ja' ? h.ja : h.en}</span></button>`).join('');
+        this.grid.innerHTML = HELPERS.map((h) => `<button type="button" class="dstamp dhelp" data-h="${h.id}" aria-label="${lang === 'ja' ? h.ja : h.en}"><span class="dhelp-ch">${h.char}</span><span class="dcap mono">${lang === 'ja' ? h.ja : h.en}</span></button>`).join('');
         return;
       }
       const keys = KEYS.filter((k) => this.matches(k));
@@ -102,7 +102,7 @@ export class Drawer {
       this.grid.innerHTML = list.map(({ key, wrong }) => {
         const o = OBJ[key];
         const label = nameOf(key, lang);
-        return `<button type="button" class="dstamp" data-k="${key}" ${wrong ? `data-w="${wrong}"` : ''} aria-label="${o.en} · ${o.ko} · ${o.ja}"><img alt="" loading="lazy" decoding="async" data-src="${key}" ${wrong ? `data-wrong="${wrong}"` : ''}><span class="dcap"><span class="dno mono">${String(o.no).padStart(3, '0')}</span><span class="dnm">${label}</span></span></button>`;
+        return `<button type="button" class="dstamp" data-k="${key}" ${wrong ? `data-w="${wrong}"` : ''} aria-label="${o.en} · ${o.ja}"><img alt="" loading="lazy" decoding="async" data-src="${key}" ${wrong ? `data-wrong="${wrong}"` : ''}><span class="dcap"><span class="dno mono">${String(o.no).padStart(3, '0')}</span><span class="dnm">${label}</span></span></button>`;
       }).join('');
       this.fillThumbs();
     };

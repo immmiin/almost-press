@@ -47,8 +47,17 @@ export function outlinePath(family: string, str: string, size: number): { path: 
   if (!f) return null;
   // fall back to canvas text when the font has no glyph for a character
   for (const ch of str) if (ch.trim() && f.charToGlyph(ch).index === 0) { pathCache.set(key, null); return null; }
-  const p = f.getPath(str, 0, 0, size);
-  const res = { path: new Path2D(p.toPathData(2)), width: f.getAdvanceWidth(str, size) };
+  // built from the raw commands: opentype's toPathData() can print NaN for some coordinates (e.g. "MO" in Rubik Mono),
+  // which silently truncates the Path2D after the first bad number
+  const path = new Path2D();
+  for (const c of f.getPath(str, 0, 0, size).commands) {
+    if (c.type === 'M') path.moveTo(c.x, c.y);
+    else if (c.type === 'L') path.lineTo(c.x, c.y);
+    else if (c.type === 'Q') path.quadraticCurveTo(c.x1, c.y1, c.x, c.y);
+    else if (c.type === 'C') path.bezierCurveTo(c.x1, c.y1, c.x2, c.y2, c.x, c.y);
+    else if (c.type === 'Z') path.closePath();
+  }
+  const res = { path, width: f.getAdvanceWidth(str, size) };
   pathCache.set(key, res);
   return res;
 }

@@ -104,7 +104,6 @@
 .x-jam-slip { padding: 18px 26px 20px; max-width: 360px; transform: rotate(-1.4deg); }
 .x-jam-h { margin: 0 0 8px; display: flex; align-items: flex-start; gap: 14px; }
 .x-jam-en { font: 20px/1 var(--f-wide); transform: scaleX(1.4) scaleY(.8); transform-origin: left; color: var(--seal); margin-right: 60px; white-space: nowrap; }
-.x-jam-ko { font: 22px/1 var(--f-heavy-ko); }
 .x-jam-ja { font: 800 12px/1 var(--f-display); letter-spacing: .2em; }
 .x-jam-btns { display: flex; gap: 18px; margin-top: 12px; }
 .x-jam-btns button { border: 0; background: none; padding: 4px 0; font: 600 15px var(--f-display); border-bottom: 1.5px solid var(--sumi); }

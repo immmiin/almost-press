@@ -27,26 +27,26 @@ export default function system(root: HTMLElement) {
   $('ui').innerHTML = Object.entries(UI).map(([k, v]) => `<figure class="sw"><i style="background:${v}"></i><figcaption class="mono">${k}<br>${v}</figcaption></figure>`).join('');
   $('inks').innerHTML = INKS.map((i) => `<figure class="ink"><i style="background:${i.hex}"></i><i style="background:${i.hex}"></i><figcaption class="mono">${i.name}${i.metallic ? ' ≈' : ''}<br>${i.hex}</figcaption></figure>`).join('');
   $('presets').innerHTML = PRESETS.map((p) => `<div class="preset slip-mini"><span class="dots">${p.inks.map((id) => `<i style="background:${INK_BY_ID[id].hex}"></i>`).join('')}</span><span class="mono">${p.name}</span></div>`).join('');
-  $('times').innerHTML = DREAM_TIMES.map((d) => `<div class="time" style="background:linear-gradient(180deg,${d.mist.join(',')})"><span class="vert ja">${d.ja}</span><span class="mono">${d.en} · ${d.ko}</span></div>`).join('');
+  $('times').innerHTML = DREAM_TIMES.map((d) => `<div class="time" style="background:linear-gradient(180deg,${d.mist.join(',')})"><span class="vert ja">${d.ja}</span><span class="mono">${d.en}</span></div>`).join('');
   $('type').innerHTML = [
-    ['Shippori Mincho B1', 'var(--f-display)', '夢の印刷所 A Day I Almost Remember', 34],
-    ['Gowun Batang', 'var(--f-ko)', '거의 기억나는 하루', 30],
+    ['Shippori Mincho B1', 'var(--f-display)', '夢の印刷所 ALMOST PRESS', 34],
+    ['Gowun Batang', 'var(--f-ko)', '거의 인쇄소', 30],
     ['Bodoni Moda Italic', 'var(--f-accent);font-style:italic', 'almost, remembered', 34],
     ['Dela Gothic One', 'var(--f-heavy-ja)', '殆ど 白鳥 台所', 34],
-    ['Black Han Sans', 'var(--f-heavy-ko)', '늦었다 수영장', 36],
+    ['Black Han Sans', 'var(--f-heavy-ko)', '거의 인쇄소', 36],
     ['Rubik Mono One (stretched)', 'var(--f-wide);display:inline-block;transform:scaleX(1.6);transform-origin:left', 'PLATE', 24],
     ['IBM Plex Mono', 'var(--f-mono)', 'p.07 · fpink/orchid/mint · mis 2.4 · #0427', 11],
-    ['IBM Plex Sans KR', 'var(--f-body)', 'Body text, 본문, 本文.', 14],
+    ['IBM Plex Sans KR', 'var(--f-body)', 'Body text, 本文.', 14],
     ['DotGothic16', 'var(--f-pixel)', 'PAPER JAM 紙づまり', 18],
-    ['Bagel Fat One', '"Bagel Fat One"', 'grandma 할머니', 34],
-    ['Do Hyeon', '"Do Hyeon"', '수영 swim', 34],
+    ['Bagel Fat One', '"Bagel Fat One"', 'grandma', 34],
+    ['Do Hyeon', '"Do Hyeon"', 'swim', 34],
   ].map(([n, f, s, z]) => `<div class="tline"><span class="mono">${n}</span><span style="font-family:${f};font-size:${z}px;line-height:1.2">${s}</span></div>`).join('');
 
   // materials
   const mat = $('mat');
   const sheet = document.createElement('div');
   sheet.className = 'sheet sys-sheet';
-  sheet.innerHTML = `<span class="mono">rice paper 한지 · deckled</span>`;
+  sheet.innerHTML = `<span class="mono">rice paper 和紙 · deckled</span>`;
   const sw = document.createElement('div'); sw.className = 'sheet-wrap'; sw.append(sheet); mat.append(sw);
   deckle(sheet, 4, 'deckle', 4);
   const vel = document.createElement('div');

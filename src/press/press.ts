@@ -89,7 +89,7 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
   const labels = () => {
     TOOLS.forEach((def, i) => {
       const lang = getLang();
-      const name = lang === 'ko' ? def.ko : lang === 'ja' ? def.ja : def.en;
+      const name = lang === 'ja' ? def.ja : def.en;
       toolBtns[i].querySelector('.stamp-label')!.textContent = name;
       toolBtns[i].setAttribute('aria-label', `${name} — ${def.note}`);
       toolBtns[i].title = def.note;
@@ -141,14 +141,14 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
   const load = () => {
     issue = getIssue();
     const p = currentPage();
-    if (!p.slug) refreshText(issue, p);
+    refreshText(issue, p);
     stage.setPage(p);
     stage.view = inks.view;
     inks.setPage(p);
     drawer.setInks(p.inks, hash(issue.seed, p.n));
     drawer.currentGround = p.ground;
     drawer.renderGrid();
-    ticket.setIssue(ISSUE_NO(issue), issue.dream);
+    ticket.setIssue(ISSUE_NO(issue));
     strip.render(issue);
     syncAtmo();
     vline();

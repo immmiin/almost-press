@@ -8,16 +8,16 @@ import { INK_BY_ID, hexToRgb } from '../design/tokens';
 type Paint = (c: CanvasRenderingContext2D, k: { SOLID: string; TINT: string; WASH: string }) => void;
 export interface GroundPart { plate: number; kind: 'solid' | 'tint' | 'wash'; markup?: string; paint?: Paint; alpha?: number; m?: DOMMatrix }
 
-export const GROUNDS: { id: GroundId; char: string; en: string; ko: string; ja: string }[] = [
-  { id: 'rice', char: '紙', en: 'rice paper', ko: '한지', ja: '和紙' },
-  { id: 'bokashi', char: '暈', en: 'bokashi sky', ko: '선염 하늘', ja: 'ぼかし空' },
-  { id: 'horizon', char: '霞', en: 'mist horizon', ko: '안개 지평', ja: '霞の地平' },
-  { id: 'pool', char: '泳', en: 'pool tiles', ko: '수영장 타일', ja: 'プールのタイル' },
-  { id: 'sea', char: '海', en: 'sea', ko: '바다', ja: '海' },
-  { id: 'cloud', char: '雲', en: 'cloud floor', ko: '구름 바닥', ja: '雲の床' },
-  { id: 'checker', char: '格', en: 'checker floor', ko: '체커 바닥', ja: '市松の床' },
-  { id: 'wash', char: '染', en: 'full-bleed wash', ko: '전면 번짐', ja: '全面の染め' },
-  { id: 'machine', char: '機', en: 'let the machine choose', ko: '기계에게 맡기기', ja: '機械まかせ' },
+export const GROUNDS: { id: GroundId; char: string; en: string; ja: string }[] = [
+  { id: 'rice', char: '紙', en: 'rice paper', ja: '和紙' },
+  { id: 'bokashi', char: '暈', en: 'bokashi sky', ja: 'ぼかし空' },
+  { id: 'horizon', char: '霞', en: 'mist horizon', ja: '霞の地平' },
+  { id: 'pool', char: '泳', en: 'pool tiles', ja: 'プールのタイル' },
+  { id: 'sea', char: '海', en: 'sea', ja: '海' },
+  { id: 'cloud', char: '雲', en: 'cloud floor', ja: '雲の床' },
+  { id: 'checker', char: '格', en: 'checker floor', ja: '市松の床' },
+  { id: 'wash', char: '染', en: 'full-bleed wash', ja: '全面の染め' },
+  { id: 'machine', char: '機', en: 'let the machine choose', ja: '機械まかせ' },
 ];
 const X0 = -BLEED, Y0 = -BLEED, W = PAGE_W + BLEED * 2, H = PAGE_H + BLEED * 2;
 

@@ -1,5 +1,5 @@
-// Layout helpers placed and edited like objects: vertical Japanese line, Hangul block word,
-// stretched English label, tiny inscription block, date column, seal, issue seal, three-script title.
+// Layout helpers placed and edited like objects: vertical Japanese line, heavy block word,
+// stretched English label, tiny inscription block, date column, seal, issue seal, the cover masthead.
 // Fine text (inscriptions, dates, labels) is marked "sharp": it prints on the overlay layer and is not
 // softened by the plate effects — tiny perfectly sharp words over soft images.
 import { s, type Part } from '../riso/parts';
@@ -9,14 +9,14 @@ import { rng } from '../core/rng';
 
 const esc = (v: string) => String(v).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
 
-export const HELPERS: { id: string; char: string; en: string; ko: string; ja: string; def: string }[] = [
-  { id: 'vja', char: '縦', en: 'vertical line', ko: '세로쓰기', ja: '縦書き', def: 'ほとんど覚えている' },
-  { id: 'hangul', char: '韓', en: 'hangul block', ko: '한글 덩어리', ja: 'ハングル', def: '늦었다' },
-  { id: 'stretch', char: '伸', en: 'stretched label', ko: '늘인 글자', ja: '伸ばし文字', def: 'ALMOST' },
-  { id: 'inscription', char: '題', en: 'inscription', ko: '화제', ja: '画題', def: 'a day i almost remember' },
-  { id: 'date', char: '暦', en: 'date column', ko: '날짜', ja: '日付', def: '' },
-  { id: 'seal', char: '殆', en: 'seal', ko: '낙관', ja: '落款', def: '殆' },
-  { id: 'dots', char: '玉', en: 'dot mesh', ko: '점 무늬', ja: '水玉', def: '' },
+export const HELPERS: { id: string; char: string; en: string; ja: string; def: string }[] = [
+  { id: 'vja', char: '縦', en: 'vertical line', ja: '縦書き', def: '夢をひとこと' },
+  { id: 'hangul', char: '太', en: 'heavy block', ja: '太字', def: '遅れた' },
+  { id: 'stretch', char: '伸', en: 'stretched label', ja: '伸ばし文字', def: 'ALMOST' },
+  { id: 'inscription', char: '題', en: 'inscription', ja: '画題', def: 'sweep the floor\nwait for the ink' },
+  { id: 'date', char: '暦', en: 'date column', ja: '日付', def: '' },
+  { id: 'seal', char: '殆', en: 'seal', ja: '落款', def: '殆' },
+  { id: 'dots', char: '玉', en: 'dot mesh', ja: '水玉', def: '' },
 ];
 
 const lines = (o: PageObj) => (o.text ?? '').split('\n');
@@ -31,7 +31,7 @@ export function helperBox(o: PageObj): [number, number, number, number] {
     case 'inscription': { const ls = lines(o); return [0, 0, Math.max(40, Math.max(...ls.map((l) => l.length)) * 4.4), ls.length * 9 + 2]; }
     case 'date': return [0, 0, 10, Math.max(30, txt.length * 8)];
     case 'seal': case 'issueSeal': return [0, 0, 100, 100];
-    case 'title': return [0, 0, 200, 150];
+    case 'title': return [0, 0, 200, 190];
     default: return [0, 0, 100, 100];
   }
 }
@@ -46,9 +46,11 @@ export function helperParts(o: PageObj): Part[] {
       return [...txt].map((ch, i) => s(0, `<text x="12" y="${i * 22 + 21}" font-family="'Shippori Mincho B1',serif" font-weight="800" font-size="20" text-anchor="middle" fill="{F}">${esc(ch)}</text>`));
     }
     case 'hangul': {
+      // a heavy block word: Dela Gothic for kana/kanji/latin, Black Han Sans when the visitor typed Hangul
       const [, , w] = helperBox(o);
-      return [s(1, `<text x="${w / 2 + 3}" y="61" font-family="'Black Han Sans',sans-serif" font-size="64" textLength="${w - 4}" lengthAdjust="spacingAndGlyphs" text-anchor="middle" fill="{F}">${esc(txt)}</text>`),
-        s(0, `<text x="${w / 2}" y="58" font-family="'Black Han Sans',sans-serif" font-size="64" textLength="${w - 4}" lengthAdjust="spacingAndGlyphs" text-anchor="middle" fill="{F}">${esc(txt)}</text>`)];
+      const fam = /[\uAC00-\uD7A3]/.test(txt) ? "'Black Han Sans',sans-serif" : "'Dela Gothic One',sans-serif";
+      return [s(1, `<text x="${w / 2 + 3}" y="61" font-family="${fam}" font-size="58" textLength="${w - 4}" lengthAdjust="spacingAndGlyphs" text-anchor="middle" fill="{F}">${esc(txt)}</text>`),
+        s(0, `<text x="${w / 2}" y="58" font-family="${fam}" font-size="58" textLength="${w - 4}" lengthAdjust="spacingAndGlyphs" text-anchor="middle" fill="{F}">${esc(txt)}</text>`)];
     }
     case 'stretch': {
       const [, , w] = helperBox(o);
@@ -76,13 +78,14 @@ export function helperParts(o: PageObj): Part[] {
       return out;
     }
     case 'title': {
-      // A Day I Almost Remember / 거의 기억나는 하루 / ほとんど覚えている一日 — each script set differently
-      const ja = 'ほとんど覚えている一日';
+      // the cover masthead: ALMOST PRESS wide and flat, 거의 인쇄소 as a heavy block, ほぼ印刷所 set vertically —
+      // each script set differently, never a neat stack
+      const ja = 'ほぼ印刷所';
       return [
-        s(0, `<text x="0" y="40" font-family="'Rubik Mono One',sans-serif" font-size="17" textLength="168" lengthAdjust="spacingAndGlyphs" fill="{F}">A DAY I ALMOST</text>`),
-        s(0, `<text x="0" y="60" font-family="'Rubik Mono One',sans-serif" font-size="17" textLength="132" lengthAdjust="spacingAndGlyphs" fill="{F}">REMEMBER</text>`),
-        s(1, `<text x="2" y="104" font-family="'Black Han Sans',sans-serif" font-size="32" textLength="150" lengthAdjust="spacingAndGlyphs" fill="{F}">거의 기억나는 하루</text>`),
-        ...[...ja].map((ch, i) => s(2, `<text x="190" y="${i * 13 + 12}" font-family="'Shippori Mincho B1',serif" font-weight="800" font-size="12" text-anchor="middle" fill="{F}">${ch}</text>`)),
+        s(0, `<text x="0" y="22" font-family="'Rubik Mono One',sans-serif" font-size="24" textLength="196" lengthAdjust="spacingAndGlyphs" fill="{F}">ALMOST PRESS</text>`),
+        s(1, `<text x="0" y="96" font-family="'Black Han Sans',sans-serif" font-size="66" textLength="150" lengthAdjust="spacingAndGlyphs" fill="{F}">거의</text>`),
+        s(1, `<text x="0" y="150" font-family="'Black Han Sans',sans-serif" font-size="66" textLength="150" lengthAdjust="spacingAndGlyphs" fill="{F}">인쇄소</text>`),
+        ...[...ja].map((ch, i) => s(2, `<text x="184" y="${i * 26 + 62}" font-family="'Shippori Mincho B1',serif" font-weight="800" font-size="24" text-anchor="middle" fill="{F}">${ch}</text>`)),
       ];
     }
   }

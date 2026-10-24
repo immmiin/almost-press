@@ -61,7 +61,7 @@ export default async function exportScreen(root: HTMLElement, params: URLSearchP
           <i class="x-seam"></i>
         </div>
         <div class="x-feet" aria-hidden="true"><i></i><i></i></div>
-        <p class="x-lab x-lab-drum mono" aria-hidden="true">drum · 胴 · 드럼</p>
+        <p class="x-lab x-lab-drum mono" aria-hidden="true">drum · 胴</p>
         <p class="x-lab x-lab-feed mono" aria-hidden="true">feed · rice paper 148×210 + 3 mm</p>
         <p class="x-lab x-lab-master mono" aria-hidden="true">master box · 製版</p>
         <p class="x-lab x-lab-tray mono" aria-hidden="true">← out · 排紙 · time flows right to left</p>
@@ -85,7 +85,7 @@ export default async function exportScreen(root: HTMLElement, params: URLSearchP
     $('.x-skip').textContent = t('x_skip');
     drawMenu();
   };
-  const start = enamelButton('START', '開始 · 시작');
+  const start = enamelButton('START', '開始');
   start.classList.add('x-start');
   start.setAttribute('aria-label', `START · ${t('x_hold')}`);
   $('.x-start-wrap').append(start);
@@ -177,7 +177,7 @@ export default async function exportScreen(root: HTMLElement, params: URLSearchP
     thud(0.6);
     const jam = $('.x-jam');
     jam.hidden = false;
-    jam.innerHTML = `<div class="x-jam-slip slip"><p class="x-jam-h"><span class="x-jam-en">PAPER JAM</span><span class="x-jam-ko">종이 걸림</span><span class="x-jam-ja vert">紙づまり</span></p>
+    jam.innerHTML = `<div class="x-jam-slip slip"><p class="x-jam-h"><span class="x-jam-en">PAPER JAM</span><span class="x-jam-ja vert">紙づまり</span></p>
       <p class="mono">sheet ${pad2(i + 1)}/16 came out crumpled · ${pad2(i + 1)}頁</p>
       <div class="x-jam-btns"><button type="button" class="x-keep">${t('keepJam')}</button><button type="button" class="x-reprint">${t('reprintJam')}</button></div></div>`;
     deckle(jam.querySelector('.x-jam-slip') as HTMLElement, 61, 'torn', 5);

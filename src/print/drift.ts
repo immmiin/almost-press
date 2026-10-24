@@ -91,7 +91,7 @@ export function applyCard(card: Card, c: DriftCtx): void {
     case 'floor-swap': { const opts: GroundId[] = ['pool', 'sea', 'cloud', 'checker', 'horizon', 'wash', 'bokashi']; page.ground = pick(r, opts.filter((g) => g !== page.ground)); break; }
     case 'word-takeover': {
       const o = objs.length ? pick(r, objs) : null; if (!o) break;
-      const lang = pick(r, ['en', 'ko', 'ja'] as const);
+      const lang = pick(r, ['en', 'ja'] as const);
       const w = nameOf(o.key, lang).toLowerCase();
       Object.assign(o, { kind: 'word', key: w, style: Math.floor(r() * 6), s: Math.max(40, o.s * 1.1) });
       break;

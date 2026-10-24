@@ -8,11 +8,12 @@ import { t, tA, onLang } from '../core/i18n';
 import { go } from '../core/router';
 import { atmosphere } from '../atmosphere/atmosphere';
 import { reducedMotion, clamp } from '../core/rng';
-import { kanjiNum, koNum } from '../press/util';
+import { kanjiNum } from '../press/util';
 import { dreamTimeOf, INK_BY_ID } from '../design/tokens';
 import { refreshText } from '../print/loop';
 import { tick } from '../core/sound';
 import type { Issue } from '../model/types';
+import { sealSVG } from '../design/seal';
 
 export default async function reader(root: HTMLElement, params: URLSearchParams) {
   root.innerHTML = `<p class="mono r-loading">${tA('unrolling')}</p>`;
@@ -24,7 +25,7 @@ export default async function reader(root: HTMLElement, params: URLSearchParams)
   const rm = reducedMotion();
   root.innerHTML = `<main class="reader" data-mode="scroll">
     <header class="r-head"><a class="r-back mono" href="#/press">← ${t('back')}</a>
-      <h1 class="r-title"><span class="r-en">${issue.fixed ? 'A Day I Almost Remember' : (issue.dream || 'A Day I Almost Remember')}</span><span class="r-no mono">#${String(issue.seed).padStart(4, '0')} · 16pp · A5</span></h1>
+      <h1 class="r-title"><span class="r-seal" aria-hidden="true">${sealSVG({ size: 30, seed: issue.seed % 97 + 3, rotate: -3 })}</span><span class="r-en">ALMOST PRESS</span><span class="r-no">Issue #${String(issue.seed).padStart(4, '0')}</span><span class="r-spec mono">16pp · A5 · risograph</span></h1>
       <div class="r-ctl"><button type="button" class="r-mode mono" data-m="scroll" aria-pressed="true"></button><button type="button" class="r-mode mono" data-m="booklet" aria-pressed="false"></button>
       <button type="button" class="r-run slip"></button></div></header>
     <section class="r-scroll" aria-label="hand scroll, drag or use arrow keys" tabindex="0"><div class="r-roll r-roll-l" aria-hidden="true"></div><div class="r-track"></div><div class="r-roll r-roll-r" aria-hidden="true"></div></section>
@@ -57,7 +58,7 @@ export default async function reader(root: HTMLElement, params: URLSearchParams)
   track.innerHTML = order.map((i) => {
     const p = pages[i]; const dt = dreamTimeOf(p.n);
     return `<figure class="r-page" data-i="${i}"><div class="r-img" role="img" aria-label="page ${p.n}"></div>
-      <figcaption class="mono"><span class="vert ja">第${kanjiNum(p.n)}頁</span><span>p.${String(p.n).padStart(2, '0')} · ${koNum(p.n)} · ${dt.en}</span><span class="r-drift">${p.drift.join(' · ') || '—'}</span><span>${p.inks.map((id) => INK_BY_ID[id]?.name.toLowerCase()).join(' / ')}</span></figcaption></figure>`;
+      <figcaption class="mono"><span class="vert ja">第${kanjiNum(p.n)}頁</span><span>p.${String(p.n).padStart(2, '0')} · ${dt.en}</span><span class="r-drift">${p.drift.join(' · ') || '—'}</span><span>${p.inks.map((id) => INK_BY_ID[id]?.name.toLowerCase()).join(' / ')}</span></figcaption></figure>`;
   }).join('');
   const figs = [...track.querySelectorAll<HTMLElement>('.r-page')];
   let ri = 0;

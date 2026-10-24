@@ -10,6 +10,7 @@ import { FULL_W, FULL_H } from '../riso/plates';
 import { PAGE_W, PAGE_H, BLEED, type Issue, type Page } from '../model/types';
 import { loadOutlineFonts } from '../type/outlines';
 import { INK_BY_ID } from '../design/tokens';
+import { issueName } from '../model/store';
 import { dreamTimeOf } from '../design/tokens';
 
 export const DPI = 300;
@@ -84,7 +85,7 @@ export function zinePDF(issue: Issue, pages: Rendered[], marks: boolean): Blob {
   const M = marks ? 12 : 0; // slug margin for crop marks
   const fw = FULL_W + M * 2, fh = FULL_H + M * 2;
   const pdf = new jsPDF({ unit: 'mm', format: [fw, fh], orientation: 'portrait', compress: true });
-  pdf.setProperties({ title: `A Day I Almost Remember · #${String(issue.seed).padStart(4, '0')}`, subject: 'ALMOST PRESS · 거의 인쇄소 · ほぼ印刷所', creator: 'ALMOST PRESS', keywords: 'risograph zine A5 bleed 3mm' });
+  pdf.setProperties({ title: issueName(issue), subject: 'ALMOST PRESS · 거의 인쇄소 · ほぼ印刷所', creator: 'ALMOST PRESS', keywords: 'risograph zine A5 bleed 3mm' });
   pages.forEach((r, i) => {
     if (i) pdf.addPage([fw, fh], 'portrait');
     pdf.addImage(r.jpeg, 'JPEG', M, M, FULL_W, FULL_H, `pg${i}`, 'NONE');
@@ -101,7 +102,7 @@ export function zinePDF(issue: Issue, pages: Rendered[], marks: boolean): Blob {
 export async function spreadsPDF(issue: Issue, pages: Rendered[]): Promise<Blob> {
   const SW = PAGE_W * 2 + BLEED * 2, SH = FULL_H;
   const pdf = new jsPDF({ unit: 'mm', format: [SW, SH], orientation: 'landscape', compress: true });
-  pdf.setProperties({ title: `A Day I Almost Remember · spreads · #${String(issue.seed).padStart(4, '0')}`, creator: 'ALMOST PRESS' });
+  pdf.setProperties({ title: `${issueName(issue)} · spreads`, creator: 'ALMOST PRESS' });
   const pxPerMM = PX_W / FULL_W;
   const spreads: [number | null, number | null][] = [[null, 0]];
   for (let i = 1; i < 15; i += 2) spreads.push([i, i + 1]);
@@ -142,7 +143,7 @@ export async function instagram(issue: Issue, pages: Rendered[]): Promise<{ name
     bm.close();
     x.shadowColor = 'transparent';
     x.fillStyle = '#3B3A40'; x.font = '15px "IBM Plex Mono", monospace';
-    x.fillText(`ALMOST PRESS · A Day I Almost Remember · #${String(issue.seed).padStart(4, '0')} · p.${String(i + 1).padStart(2, '0')}/16`, ox, oy + h + 52);
+    x.fillText(`${issueName(issue)} · p.${String(i + 1).padStart(2, '0')}/16`, ox, oy + h + 52);
     out.push({ name: `instagram-p${String(i + 1).padStart(2, '0')}.png`, png: await toBlob(c, 'image/png') });
     await nextFrame();
   }
@@ -150,7 +151,7 @@ export async function instagram(issue: Issue, pages: Rendered[]): Promise<{ name
 }
 
 export function inkList(issue: Issue): string {
-  const lines = [`ALMOST PRESS · A Day I Almost Remember · issue #${String(issue.seed).padStart(4, '0')}`, `dream: ${issue.dream}`, '', 'page · plate · ink · hex'];
+  const lines = [issueName(issue), `dream: ${issue.dream}`, '', 'page · plate · ink · hex'];
   issue.pages.forEach((p) => p.inks.forEach((id, i) => lines.push(`p.${String(p.n).padStart(2, '0')} · plate ${i + 1} · ${INK_BY_ID[id].name}${INK_BY_ID[id].metallic ? ' (metallic, approximate on screen)' : ''} · ${INK_BY_ID[id].hex}`)));
   lines.push('', 'stamp & type layer: the seal (vermilion, hand stamped) and the tiny sharp type, printed last.', 'Masters are grayscale: black = full ink.');
   return lines.join('\n');

@@ -33,7 +33,7 @@ export function newIssue(seed = Math.floor(Math.random() * 10000), dream = ''): 
   // page 1 arrives with the seal and a tiny inscription; everything else is stamped by hand
   first.objects.push(
     { id: newId(), kind: 'helper', key: 'seal', text: '殆', x: 128, y: 188, s: 11, r: (r() - 0.5) * 6, plates: [0, 1, 2], seed: seed % 997 },
-    { id: newId(), kind: 'helper', key: 'inscription', text: 'a day i almost remember\n거의 기억나는 하루\nほとんど覚えている一日', x: 26, y: 186, s: 30, r: 0, plates: [0, 1, 2], seed: 2 },
+    { id: newId(), kind: 'helper', key: 'inscription', text: `ALMOST PRESS · issue #${String(seed).padStart(4, '0')}\nほぼ印刷所 · 十六頁`, x: 26, y: 187, s: 30, r: 0, plates: [0, 1, 2], seed: 2 },
   );
   const is: Issue = { id: 'i' + seed + '-' + Date.now().toString(36), seed, dream, lang: 'en', pages: [first], current: 0, forgotten: [] };
   first.origin = JSON.stringify(stripOrigin(first));
@@ -45,12 +45,22 @@ export function getIssue(): Issue {
   if (issue) return issue;
   try {
     const raw = localStorage.getItem(KEY);
-    if (raw) { issue = JSON.parse(raw) as Issue; return issue; }
+    if (raw) { issue = migrate(JSON.parse(raw) as Issue); return issue; }
   } catch { /* corrupted: start over */ }
   issue = newIssue();
   return issue;
+}
+/** Issues saved before revision 01 carried the old zine title on page 1 and Korean numerals in the slug. */
+function migrate(is: Issue): Issue {
+  for (const p of is.pages) {
+    for (const o of p.objects) if (o.kind === 'helper' && o.key === 'inscription' && /almost remember/i.test(o.text ?? '')) o.text = `ALMOST PRESS · issue #${String(is.seed).padStart(4, '0')}\nほぼ印刷所 · 十六頁`;
+    p.slug = undefined; p.dreamLine = undefined;
+  }
+  return is;
 }
 export function setIssue(i: Issue) { issue = i; emit('issue'); }
 export function currentPage(): Page { const i = getIssue(); return i.pages[i.current]; }
 export function forget(objs: PageObj[]) { getIssue().forgotten.push(...objs.map((o) => ({ ...o, fx: undefined, opacity: 1 }))); emit('forgotten'); }
 export const ISSUE_NO = (i: Issue) => '#' + String(i.seed).padStart(4, '0');
+/** An issue is named only by the press and its number. */
+export const issueName = (i: Pick<Issue, 'seed'>) => `ALMOST PRESS · Issue #${String(i.seed).padStart(4, '0')}`;

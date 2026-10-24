@@ -42,7 +42,7 @@ export function applyLayout(layout: Layout, page: Page, r: Rng, keepsakeId?: str
     }
     case 'softtype': {
       const o = others[0];
-      if (o) page.objects.push({ id: newId(), kind: 'word', key: nameOf(o.key, pick(r, ['en', 'ko', 'ja'] as const)).toLowerCase(), style: Math.floor(r() * 6), x: PAGE_W / 2, y: 70 + r() * 30, s: 132, r: (r() - 0.5) * 8, plates: [top, 0, 1], seed: 5, opacity: 0.9 });
+      if (o) page.objects.push({ id: newId(), kind: 'word', key: nameOf(o.key, pick(r, ['en', 'ja'] as const)).toLowerCase(), style: Math.floor(r() * 6), x: PAGE_W / 2, y: 70 + r() * 30, s: 132, r: (r() - 0.5) * 8, plates: [top, 0, 1], seed: 5, opacity: 0.9 });
       page.strokes.push({ tool: 'haze', pts: [[0.1, 0.4], [0.9, 0.42]], size: 0.16, intensity: 0.7, seed: 4 });
       break;
     }
@@ -75,14 +75,14 @@ export function applyLayout(layout: Layout, page: Page, r: Rng, keepsakeId?: str
       page.objects.push(helper(page, 'vja', [...word].slice(0, 3).join(''), 118, 66, 22, 0, [0, 1, 2]));
       if (o) { o.s = 70; o.x = 56; o.y = 118; }
       others.slice(1).forEach((q) => { q.s *= 0.4; q.x = 20 + r() * 40; q.y = 170 + r() * 14; });
-      page.objects.push(helper(page, 'inscription', `${kanjiNum(page.n)} · ${JA_TIME[band]}\n${o ? `${OBJ[o.key]?.en.toLowerCase()} · ${OBJ[o.key]?.ko}` : ''}`, 14, 30, 26));
+      page.objects.push(helper(page, 'inscription', `${kanjiNum(page.n)} · ${JA_TIME[band]}\n${o ? `${OBJ[o.key]?.en.toLowerCase()} · ${OBJ[o.key]?.ja}` : ''}`, 14, 30, 26));
       page.objects.push(helper(page, 'date', datecol(page), 140, 150, 3.4));
       break;
     }
   }
 }
 export function inscription(page: Page, r: Rng) {
-  const lines = ['sweep the floor', 'mop the floor', 'the water was warm', 'someone was late', 'the clock kept going', '물이 따뜻했다', '時計はまだ動く', 'almost', 'it was nearly morning', '거의', 'ほとんど'];
+  const lines = ['sweep the floor', 'mop the floor', 'the water was warm', 'someone was late', 'the clock kept going', '水はぬるかった', '時計はまだ動く', 'almost', 'it was nearly morning', 'ほとんど', 'wait for the ink'];
   return [pick(r, lines), pick(r, lines)].join('\n') + `\np.${String(page.n).padStart(2, '0')}`;
 }
 function datecol(page: Page) { return `${kanjiNum(page.n)}頁`; }

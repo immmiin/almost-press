@@ -33,9 +33,7 @@ export default function gate(root: HTMLElement) {
       <div class="g-title" aria-hidden="true">${[0, 1, 2].map(titleLayer).join('')}</div>
       <h1 class="sr">ALMOST PRESS · 거의 인쇄소 · ほぼ印刷所</h1>
       <div class="g-seal" aria-hidden="true">${sealSVG({ size: 150, seed: Math.floor(R() * 40) + 1, doubleStrike: R() < 0.4, rotate: (R() - 0.5) * 9 })}</div>
-      <p class="g-sub mono">a dream print shop · 16 pages · A5 · risograph<br>꿈의 인쇄소 · 열여섯 쪽<br>夢の印刷所 · 十六頁</p>
-      <p class="g-zine"><span class="g-zine-en">A Day I Almost Remember</span><span class="g-zine-ko">거의 기억나는 하루</span></p>
-      <p class="g-zine-ja vert">ほとんど覚えている一日</p>
+      <p class="g-sub mono">a dream print shop · 16 pages · A5 · risograph<br>夢の印刷所 · 十六頁</p>
       <p class="g-date mono vert">${now.getFullYear()} · ${kanjiNum(now.getMonth() + 1)}月 · issue 01–${ISSUE_NO(is).slice(1)}</p>
       <p class="g-ins mono">sweep the floor<br>mop the floor<br>wait for the ink</p>
     </div></div>
@@ -56,8 +54,8 @@ export default function gate(root: HTMLElement) {
     slips.forEach(([key, fn, note], i) => {
       const w = document.createElement('div');
       w.className = `g-slip-wrap g-slip-${i}`;
-      const [en, ko, ja] = tAll(key);
-      const s = slip('button', 50 + i, `<span class="g-slip-main">${t(key)}</span><span class="g-slip-alt mono">${[en, ko, ja].filter((x) => x !== t(key)).join(' · ')}</span>${note ? `<span class="g-slip-note mono">${note}</span>` : ''}`, 'g-slip');
+      const [, ja] = tAll(key);
+      const s = slip('button', 50 + i, `<span class="g-slip-main">${t(key)}</span><span class="g-slip-alt mono">${ja}</span>${note ? `<span class="g-slip-note mono">${note}</span>` : ''}`, 'g-slip');
       s.addEventListener('click', () => peel(w, fn));
       s.addEventListener('pointerenter', () => flutter(s));
       s.addEventListener('focus', () => flutter(s));
@@ -66,7 +64,7 @@ export default function gate(root: HTMLElement) {
     });
     if (inProgress) {
       const n = document.createElement('button');
-      n.type = 'button'; n.className = 'g-new mono'; n.textContent = '+ new issue · 새 호 · 新しい号';
+      n.type = 'button'; n.className = 'g-new mono'; n.textContent = `${tAll('newIssue')[0]} · ${tAll('newIssue')[1]}`;
       n.addEventListener('click', () => leave(() => go('press', 'new=1')));
       nav.append(n);
     }
