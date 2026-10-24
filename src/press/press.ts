@@ -12,7 +12,7 @@ import { getIssue, emit, onIssue, ISSUE_NO, currentPage, newIssue, setIssue } fr
 import { commitPrint, nextPage, reprint, refreshText, inkUse } from '../print/loop';
 import { stampDream } from './edits';
 import { atmosphere, dissolveTo } from '../atmosphere/atmosphere';
-import { tA, onLang, setLabelDrift, getLang } from '../core/i18n';
+import { tA, tAll, onLang, setLabelDrift, getLang } from '../core/i18n';
 import { dreamTimeOf, INK_BY_ID } from '../design/tokens';
 import { kanjiNum } from './util';
 import { roller, thud, tick } from '../core/sound';
@@ -25,7 +25,8 @@ import { remember, driftColumn, noteSlip, Guide } from './remember';
 export default function press(root: HTMLElement, params: URLSearchParams) {
   if (params.get('new')) { setIssue(newIssue(params.get('seed') ? +params.get('seed')! : undefined)); history.replaceState(null, '', '#/press'); }
   let issue: Issue = getIssue();
-  if (issue.fixed || issue.bound) { /* a finished or fixed issue opens a fresh one at the press */ setIssue(newIssue()); issue = getIssue(); }
+  // the fixed Issue 01 is never edited: the press opens a fresh issue. A bound issue stays open: any sheet can be reopened.
+  if (issue.fixed) { setIssue(newIssue()); issue = getIssue(); }
   root.innerHTML = `<div class="press" data-dozing="false">
     <div class="p-ticket"></div><div class="p-drawer"></div>
     <div class="p-stage"><div class="p-vline vert" aria-live="polite"></div><div class="p-roller" aria-hidden="true"><i></i></div><div class="p-drum" aria-hidden="true"></div><div class="p-notes"></div></div>
@@ -200,6 +201,8 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
     strip.render(issue);
     syncAtmo();
     vline();
+    showBound();
+    strip.sleep.hidden = !!issue.bound;
     if (!guide && Guide.wanted() && issue.current === 0 && !p.printed) guide = new Guide(notes());
     if (guide && issue.current !== 0) { guide.el.remove(); guide = null; }
     if (guide && p.objects.some((o) => o.kind !== 'helper')) guide.mark(0);
@@ -210,6 +213,7 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
   const placeNotes = () => {
     driftColumn(notes(), stage, currentPage(), false);
     guide?.place(stage);
+    placeBound();
     const sr = stage.sheet.getBoundingClientRect(), pr = $('.p-stage').getBoundingClientRect();
     const rl = $('.p-roller');
     rl.style.setProperty('--rl', `${sr.left - pr.left}px`); rl.style.setProperty('--rw', `${sr.width}px`);
@@ -318,10 +322,10 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
     }
     const wasLatest = is.current === is.pages.length - 1;
     if (wasLatest && p.n >= 16) {
-      busy = false; ring(0);
-      await bindIssue(is, root);
-      is.bound = true; emit('bound');
-      go('reader', 'issue=current');
+      // the sixteenth sheet: the issue is bound (once) and stays on the press, with a slip to run the edition
+      if (!is.bound) { await bindIssue(is, root); is.bound = true; emit('bound'); }
+      busy = false; ring(0); strip.count.textContent = tA('hold');
+      load();
       return;
     }
     let arriving: { prevIdx: number } | null = null;
@@ -332,8 +336,9 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
         is.current = is.pages.length - 1;
       } else {
         // reopened sheet: later pages are not regenerated; go back to the sheet on the press
+        // (a bound issue keeps the reopened sheet on the press)
         const firstOpen = is.pages.findIndex((q) => !q.printed);
-        is.current = firstOpen >= 0 ? firstOpen : is.pages.length - 1;
+        if (!is.bound) is.current = firstOpen >= 0 ? firstOpen : is.pages.length - 1;
       }
       emit('next'); load(); ring(0);
       strip.count.textContent = tA('hold');
@@ -351,6 +356,110 @@ export default function press(root: HTMLElement, params: URLSearchParams) {
   const spaceDown = (e: KeyboardEvent) => { if (e.key === ' ' && !e.repeat && !typing(e)) { e.preventDefault(); startPrint(); } };
   const spaceUp = (e: KeyboardEvent) => { if (e.key === ' ' && !typing(e)) stopPrint(); };
   addEventListener('keydown', spaceDown); addEventListener('keyup', spaceUp);
+
+  // ---------- a slip that asks once (Fall asleep) ----------
+  const ask = (q: [string, string], yes: [string, string], no: [string, string]) => new Promise<boolean>((resolve) => {
+    const veil = document.createElement('div'); veil.className = 'ask-veil';
+    const s = slip('div', 73, `<p>${q[0]}</p><p class="ja" lang="ja">${q[1]}</p><div class="row"><button type="button" class="slip run-yes">${yes[0]} · <span lang="ja">${yes[1]}</span></button><button type="button" class="lnk run-no">${no[0]} · ${no[1]}</button></div>`, 'ask-slip');
+    s.setAttribute('role', 'dialog'); s.setAttribute('aria-modal', 'true'); s.setAttribute('aria-label', q[0]);
+    s.append(washi(81, { left: '42%', top: '-9px' }, 70));
+    root.append(veil, s);
+    const done = (v: boolean) => { veil.remove(); s.remove(); removeEventListener('keydown', esc); tick(); resolve(v); };
+    const esc = (e: KeyboardEvent) => { if (e.key === 'Escape') done(false); };
+    addEventListener('keydown', esc);
+    veil.addEventListener('click', () => done(false));
+    (s.querySelector('.run-yes') as HTMLElement).addEventListener('click', () => done(true));
+    (s.querySelector('.run-no') as HTMLElement).addEventListener('click', () => done(false));
+    (s.querySelector('.run-yes') as HTMLElement).focus();
+  });
+
+  // ---------- Fall asleep: the press dreams the remaining sheets by itself, then binds the issue ----------
+  const dreamTheRest = async () => {
+    if (busy || printing) return;
+    const is = getIssue();
+    if (is.bound) return;
+    busy = true;
+    const rm = reducedMotion();
+    let skip = rm;
+    const onSkip = (e: Event) => { if (e instanceof KeyboardEvent && e.key !== 'Escape') return; skip = true; };
+    addEventListener('keydown', onSkip); stage.el.addEventListener('pointerdown', onSkip);
+    const lab = slip('div', 71, '', 'dream-ceremony');
+    lab.setAttribute('role', 'status');
+    $('.p-stage').append(lab);
+    stage.el.classList.add('remembering');
+    guide?.el.remove(); guide = null;
+    const mem = inks.memory === 'off' ? 'gentle' : inks.memory;
+    const say = (n: number) => { lab.innerHTML = `<span lang="ja">眠る</span> · the press dreams sheet ${n} <span class="mono">${String(n).padStart(2, '0')}/16 · click to hurry</span>`; };
+    const pause = (ms: number) => new Promise<void>((res) => { const t0 = performance.now(); const f = () => (skip || performance.now() - t0 >= ms ? res() : requestAnimationFrame(f)); f(); });
+    // the sheet on the press prints with all its plates
+    is.current = is.pages.length - 1;
+    const last = currentPage();
+    if (!last.printed) { commitPrint(is, last, last.inks.length); strip.invalidate(is.current); }
+    emit('print'); strip.render(is); thud(0.6);
+    while (is.pages.length < 16) {
+      const np = nextPage(is, inks.drift, mem, { dream: true });
+      commitPrint(is, np, np.inks.length);
+      is.pages.push(np); is.current = is.pages.length - 1;
+      say(np.n);
+      stage.setPage(np); syncAtmo(); vline(); strip.render(is);
+      atmosphere().flashInk(INK_BY_ID[np.inks[0]].hex, 0.5); thud(0.2);
+      if (!skip) { stage.canvas.animate([{ opacity: 0.15, filter: 'blur(3px)' }, { opacity: 1, filter: 'none' }], { duration: 520, easing: 'cubic-bezier(.3,.7,.2,1)' }); await pause(800); }
+      else await new Promise((r) => requestAnimationFrame(r));
+    }
+    emit('dreamt');
+    lab.remove(); stage.el.classList.remove('remembering');
+    removeEventListener('keydown', onSkip); stage.el.removeEventListener('pointerdown', onSkip);
+    await bindIssue(is, root);
+    is.bound = true; emit('bound');
+    busy = false;
+    load();
+  };
+  strip.onSleep = async () => {
+    if (busy || printing || getIssue().bound) return;
+    if (await ask(tAll('sleepAsk'), tAll('sleepYes'), tAll('sleepNo'))) await dreamTheRest();
+  };
+
+  // ---------- after binding: a clear slip to run the edition; every sheet can still be reopened ----------
+  let boundSlip: HTMLElement | null = null;
+  const showBound = () => {
+    const is = getIssue();
+    if (!is.bound) { boundSlip?.remove(); boundSlip = null; return; }
+    if (boundSlip?.isConnected) { placeBound(); return; }
+    const [bEn, bJa] = tAll('bound');
+    boundSlip = slip('div', 37, `<h3>${bEn} · <span lang="ja">${bJa}</span></h3>
+      <button type="button" class="slip run"><span class="ja" aria-hidden="true">刷</span>${tA('run')}<small lang="${getLang() === 'ja' ? 'en' : 'ja'}">${tAll('run')[getLang() === 'ja' ? 0 : 1]}</small></button>
+      <a href="#/reader?issue=current">${tA('scroll')} →</a>
+      <span class="mono" style="color:var(--soft)">click any sheet on the rod to reopen it</span>`, 'bound-slip');
+    boundSlip.append(washi(57, { left: '30%', top: '-9px' }, 64));
+    (boundSlip.querySelector('.run') as HTMLElement).addEventListener('click', () => dissolveTo(() => go('export', 'issue=current'), 900));
+    notes().append(boundSlip);
+    placeBound();
+    if (!reducedMotion()) boundSlip.animate([{ opacity: 0, transform: 'translateY(-10px) rotate(-3deg)' }, { opacity: 1, transform: 'none' }], { duration: 420, easing: 'cubic-bezier(.3,.7,.2,1)' });
+  };
+  const placeBound = () => {
+    if (!boundSlip) return;
+    // beside the page: the right margin under the drift slips, else the left margin, else over the page's foot
+    const h = notes().getBoundingClientRect(), s = stage.sheet.getBoundingClientRect();
+    const W = 176;
+    let x = s.right - h.left + 14, y = s.top - h.top + s.height * 0.46;
+    if (h.right - s.right < W + 20) { x = s.left - h.left - W - 16; if (x < 28) { x = s.left - h.left + 10; y = s.bottom - h.top - 200; } }
+    Object.assign(boundSlip.style, { left: `${x}px`, top: `${y}px`, rotate: '-2deg' });
+  };
+
+  // ---------- print this sheet as a single poster (刷 on a printed sheet, or right-click it) ----------
+  strip.onPoster = async (i) => {
+    const is = getIssue(); const p = is.pages[i];
+    if (!p?.printed || busy) return;
+    const sr = stage.sheet.getBoundingClientRect(), nr = notes().getBoundingClientRect();
+    const at: [number, number] = [sr.left - nr.left + sr.width / 2, sr.top - nr.top + sr.height * 0.5];
+    noteSlip(notes(), `printing sheet <b>${p.n}</b> as a poster…`, ...at, 1800, 9);
+    const { posterFiles, download } = await import('../export/files');
+    const files = await posterFiles(is, p);
+    files.forEach((f, k) => setTimeout(() => download(f.blob, f.name), k * 350));
+    stage.render('full');
+    noteSlip(notes(), `poster <b>${p.n}</b> · A5 PDF with bleed + PNG`, at[0], at[1] + 36, 3200, 13);
+    thud(0.6);
+  };
 
   // ---------- weird, never in the way ----------
   const pressEl = $('.press') as HTMLElement;

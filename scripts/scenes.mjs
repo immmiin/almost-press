@@ -87,6 +87,13 @@ try {
     await page.click('.sleep-slip'); await sleep(500); await shot('sleep-ask');
     await page.click('.ask-slip .run-yes'); await sleep(4000); await shot('sleep-mid');
     await sleep(14000); await shot('sleep-bound');
+    // print sheet 3 as a poster from the rod
+    const downloads = [];
+    page.on('download', (d) => downloads.push(d));
+    await page.hover('.leaf-wrap:has(.leaf[data-i="2"])'); await sleep(200);
+    await page.click('.leaf-print[data-i="2"]');
+    await sleep(9000); await shot('sleep-poster');
+    for (const d of downloads) { const p = join(out, d.suggestedFilename()); await d.saveAs(p); console.log('download', d.suggestedFilename()); }
   } else if (scene === 'dreamfor') {
     await go('#/gate', 3000);
     await page.fill('.g-dream input', 'a swan in the kitchen and the clock kept getting bigger');

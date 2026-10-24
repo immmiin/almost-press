@@ -173,6 +173,7 @@
 .rod-wrap::before { content: ""; position: absolute; left: 0; right: 0; top: 10px; height: 5px; border-radius: 3px; background: linear-gradient(180deg, #d9cbb8, #a89580 60%, #8b7a68); box-shadow: 0 2px 3px rgba(59,58,64,.25); }
 .rod-wrap::after { content: ""; position: absolute; right: -6px; top: 6px; width: 13px; height: 13px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #e9dccb, #8b7a68); }
 .rod { position: relative; display: flex; gap: clamp(3px, .6vw, 10px); height: 100%; padding: 6px 10px 0; flex-direction: row-reverse; justify-content: flex-start; }
+.leaf-wrap { position: relative; flex: none; }
 .leaf { position: relative; border: 0; background: none; padding: 0; width: clamp(30px, 2.8vw, 42px); display: grid; justify-items: center; align-content: start; color: var(--sumi); }
 .leaf-clip { width: 8px; height: 11px; background: #c9b9a4; border-radius: 1px; box-shadow: inset 0 -2px 0 rgba(0,0,0,.12); z-index: 2; }
 .leaf-sheet { position: relative; width: 100%; aspect-ratio: 154/216; margin-top: -4px; background: var(--rice) var(--tex-rice) 0 0 / 200px; box-shadow: 0 3px 6px -2px rgba(59,58,64,.25); display: block; overflow: hidden; transform-origin: top center; transition: transform var(--material) var(--ease-paper); }
@@ -189,7 +190,6 @@
 .leaf.cur .leaf-k { color: var(--seal); }
 .leaf:not(:disabled):not(.cur):hover .leaf-sheet { transform: rotate(3deg); }
 .leaf-print { position: absolute; z-index: 3; top: 12px; right: -5px; width: 18px; height: 18px; padding: 0; border: 0; display: none; place-items: center; background: var(--pearl); color: var(--seal); font: 800 11px/1 var(--f-display); box-shadow: 0 1px 2px rgba(59,58,64,.3); border-radius: 1px; }
-.leaf-wrap { position: relative; }
 .leaf-wrap:hover .leaf-print, .leaf-wrap:focus-within .leaf-print { display: grid; }
 .dish-wrap { position: relative; height: 100%; display: grid; align-content: center; justify-items: center; }
 .dish { position: relative; width: 150px; height: 54px; }
@@ -206,6 +206,7 @@
 .print-wrap .enamel-label { font-size: 13px; }
 .print-count { font-size: 11px; color: var(--soft); min-height: 14px; white-space: nowrap; letter-spacing: .04em; }
 .print-count b { color: var(--seal); font-weight: 500; }
+.sleep-slip[hidden] { display: none; }
 .sleep-slip { font: 600 14px/1.1 var(--f-display); padding: 9px 14px 13px; display: grid; gap: 2px; text-align: center; }
 .sleep-slip .ja { font-size: 16px; font-weight: 800; color: var(--lilac); }
 .sleep-slip .mono { font-size: 11px; color: var(--soft); }
@@ -236,9 +237,10 @@
 .ask-slip .row button:first-child { font: 600 15px var(--f-display); padding: 9px 16px 12px; }
 .ask-slip .row button.lnk { border: 0; background: none; border-bottom: 1px solid rgba(59,58,64,.4); padding: 2px 0; font-size: 12px; }
 .ask-veil { position: fixed; inset: 0; z-index: 74; background: rgba(246,242,236,.3); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); }
-.bound-slip { position: absolute; z-index: 7; display: grid; gap: 10px; justify-items: start; padding: 16px 20px 20px; width: 230px; pointer-events: auto; }
+.bound-slip { position: absolute; z-index: 7; display: grid; gap: 10px; justify-items: start; padding: 14px 14px 18px; width: 176px; pointer-events: auto; }
 .bound-slip h3 { margin: 0; font: 11px/1.2 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--soft); }
-.bound-slip .run { font: 600 18px/1.15 var(--f-display); padding: 10px 16px 13px; }
+.bound-slip .run { font: 600 16px/1.15 var(--f-display); padding: 9px 12px 12px; }
+.bound-slip .run small { display: block; font: 500 12px/1.2 var(--f-display); color: var(--soft); margin-top: 2px; }
 .bound-slip .run .ja { color: var(--seal); font-weight: 800; margin-right: 6px; }
 .bound-slip a, .bound-slip .lnk { font: 12px var(--f-mono); color: var(--sumi); border: 0; background: none; padding: 1px 0; border-bottom: 1px solid rgba(59,58,64,.4); text-decoration: none; }
 .dream-ceremony { position: absolute; left: 50%; bottom: 10px; translate: -50% 0; z-index: 8; pointer-events: none; padding: 8px 16px 11px; font: 600 13px/1.2 var(--f-display); white-space: nowrap; }

@@ -150,6 +150,23 @@ export async function instagram(issue: Issue, pages: Rendered[]): Promise<{ name
   return out;
 }
 
+/** One sheet as a single poster: an A5 PDF with 3 mm bleed (the 300 dpi page) and a PNG of the trimmed page. */
+export async function posterFiles(issue: Issue, page: Page): Promise<{ name: string; blob: Blob }[]> {
+  await fontsReady();
+  const src = pipeline().render(page, PX_W);
+  const jpeg = await blobBytes(await toBlob(src, 'image/jpeg', 0.93));
+  const bl = Math.round(BLEED * (src.width / FULL_W));
+  const tc = document.createElement('canvas');
+  tc.width = src.width - bl * 2; tc.height = src.height - bl * 2;
+  tc.getContext('2d')!.drawImage(src, bl, bl, tc.width, tc.height, 0, 0, tc.width, tc.height);
+  const png = await toBlob(tc, 'image/png');
+  const pdf = new jsPDF({ unit: 'mm', format: [FULL_W, FULL_H], orientation: 'portrait', compress: true });
+  pdf.setProperties({ title: `${issueName(issue)} · sheet ${page.n}`, subject: 'ALMOST PRESS · 거의 인쇄소 · ほぼ印刷所', creator: 'ALMOST PRESS', keywords: 'risograph poster A5 bleed 3mm' });
+  pdf.addImage(jpeg, 'JPEG', 0, 0, FULL_W, FULL_H, 'poster', 'NONE');
+  const base = `almost-press-${String(issue.seed).padStart(4, '0')}-p${String(page.n).padStart(2, '0')}-poster`;
+  return [{ name: `${base}-A5-bleed.pdf`, blob: pdf.output('blob') }, { name: `${base}.png`, blob: png }];
+}
+
 export function inkList(issue: Issue): string {
   const lines = [issueName(issue), `dream: ${issue.dream}`, '', 'page · plate · ink · hex'];
   issue.pages.forEach((p) => p.inks.forEach((id, i) => lines.push(`p.${String(p.n).padStart(2, '0')} · plate ${i + 1} · ${INK_BY_ID[id].name}${INK_BY_ID[id].metallic ? ' (metallic, approximate on screen)' : ''} · ${INK_BY_ID[id].hex}`)));
